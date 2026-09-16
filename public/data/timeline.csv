@@ -1,0 +1,4 @@
+event_id,date_start,date_end,territorial_level,entity,event_type,title,description,source_ids,epistemic_status,last_reviewed
+EVT-0001,1948-01-01,,national,France,period_start,Début de la période principale,Point de départ conventionnel de la chronologie de recherche,,method,2026-09-16
+EVT-0002,2018-11-23,,national,France,legal_reform,Loi ELAN,Événement à documenter avec texte et conséquences effectives,,PLAUSIBLE,2026-09-16
+EVT-0003,2026-09-16,,project,Observatoire,project_init,Initialisation du socle probatoire,Création du registre de sources claims indicateurs et page publique,,ETABLI,2026-09-16
