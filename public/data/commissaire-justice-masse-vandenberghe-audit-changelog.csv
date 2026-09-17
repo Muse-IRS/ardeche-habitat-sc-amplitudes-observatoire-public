@@ -1,0 +1,3 @@
+version,date,etat,modification,archive
+v0.1,2026-09-17,OUVERT,"Ouverture de l’annexe publique : distinction copie de retrait / minute / répertoire / pièces sources ; premiers faits documentés et contrôles ouverts.","Historique Git du dépôt"
+v0.2,2026-09-17,OUVERT,"Ajout du registre évolutif CSV, de la règle de mise à jour sur événement observable, de l’état documentaire du contrat source et de l’observation orale à portée indéterminée.","Historique Git du dépôt"
