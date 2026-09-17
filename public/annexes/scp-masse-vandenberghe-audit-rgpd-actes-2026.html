@@ -15,8 +15,7 @@
     .status{display:inline-block;padding:3px 8px;border-radius:999px;border:1px solid var(--line);font-size:.78rem;font-weight:700;white-space:nowrap}
     .documented{background:#e5f5e9}.reported{background:#e9efff}.unknown{background:#fff4ce}.test{background:#ffe8cc}.active{background:#fde2e2}
     .meta{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-    .meta div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}
-    .meta strong{display:block;font-size:1.15rem}
+    .meta div{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px}.meta strong{display:block;font-size:1.15rem}
     .equation{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#0f172a;color:#e2e8f0;padding:14px;border-radius:10px;overflow:auto}
     .small{font-size:.9rem;color:var(--muted)}
     @media(max-width:800px){.meta{grid-template-columns:1fr 1fr}.table-wrap{overflow-x:auto}.audit-table{min-width:980px}}
@@ -28,14 +27,14 @@
       <p class="eyebrow">Annexe publique · audit documentaire évolutif</p>
       <h1>SCP Masse-Vandenberghe — audit RGPD des actes 2026</h1>
       <p class="lead">Registre public borné des faits documentés, observations rapportées, données manquantes et contrôles encore ouverts concernant la chaîne documentaire d’actes de commissaire de justice.</p>
-      <div class="badges"><span>Audit ouvert le 17/09/2026</span><span>Évolutif</span><span>Traçable</span><span>RGPD</span><span>Actes 2026</span></div>
+      <div class="badges"><span>Audit ouvert le 17/09/2026</span><span>v0.2</span><span>Évolutif</span><span>Traçable</span><span>RGPD</span></div>
     </div>
   </header>
 
   <main class="wrap">
     <section class="notice">
       <h2>Statut de l’annexe</h2>
-      <p>Cette annexe a été ouverte le <strong>17 septembre 2026</strong>. Elle est destinée à être mise à jour au fil des réponses, documents et traces effectivement obtenus. Les mises à jour sont versionnées dans l’historique Git du dépôt. Un nouvel événement complète la chronologie ; il ne réécrit pas rétroactivement l’état antérieur.</p>
+      <p>Cette annexe a été ouverte le <strong>17 septembre 2026</strong>. Elle est destinée à être mise à jour au fil des réponses, documents et traces effectivement obtenus, avec consolidation régulière de l’état public. Les mises à jour sont versionnées dans l’historique Git du dépôt et dans un journal public. Un nouvel événement complète la chronologie ; il ne réécrit pas rétroactivement l’état antérieur.</p>
       <p>La page expose uniquement un résultat public minimal. Elle ne publie ni données personnelles inutiles, ni pièces intégrales, ni méthode privée de gouvernance ou de raisonnement.</p>
     </section>
 
@@ -44,10 +43,10 @@
       <div class="meta">
         <div><span>Début de l’audit</span><strong>17/09/2026</strong></div>
         <div><span>Dernière mise à jour</span><strong>17/09/2026</strong></div>
+        <div><span>Version publique</span><strong>v0.2</strong></div>
         <div><span>État</span><strong>OUVERT</strong></div>
-        <div><span>Rythme</span><strong>selon événements</strong></div>
       </div>
-      <p class="small">Aucune fréquence artificielle n’est imposée : une mise à jour intervient lorsqu’un document, une réponse, une échéance ou un fait nouveau modifie l’état observable.</p>
+      <p class="small">Une révision intervient lorsqu’un document, une réponse, une échéance ou un fait nouveau modifie l’état observable. Le journal public permet de distinguer chaque consolidation successive.</p>
     </section>
 
     <section>
@@ -60,7 +59,7 @@
       <h2>Distinction juridique structurante</h2>
       <p>Le délai de trois mois prévu par l’article 656 du Code de procédure civile concerne la <strong>copie de l’acte conservée à l’étude pour retrait</strong>. Il ne doit pas être assimilé à la conservation de l’<strong>original en minute</strong>, au <strong>répertoire</strong>, ni au sort des <strong>pièces sources</strong> utilisées pour préparer l’acte.</p>
       <div class="equation">COPIE DE RETRAIT ≠ MINUTE ≠ RÉPERTOIRE ≠ PIÈCES SOURCES</div>
-      <p><a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006411026" rel="noopener">CPC, art. 656</a> · <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000044472122" rel="noopener">Décret n° 2021-1625, art. 18</a> · <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000044476223/" rel="noopener">Décret n° 2021-1625, art. 19</a> · <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042982383" rel="noopener">Code du patrimoine, art. R.212-15</a></p>
+      <p><a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000006411025" rel="noopener">CPC, art. 656</a> · <a href="https://www.legifrance.gouv.fr/jorf/article_jo/JORFARTI000044472122" rel="noopener">Décret n° 2021-1625, art. 18</a> · <a href="https://www.legifrance.gouv.fr/loda/article_lc/LEGIARTI000044476223/" rel="noopener">Décret n° 2021-1625, art. 19</a> · <a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000042982383" rel="noopener">Code du patrimoine, art. R.212-15</a></p>
     </section>
 
     <section>
@@ -101,9 +100,24 @@
     </section>
 
     <section>
+      <h2>Journal public des mises à jour</h2>
+      <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Version</th><th>Date</th><th>État</th><th>Modification</th></tr></thead>
+        <tbody>
+          <tr><td>v0.1</td><td>17/09/2026</td><td>OUVERT</td><td>Ouverture de l’annexe publique et première distinction entre copie de retrait, minute, répertoire et pièces sources.</td></tr>
+          <tr><td>v0.2</td><td>17/09/2026</td><td>OUVERT</td><td>Ajout du registre CSV évolutif, de la règle de mise à jour, de l’état documentaire du contrat source et de l’observation orale à portée indéterminée.</td></tr>
+        </tbody>
+      </table>
+      </div>
+      <p class="small">Les versions antérieures demeurent récupérables dans l’historique Git du dépôt ; le journal CSV fournit une lecture synthétique des consolidations publiques.</p>
+    </section>
+
+    <section>
       <h2>Données ouvertes de l’annexe</h2>
       <ul class="sources">
         <li><a href="../data/commissaire-justice-masse-vandenberghe-audit-evolutif.csv">Registre CSV de l’annexe</a></li>
+        <li><a href="../data/commissaire-justice-masse-vandenberghe-audit-changelog.csv">Journal CSV des versions publiques</a></li>
         <li><a href="../commissaire-justice-masse-vandenberghe-rgpd.html">Audit public général de la SCP Masse-Vandenberghe</a></li>
         <li><a href="https://www.cnil.fr/fr/comprendre-mes-droits/le-droit-dacces-connaitre-les-donnees-quun-organisme-detient-sur-vous" rel="noopener">CNIL — droit d’accès</a></li>
         <li><a href="https://www.cnil.fr/le-droit-la-limitation-du-traitement-geler-lutilisation-de-vos-donnees" rel="noopener">CNIL — limitation du traitement</a></li>
