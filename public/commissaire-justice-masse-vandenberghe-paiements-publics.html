@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SCP Masse-Vandenberghe — paiements publics</title>
+  <meta name="description" content="Audit public du référencement de la SCP Masse-Vandenberghe sur JePaieParCarte et de l’architecture générique ADEC, sans donnée de dossier individuel.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/commissaire-justice-masse-vandenberghe-paiements-publics.html">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <p class="eyebrow">Audit public des paiements</p>
+    <h1>SCP Masse-Vandenberghe — paiement en ligne</h1>
+    <p class="lead">Ce qui est publiquement établi sur JePaieParCarte, ce que la documentation ADEC décrit de manière générique et ce qui reste inconnu pour l’étude elle-même.</p>
+    <div class="badges"><span>JePaieParCarte</span><span>ADEC</span><span>VADS</span><span>Compte affecté</span></div>
+  </div></header>
+  <main class="wrap">
+    <section><h2>Fait public directement établi</h2><p>La plateforme publique JePaieParCarte référence <strong>SCP MASSE VANDENBERGHE</strong> dans la liste des études de commissaires de justice proposées à l’utilisateur. Ce référencement établit un lien public entre l’étude et la plateforme.</p><p class="note">Le référencement d’une étude sur une plateforme n’établit pas, à lui seul, la banque utilisée, l’acquéreur carte, le libellé bancaire final ni la disponibilité opérationnelle d’une transaction à un instant donné.</p></section>
+
+    <section><h2>Architecture générique documentée par ADEC</h2><p>La documentation ADEC présente JePaieParCarte comme une solution de paiement en ligne destinée aux commissaires de justice. Pour une étude, ADEC indique que la mise en place nécessite un contrat VADS obtenu auprès de la banque et relié au compte affecté de l’étude. ADEC décrit également la possibilité d’intégrer un bouton de paiement vers l’espace JePaieParCarte dédié.</p><pre>étude → JePaieParCarte → contrat VADS bancaire → compte affecté</pre><p><strong>Qualification :</strong> cette chaîne décrit l’architecture générique de la solution. Elle ne permet pas de déduire sans autre source le nom de la banque ou les paramètres monétiques propres à la SCP Masse-Vandenberghe.</p></section>
+
+    <section class="grid two">
+      <article class="card observed"><h3>Établi pour l’étude</h3><p>Présence nominative de la SCP dans la sélection publique JePaieParCarte.</p></article>
+      <article class="card"><h3>Établi pour la solution</h3><p>ADEC documente le recours à un contrat VADS bancaire relié au compte affecté pour une étude utilisant JePaieParCarte.</p></article>
+      <article class="card"><h3>Indéterminé</h3><p>Banque, acquéreur, identifiant marchand, réseaux cartes, contrat VADS particulier, MCC et compte de remise propres à cette étude.</p></article>
+      <article class="card"><h3>Inconnu sans transaction</h3><p>Nom marchand présenté à l’autorisation et libellé finalement visible sur le relevé du payeur.</p></article>
+    </section>
+
+    <section><h2>Principe de lecture</h2><pre>SCP Masse-Vandenberghe → JePaieParCarte → architecture ADEC → banque à identifier → trace transactionnelle à identifier</pre><p>La présence d’un prestataire tiers ne signifie pas que ce prestataire est le bénéficiaire économique des fonds. De même, une différence éventuelle entre dénomination juridique, nom marchand et libellé bancaire ne constitue pas en elle-même une irrégularité.</p></section>
+
+    <section><h2>Sources publiques</h2><ul class="sources">
+      <li><a href="https://www.jepaieparcarte.com/" rel="noopener">JePaieParCarte — sélection publique des études</a></li>
+      <li><a href="https://cjweb.adec-sas.com/faq/comment-disposer-du-paiement-en-ligne-sur-mon-site-cj-web/" rel="noopener">ADEC / CJ WEB — mise en place du paiement</a></li>
+      <li><a href="https://www.adec-sas.com/general/jepaieparcarte-le-moyen-de-paiement-securise/" rel="noopener">ADEC — présentation de JePaieParCarte</a></li>
+    </ul></section>
+
+    <section><h2>Audit juridique distinct</h2><p>Les questions de conservation des actes, minute, répertoire et droits RGPD font l’objet d’une page séparée afin de ne pas mélanger chaîne documentaire et chaîne de paiement.</p><p><a href="commissaire-justice-masse-vandenberghe-rgpd.html">Ouvrir l’audit RGPD général →</a></p></section>
+
+    <section class="notice"><h2>Frontière de publication</h2><p>Aucun numéro de dossier, aucune pièce privée, aucune transaction individuelle, aucune coordonnée bancaire et aucune observation issue d’un échange privé ne sont reproduits ici.</p></section>
+  </main>
+  <footer><div class="wrap"><a href="paiements-flux-publics.html">← Paiements et flux</a> · <a href="index.html">Accueil</a> · Muse-IRS · 2026</div></footer>
+</body>
+</html>
