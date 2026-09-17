@@ -21,6 +21,11 @@ Ardèche Habitat → SC Amplitudes → Département de l’Ardèche → Région 
 
 Période principale : 1948–2026, avec focalisation 2000–2026.
 
+## Pages publiques spécialisées
+
+- **SCP Masse-Vandenberghe — audit RGPD et actes de commissaire de justice** : `public/commissaire-justice-masse-vandenberghe-rgpd.html`
+- **Registre public des incohérences, écarts neutralisés et points de contrôle** : `public/data/commissaire-justice-masse-vandenberghe-incoherences.csv`
+
 ## Frontière public / privé
 
 Ce dépôt est une **surface publique de restitution**. Le travail préparatoire, les notes, les documents de recherche, les hypothèses intermédiaires et les éléments non destinés à publication restent dans un dépôt canonique privé.
@@ -35,6 +40,8 @@ Les fichiers publiés ici doivent pouvoir être justifiés par des sources publi
 - INDÉTERMINÉ
 - DIVERGENT
 - RÉFUTÉ
+
+Pour les audits procéduraux, le projet utilise également les états **À TESTER** et **À ACTIVER** afin de ne pas transformer une hypothèse vérifiable en anomalie acquise.
 
 ## Indépendance
 
