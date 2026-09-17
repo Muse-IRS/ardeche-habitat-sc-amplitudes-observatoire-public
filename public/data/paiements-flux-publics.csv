@@ -1,0 +1,13 @@
+id,entity,layer,observation,status,temporal_scope,source_id
+AH-PAY-001,Ardèche Habitat,moyens de paiement,"La page publique présente prélèvement automatique, carte bancaire en ligne, carte bancaire en agence, virement, chèque et espèces.",ETABLI,"page publique consultée en 2026",SRC-AH-REGLEMENTS
+AH-PAY-002,Ardèche Habitat,paiement en ligne,"Une page Systempay dédiée à Ardèche Habitat est publiquement accessible.",ETABLI,"page active en 2026",SRC-AH-SYSTEMPAY
+AH-PAY-003,Ardèche Habitat,données du formulaire,"Le formulaire public demande notamment identité, agence locative, référence, e-mail et montant.",ETABLI,"page active en 2026",SRC-AH-SYSTEMPAY
+AH-PAY-004,Ardèche Habitat,sécurité déclarée,"La page Systempay annonce TLS, 3-D Secure, e-mail de confirmation et information du bénéficiaire.",ETABLI,"page active en 2026",SRC-AH-SYSTEMPAY
+AH-PAY-005,Ardèche Habitat,banque nommée,"Ardèche Habitat nomme la Caisse d’Épargne pour la redirection de paiement CB en ligne et pour les coordonnées de virement publiées.",ETABLI,"page publique consultée en 2026",SRC-AH-REGLEMENTS
+AH-PAY-006,Ardèche Habitat,acquéreur carte,"L’identité de l’acquéreur carte propre au flux Ardèche Habitat n’est pas établie par les sources publiques retenues.",INDETERMINE,"2026",SRC-AH-REGLEMENTS
+AH-PAY-007,Ardèche Habitat,libellé bancaire,"Le libellé final visible sur le relevé du payeur n’est pas établi.",INDETERMINE,"2026",SRC-AH-SYSTEMPAY
+AH-PAY-008,Ardèche Habitat,espèces,"Le site indique un règlement en espèces dans les agences de La Banque Postale.",ETABLI,"page publique consultée en 2026",SRC-AH-REGLEMENTS
+CJ-PAY-001,SCP Masse-Vandenberghe,plateforme,"JePaieParCarte référence publiquement SCP MASSE VANDENBERGHE parmi les études proposées.",ETABLI,"page publique consultée en 2026",SRC-CJ-JPPC
+CJ-PAY-002,SCP Masse-Vandenberghe,architecture JePaieParCarte,"ADEC décrit pour les études un contrat VADS obtenu auprès de la banque et relié au compte affecté.",ARCHITECTURE_GENERIQUE,"documentation ADEC consultée en 2026",SRC-ADEC-JPPC
+CJ-PAY-003,SCP Masse-Vandenberghe,banque,"La banque propre à l’étude pour JePaieParCarte n’est pas établie par les sources publiques retenues.",INDETERMINE,"2026",SRC-CJ-JPPC
+CJ-PAY-004,SCP Masse-Vandenberghe,acquéreur et libellé,"Acquéreur, identifiant marchand, MCC et libellé bancaire final ne sont pas établis.",INDETERMINE,"2026",SRC-CJ-JPPC
