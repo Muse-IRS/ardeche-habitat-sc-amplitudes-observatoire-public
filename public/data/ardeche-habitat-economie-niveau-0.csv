@@ -1,0 +1,48 @@
+metric_id,category,metric,value,unit,period,scope,source_id,status,notes
+ECO-001,patrimoine,Logements publiés,6536,logements,consulté 2026-09-17,Page Gestion locative,SRC-0009,ETABLI,"Valeur publiée par Ardèche Habitat"
+ECO-002,patrimoine,Communes couvertes,122,minimum_communes,consulté 2026-09-17,Page Gestion locative,SRC-0009,ETABLI,"Le site indique plus de 122 communes"
+ECO-003,patrimoine,Logements publiés,6450,minimum_logements,consulté 2026-09-17,Page Historique chiffres clés,SRC-0010,PERIMETRE_DISTINCT,"Le site indique plus de 6 450 logements"
+ECO-004,patrimoine,Communes couvertes,124,minimum_communes,consulté 2026-09-17,Page Historique chiffres clés,SRC-0010,PERIMETRE_DISTINCT,"Le site indique plus de 124 communes"
+ECO-005,patrimoine,Garages et parkings,1981,unités,consulté 2026-09-17,Page Historique chiffres clés,SRC-0010,ETABLI,
+ECO-006,patrimoine,Locaux commerciaux associatifs ou professionnels,186,unités,consulté 2026-09-17,Page Historique chiffres clés,SRC-0010,ETABLI,
+ECO-007,patrimoine,Etablissements accueillant du public,18,unités,consulté 2026-09-17,Page Historique chiffres clés,SRC-0010,ETABLI,"EHPAD FJT résidences étudiantes ou sociales"
+ECO-008,patrimoine,Objectif de construction annuel,80,logements_par_an,consulté 2026-09-17,Déclaration institutionnelle,SRC-0010,DECLARE,"Environ 80 logements par an"
+ECO-009,perimetre_ancols,Logements et équivalents gérés,6593,logements_equivalents,2021,Dénominateur tableau maintenance,SRC-0011,ETABLI,"Ne pas confondre avec parc géré ou actifs en propriété"
+ECO-010,perimetre_ancols,Parc géré fin 2021,6632,logements,2021,Analyse exploitation,SRC-0011,ETABLI,"Périmètre distinct du tableau maintenance"
+ECO-011,perimetre_ancols,Logements et équivalents en propriété,7055,logements_equivalents,2021,Tableau FRNG,SRC-0011,ETABLI,"Périmètre distinct des logements gérés"
+ECO-012,exploitation,Coût personnel normalisé,4.572,M_EUR,2021,Hors régie et maîtrise d'ouvrage,SRC-0011,ETABLI,
+ECO-013,exploitation,Coût personnel par logement géré,694,EUR_par_logement,2021,Ratio ANCOLS,SRC-0011,ETABLI,
+ECO-014,exploitation,Coût personnel sur loyers,16.2,pct,2021,Ratio ANCOLS,SRC-0011,ETABLI,
+ECO-015,exploitation,Autres charges externes hors CGLLS,2.155,M_EUR,2021,Exploitation,SRC-0011,ETABLI,
+ECO-016,maintenance,Maintenance totale régie comprise,4.265,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-017,maintenance,Entretien courant,1.577,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-018,maintenance,Gros entretien,1.487,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-019,maintenance,Charges exploitation liées aux immeubles,0.692,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-020,maintenance,Régie personnel,0.404,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-021,maintenance,Régie consommations,0.106,M_EUR,2021,Tableau maintenance,SRC-0011,ETABLI,
+ECO-022,maintenance,Maintenance totale,4.861,M_EUR,2017,Tableau maintenance,SRC-0011,ETABLI,
+ECO-023,maintenance,Maintenance totale,4.107,M_EUR,2018,Tableau maintenance,SRC-0011,ETABLI,
+ECO-024,maintenance,Maintenance totale,3.836,M_EUR,2019,Tableau maintenance,SRC-0011,ETABLI,
+ECO-025,maintenance,Maintenance totale,3.765,M_EUR,2020,Tableau maintenance,SRC-0011,ETABLI,
+ECO-026,recettes,Loyers,28.159,M_EUR,2021,Exploitation,SRC-0011,ETABLI,
+ECO-027,recettes,Chiffre affaires locatif,28.488,M_EUR,2021,Exploitation,SRC-0011,ETABLI,
+ECO-028,recettes,Produit des activités,28.500,M_EUR,2021,Exploitation,SRC-0011,ETABLI,
+ECO-029,recettes,Part loyers logements,85,pct,2021,Répartition des loyers,SRC-0011,ETABLI,
+ECO-030,recettes,Part loyers résidences collectives,10,pct,2021,Répartition des loyers,SRC-0011,ETABLI,
+ECO-031,recettes,Part loyers locaux professionnels,5,pct,2021,Répartition des loyers,SRC-0011,ETABLI,
+ECO-032,dette,Capital restant dû,221,M_EUR,2021-12-31,Encours de dette,SRC-0011,ETABLI,
+ECO-033,dette,Part Banque des Territoires CDC,78,pct,2021-12-31,Encours de dette,SRC-0011,ETABLI,"Le rapport indique près de 78 %"
+ECO-034,dette,Part prêts indexés Livret A,78,pct,2021-12-31,Encours de dette,SRC-0011,ETABLI,
+ECO-035,dette,Part prêts à taux fixe,15,pct,2021-12-31,Encours de dette,SRC-0011,ETABLI,
+ECO-036,dette,Taux moyen de dette,1.1,pct,2021-12-31,Encours de dette,SRC-0011,ETABLI,
+ECO-037,dette,Ressources propres,237.485,M_EUR,2021,Tableau indépendance financière,SRC-0011,ETABLI,
+ECO-038,dette,FRNG,30.864,M_EUR,2021,Tableau FRNG,SRC-0011,ETABLI,
+ECO-039,dette,FRNG à terminaison,23.426,M_EUR,2021,Tableau FRNG,SRC-0011,ETABLI,
+ECO-040,dette,Annuités emprunts locatifs,11.554,M_EUR,2021,Tableau dette,SRC-0011,ETABLI,
+ECO-041,dette,Annuités sur loyers,41.0,pct,2021,Tableau dette,SRC-0011,ETABLI,
+ECO-042,dette,Prêts CDC réaménagés,63,prêts,2020,Réaménagement,SRC-0011,ETABLI,
+ECO-043,dette,Capital restant dû des prêts CDC réaménagés,46.6,M_EUR,2020,Réaménagement,SRC-0011,ETABLI,
+ECO-044,refinancement,Emprunt garanti La Banque Postale Crédit Entreprises,10.013233,M_EUR,2026,Refinancement de prêts CDC,SRC-0012,ETABLI,
+ECO-045,refinancement,Nombre de prêts CDC refinancés,20,prêts,2026,Garantie départementale,SRC-0012,ETABLI,
+ECO-046,aides,Caisse allocations familiales versements annuels Ardèche Habitat,,EUR,indéterminé,Flux CAF vers organisme,,INDETERMINE,"Aucune source locale chiffrée retenue à ce stade"
+ECO-047,aides,Ménages APL ALS du parc,,ménages,indéterminé,Population bénéficiaire,,INDETERMINE,"Ne pas estimer à partir d’un taux national"
