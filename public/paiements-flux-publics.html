@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Paiements et flux — Observatoire public</title>
+  <meta name="description" content="Lecture publique et sourcée des moyens de paiement, interfaces, prestataires, banques et traces transactionnelles, sans données individuelles.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/paiements-flux-publics.html">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <p class="eyebrow">Observatoire documentaire indépendant</p>
+    <h1>Paiements et flux publics</h1>
+    <p class="lead">Comprendre un paiement sans confondre l’organisme payé, l’interface, le prestataire technique, l’acquéreur, la banque, le compte bénéficiaire et le libellé finalement visible.</p>
+    <div class="badges"><span>Sources publiques</span><span>Flux</span><span>Banques</span><span>Traçabilité</span></div>
+  </div></header>
+  <main class="wrap">
+    <section><h2>Chaîne de lecture</h2><pre>organisme → moyen de paiement → interface → prestataire → acquéreur → banque → compte → libellé → trace</pre><p class="note">Une couche documentée n’établit pas automatiquement la suivante. Un portail de paiement n’est pas nécessairement la banque, un prestataire technique n’est pas nécessairement le bénéficiaire et une banque de virement n’est pas nécessairement l’acquéreur carte.</p></section>
+
+    <section class="grid two">
+      <article class="card observed"><h2>Ardèche Habitat</h2><p>Les sources publiques documentent plusieurs moyens de règlement et une page Systempay dédiée au paiement en ligne. L’analyse sépare les modalités publiées, la plateforme de collecte, la banque nommée et les couches techniques qui restent indéterminées.</p><p><a href="ardeche-habitat-paiements-flux-publics.html">Ouvrir l’audit public →</a></p></article>
+      <article class="card observed"><h2>SCP Masse-Vandenberghe</h2><p>La plateforme publique JePaieParCarte référence l’étude. La documentation ADEC décrit l’architecture générique du service et le recours à un contrat VADS relié au compte affecté de l’étude, sans permettre à elle seule d’identifier la banque ou le libellé final de cette étude.</p><p><a href="commissaire-justice-masse-vandenberghe-paiements-publics.html">Ouvrir l’audit public →</a></p></article>
+    </section>
+
+    <section><h2>Statuts de qualification</h2><div class="statuses"><span>ÉTABLI</span><span>COMPATIBLE</span><span>INCOMPLET</span><span>INDÉTERMINÉ</span><span>ARCHITECTURE GÉNÉRIQUE</span></div><p>Le statut porte sur une proposition déterminée, pas sur l’organisme dans son ensemble. <strong>Divergence documentaire ≠ irrégularité.</strong></p></section>
+
+    <section><h2>Ce que les pages publiques ne contiennent pas</h2><p>Aucune référence locataire, aucun numéro de dossier individuel, aucun IBAN complet, aucune donnée de carte, aucune transaction individuelle et aucune observation issue d’un dossier privé. Les coordonnées bancaires éventuellement publiées par les organismes sources ne sont pas recopiées ici.</p></section>
+
+    <section><h2>Données publiques structurées</h2><ul class="sources"><li><a href="data/paiements-flux-publics.csv">Registre public des flux et qualifications</a></li><li><a href="data/paiements-sources-publics.csv">Registre public des sources</a></li></ul></section>
+
+    <section><h2>Sources principales</h2><ul class="sources">
+      <li><a href="https://www.ardechehabitat.fr/etre-locataire/reglements-enquetes.html" rel="noopener">Ardèche Habitat — règlements des loyers</a></li>
+      <li><a href="https://jepaieenligne.systempay.fr/ARDECHE_HABITAT" rel="noopener">Systempay — espace Ardèche Habitat</a></li>
+      <li><a href="https://www.jepaieparcarte.com/" rel="noopener">JePaieParCarte — sélection des études</a></li>
+      <li><a href="https://cjweb.adec-sas.com/faq/comment-disposer-du-paiement-en-ligne-sur-mon-site-cj-web/" rel="noopener">ADEC / CJ WEB — architecture JePaieParCarte</a></li>
+    </ul></section>
+
+    <section class="notice"><h2>Frontière de publication</h2><p>Cette branche est exclusivement publique et pédagogique. Elle organise des faits déjà accessibles publiquement et distingue les faits propres à un organisme de l’architecture générique d’un prestataire. Les analyses privées et les dossiers individuels ne sont pas propagés vers cette couche.</p></section>
+  </main>
+  <footer><div class="wrap"><a href="index.html">← Accueil</a> · Muse-IRS · Observatoire public · 2026</div></footer>
+</body>
+</html>
