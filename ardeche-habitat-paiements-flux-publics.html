@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ardèche Habitat — paiements et flux publics</title>
+  <meta name="description" content="Audit public des moyens de paiement publiés par Ardèche Habitat, de la page Systempay, des banques nommées et des couches techniques encore indéterminées.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/ardeche-habitat-paiements-flux-publics.html">
+  <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header class="hero"><div class="wrap">
+    <p class="eyebrow">Audit public des paiements</p>
+    <h1>Ardèche Habitat — moyens de paiement et flux</h1>
+    <p class="lead">Lecture publique des modalités de règlement, de la page Systempay et des acteurs bancaires nommés, en distinguant ce qui est établi de ce qui reste techniquement indéterminé.</p>
+    <div class="badges"><span>Ardèche Habitat</span><span>Systempay</span><span>Caisse d’Épargne</span><span>Banque Postale</span></div>
+  </div></header>
+  <main class="wrap">
+    <section><h2>Modalités publiées</h2><p>La page publique « Règlements des loyers » d’Ardèche Habitat présente plusieurs modalités : prélèvement automatique, carte bancaire en ligne, carte bancaire en agence, virement, chèque et espèces. La même page comporte encore une mention liée aux fermetures d’agences pendant la période Covid : cette présence impose de distinguer <strong>contenu publié</strong> et <strong>disponibilité opérationnelle actuelle</strong> pour chaque modalité.</p></section>
+
+    <section class="grid two">
+      <article class="card observed"><h3>Carte bancaire en ligne</h3><p>Ardèche Habitat indique une redirection vers une plateforme bancaire sécurisée de la Caisse d’Épargne. Une page publique Systempay dédiée à Ardèche Habitat est active et présente un formulaire de paiement.</p></article>
+      <article class="card"><h3>Virement</h3><p>Ardèche Habitat publie des coordonnées de virement rattachées à la Caisse d’Épargne Loire Drôme Ardèche. Les coordonnées bancaires complètes ne sont volontairement pas reproduites sur cet observatoire.</p></article>
+      <article class="card"><h3>Prélèvement</h3><p>Le site décrit un prélèvement automatique avec plusieurs dates possibles et un formulaire d’autorisation accompagné d’un relevé d’identité bancaire.</p></article>
+      <article class="card"><h3>Chèque et espèces</h3><p>Le chèque est annoncé à l’ordre d’Ardèche Habitat. Les espèces sont annoncées comme réglables dans les agences de La Banque Postale. Le mécanisme bancaire de rapprochement n’est pas exposé publiquement.</p></article>
+    </section>
+
+    <section><h2>Page Systempay dédiée</h2><p>La page publique <code>jepaieenligne.systempay.fr/ARDECHE_HABITAT</code> demande notamment civilité, nom, prénom, agence locative, référence figurant sur l’avis d’échéance, adresse e-mail et montant à régler. Elle annonce un paiement sécurisé avec TLS et 3-D Secure, un e-mail de confirmation après transaction et l’information du bénéficiaire du règlement.</p><p class="note">La page indique également que l’organisme payé n’accède pas aux coordonnées bancaires saisies sur l’environnement de paiement. Cela décrit l’interface publique ; le détail des journaux techniques, du contrat acquéreur et de la remise en banque n’est pas exposé par cette page.</p></section>
+
+    <section><h2>Chaîne actuellement documentable</h2><pre>Ardèche Habitat → page de règlement → Systempay → transaction sécurisée → bénéficiaire informé
+
+Ardèche Habitat → virement → Caisse d’Épargne Loire Drôme Ardèche → compte d’encaissement publié
+
+Ardèche Habitat → espèces → agence Banque Postale → mécanisme de reversement non documenté publiquement</pre></section>
+
+    <section><h2>Ce qui reste indéterminé</h2><div class="statuses"><span>ACQUÉREUR CARTE</span><span>COMPTE DE REMISE CB</span><span>LIBELLÉ BANCAIRE FINAL</span><span>IDENTITÉ DES COMPTES ENTRE MOYENS</span><span>RAPPROCHEMENT BANQUE POSTALE</span></div><p>La banque nommée pour le virement ou pour la redirection publique ne suffit pas à établir, sans autre source, l’identité de l’acquéreur carte, du compte de remise ou du descripteur visible sur un relevé bancaire.</p></section>
+
+    <section><h2>Données personnelles visibles dans le parcours public</h2><p>Le formulaire Systempay demande des données d’identification et d’imputation : identité, agence, référence, e-mail et montant. La page distingue ces données des coordonnées bancaires traitées dans l’environnement sécurisé. Aucune donnée réelle de locataire n’est enregistrée dans cet observatoire.</p></section>
+
+    <section><h2>Sources publiques</h2><ul class="sources">
+      <li><a href="https://www.ardechehabitat.fr/etre-locataire/reglements-enquetes.html" rel="noopener">Ardèche Habitat — règlements des loyers</a></li>
+      <li><a href="https://jepaieenligne.systempay.fr/ARDECHE_HABITAT" rel="noopener">Systempay — espace public Ardèche Habitat</a></li>
+      <li><a href="https://www.ardechehabitat.fr/83-infos-pratiques.html" rel="noopener">Ardèche Habitat — informations pratiques</a></li>
+    </ul></section>
+
+    <section class="notice"><h2>Frontière de publication</h2><p>Cette page ne contient ni référence locataire, ni avis d’échéance, ni transaction individuelle, ni coordonnées bancaires complètes. Elle ne conclut pas qu’un acteur technique exerce une fonction bancaire déterminée tant qu’une source directe ne l’établit pas.</p></section>
+  </main>
+  <footer><div class="wrap"><a href="paiements-flux-publics.html">← Paiements et flux</a> · <a href="index.html">Accueil</a> · Muse-IRS · 2026</div></footer>
+</body>
+</html>
