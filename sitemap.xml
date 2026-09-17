@@ -2,8 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/</loc>
-    <lastmod>2026-09-16</lastmod>
+    <lastmod>2026-09-17</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/commissaire-justice-masse-vandenberghe-rgpd.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/annexes/scp-masse-vandenberghe-audit-rgpd-actes-2026.html</loc>
+    <lastmod>2026-09-17</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 </urlset>
