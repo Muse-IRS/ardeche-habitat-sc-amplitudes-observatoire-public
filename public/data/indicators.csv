@@ -1,7 +1,0 @@
-indicator_id,name,definition,numerator,denominator,unit,scope,method_status,source_ids,last_updated,notes
-IND-0001,S_intensity,Intensité sociale d’une décision,,,score_0_1,decision,experimental,,2026-09-16,À documenter selon conventions explicites
-IND-0002,P_intensity,Intensité patrimoniale et financière d’une décision,,,score_0_1,decision,experimental,,2026-09-16,Indépendant de S_intensity
-IND-0003,Debt_per_dwelling,Dette financière rapportée au nombre de logements,dette_financiere,nombre_logements,EUR_per_dwelling,entity,planned,,2026-09-16,
-IND-0004,CAF_to_rental_revenue,CAF courante rapportée au CA locatif,CAF_courante,CA_locatif,ratio,entity,planned,,2026-09-16,
-IND-0005,Sales_rotation,Taux annuel de cession de logements,logements_cedes,parc_moyen,ratio,entity,planned,,2026-09-16,
-IND-0006,Reinvestment_social_axis,Axe expérimental de réinvestissement social,,,score_or_ratio,entity,experimental,,2026-09-16,Ne forme pas une partition exclusive avec l’axe patrimonial

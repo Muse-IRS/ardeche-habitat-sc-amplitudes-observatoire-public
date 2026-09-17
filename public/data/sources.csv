@@ -1,9 +1,0 @@
-source_id,title,producer,url,source_type,territorial_level,publication_date,verification_date,primary_secondary,self_description,theme,status,notes
-SRC-0001,Site institutionnel Ardèche Habitat,Ardèche Habitat,https://www.ardechehabitat.fr/,S4,local,,2026-09-16,primary,yes,institution,active,Source institutionnelle — auto-description
-SRC-0002,ANCOLS,ANCOLS,https://www.ancols.fr/,S2,national,,2026-09-16,primary,no,control,active,Point d’entrée vers rapports de contrôle et études
-SRC-0003,Légifrance,État français,https://www.legifrance.gouv.fr/,S1,national,,2026-09-16,primary,no,law,active,Textes juridiques en vigueur et historiques
-SRC-0004,Département de l’Ardèche,Département de l’Ardèche,https://www.ardeche.fr/,S4,departmental,,2026-09-16,primary,yes,territory,active,Source institutionnelle — auto-description
-SRC-0005,Région Auvergne-Rhône-Alpes,Région Auvergne-Rhône-Alpes,https://www.auvergnerhonealpes.fr/,S4,regional,,2026-09-16,primary,yes,territory,active,Source institutionnelle — auto-description
-SRC-0006,Banque des Territoires,Caisse des Dépôts,https://www.banquedesterritoires.fr/,S5,national,,2026-09-16,primary,partly,finance,active,Financement du logement social
-SRC-0007,data.gouv.fr,État français,https://www.data.gouv.fr/,S3,national,,2026-09-16,primary,no,open-data,active,Portail de données publiques
-SRC-0008,INSEE,INSEE,https://www.insee.fr/,S3,national,,2026-09-16,primary,no,data,active,Données démographiques et économiques

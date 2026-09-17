@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/sitemap.xml
