@@ -1,0 +1,7 @@
+source_id,entity,source_name,url,source_type,consulted_on,scope
+SRC-AH-REGLEMENTS,Ardèche Habitat,"Règlements des loyers","https://www.ardechehabitat.fr/etre-locataire/reglements-enquetes.html","SOURCE PUBLIQUE DE L'ORGANISME",2026-09-17,"modalités de paiement publiées"
+SRC-AH-SYSTEMPAY,Ardèche Habitat,"Systempay — espace Ardèche Habitat","https://jepaieenligne.systempay.fr/ARDECHE_HABITAT","SOURCE PRESTATAIRE PUBLIQUE",2026-09-17,"formulaire public et sécurité déclarée"
+SRC-AH-INFOS,Ardèche Habitat,"Informations pratiques","https://www.ardechehabitat.fr/83-infos-pratiques.html","SOURCE PUBLIQUE DE L'ORGANISME",2026-09-17,"accès au paiement en ligne et coordonnées générales"
+SRC-CJ-JPPC,SCP Masse-Vandenberghe,"JePaieParCarte","https://www.jepaieparcarte.com/","SOURCE PRESTATAIRE PUBLIQUE",2026-09-17,"référencement public de l'étude"
+SRC-ADEC-JPPC,SCP Masse-Vandenberghe,"ADEC / CJ WEB — paiement en ligne","https://cjweb.adec-sas.com/faq/comment-disposer-du-paiement-en-ligne-sur-mon-site-cj-web/","SOURCE PRESTATAIRE PUBLIQUE",2026-09-17,"architecture générique JePaieParCarte et contrat VADS"
+SRC-ADEC-PRESENTATION,SCP Masse-Vandenberghe,"ADEC — JePaieParCarte","https://www.adec-sas.com/general/jepaieparcarte-le-moyen-de-paiement-securise/","SOURCE PRESTATAIRE PUBLIQUE",2026-09-17,"présentation générale de la solution"
