@@ -21,6 +21,13 @@ Ardèche Habitat → SC Amplitudes → Département de l’Ardèche → Région 
 
 Période principale : 1948–2026, avec focalisation 2000–2026.
 
+## Couches publiques transversales
+
+- **Comprendre l’information** : `public/information/`
+- **Auto-audit RGPD de l’observatoire** : `public/rgpd/`
+- **Notice de confidentialité** : `public/privacy.html`
+- **État machine-readable de confidentialité** : `public/data/privacy-audit.json`
+
 ## Pages publiques spécialisées
 
 - **SCP Masse-Vandenberghe — audit RGPD et actes de commissaire de justice** : `public/commissaire-justice-masse-vandenberghe-rgpd.html`

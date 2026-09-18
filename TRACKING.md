@@ -1,41 +1,41 @@
 # Tracking convention — observatoire public
 
-## Architecture retenue
+## État courant — 18 septembre 2026
 
-Toutes les pages HTML publiques de l’observatoire utilisent un seul conteneur Google Tag Manager :
+```text
+PUBLIC_ANALYTICS = SUSPENDED
+GTM = CONFIGURED_BUT_INACTIVE
+GA4 = CONFIGURED_BUT_INACTIVE
+```
+
+L’audit de confidentialité du 18 septembre 2026 a identifié que certaines pages chargeaient GTM/GA4 immédiatement alors que d’autres ne le chargeaient pas, sans mécanisme de consentement versionné dans le dépôt. Le chargement de mesure d’audience est donc suspendu sur l’ensemble de la projection publique.
+
+Aucun bloc `gtm.js` ni iframe `noscript` Google Tag Manager ne doit être présent dans les pages servies tant qu’une réactivation n’a pas été explicitement validée.
+
+## Configuration historique conservée
 
 - GTM : `GTM-5ZZ27N8W`
 - GA4 : `G-JPQKQ9JKW8`
+- ancienne relation prévue : `SITE PUBLIC → GOOGLE TAG MANAGER → GOOGLE ANALYTICS 4`
 
-La règle est :
+Ces identifiants sont conservés pour la traçabilité de l’état antérieur. Ils ne signifient pas que le tracking est actif.
 
-`page publique → Google Tag Manager → Google Analytics 4`
+## Conditions minimales avant réactivation
 
-Le tag GA4 direct (`gtag.js` chargé avec `G-JPQKQ9JKW8`) ne doit pas être ajouté directement dans les pages HTML lorsque GA4 est déclenché depuis le conteneur GTM, afin d’éviter un double envoi de `page_view` ou d’autres événements.
+Une réactivation exige au minimum :
 
-## Snippet obligatoire dans `<head>`
+1. inventaire des tags réellement configurés dans GTM ;
+2. finalité explicite de chaque tag ;
+3. qualification du régime de consentement applicable ;
+4. mécanisme permettant accepter, refuser et retirer avec une simplicité équivalente lorsque le consentement est requis ;
+5. documentation des durées et destinataires ;
+6. canal privé adapté pour l’exercice des droits ;
+7. mise à jour simultanée de `/rgpd/`, `privacy.html` et `data/privacy-audit.json`.
 
-```html
-<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-5ZZ27N8W');</script>
-<!-- End Google Tag Manager -->
+## Invariant
+
+```text
+DOCUMENTED_TRACKING_STATE == CODE_ACTUALLY_SERVED
 ```
 
-## Snippet obligatoire immédiatement après `<body>`
-
-```html
-<!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5ZZ27N8W"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-```
-
-## Règle pour les futures pages
-
-Toute nouvelle page HTML publiée (`/dpe/`, `/justice/`, `/rgpd/`, `/politiques-publiques/`, `/argent-dette/`, `/information/`, `/champ-reflexion/`, etc.) doit reprendre ces deux blocs avant publication.
-
-Aucun autre identifiant GTM ou GA4 ne doit être ajouté sans décision explicite et synchronisation avec le dépôt canonique privé.
+Une configuration externe non versionnée ne doit jamais être présentée comme auditée par le seul dépôt GitHub.

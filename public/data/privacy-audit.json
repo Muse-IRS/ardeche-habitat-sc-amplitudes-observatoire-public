@@ -1,0 +1,47 @@
+{
+  "schema_version": "1.0",
+  "observed_at": "2026-09-18",
+  "scope": "public application code served by Muse-IRS/ardeche-habitat-sc-amplitudes-observatoire-public",
+  "status": "PUBLIC_SELF_AUDIT",
+  "analytics": {
+    "status": "SUSPENDED",
+    "previous_convention": "Google Tag Manager -> Google Analytics 4",
+    "reason": "inconsistent loading across pages and no versioned consent mechanism/container-tag inventory",
+    "active_script_in_public_html": false
+  },
+  "application_storage": {
+    "localStorage": false,
+    "sessionStorage": false,
+    "document_cookie_write": false
+  },
+  "accounts": false,
+  "advertising": false,
+  "server_side_visitor_profile": false,
+  "hosting": {
+    "provider": "GitHub Pages",
+    "application_access_to_host_logs": false
+  },
+  "dpe": {
+    "route": "/dpe/",
+    "external_request": "https://data.ademe.fr/",
+    "trigger": "explicit user search action",
+    "application_server_intermediary": false,
+    "persistent_application_storage": false,
+    "precise_address_default": "masked/minimized"
+  },
+  "external_links": {
+    "request_on_presence": false,
+    "request_on_user_navigation": true,
+    "referrer_policy": "no-referrer"
+  },
+  "known_limits": [
+    "GitHub Pages infrastructure logs are outside this repository",
+    "the internal GTM container configuration is not versioned in this repository",
+    "a private publisher contact channel for rights requests is not yet published"
+  ],
+  "public_information_routes": [
+    "/information/",
+    "/rgpd/",
+    "/privacy.html"
+  ]
+}
