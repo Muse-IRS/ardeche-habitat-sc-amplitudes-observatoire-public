@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Google Tag Manager -->
+  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+  })(window,document,'script','dataLayer','GTM-5ZZ27N8W');</script>
+  <!-- End Google Tag Manager -->
+  <title>Comprendre mon DPE — Observatoire public</title>
+  <meta name="description" content="Retrouver et comprendre un DPE public ADEME, y compris les méthodes historiques antérieures à juillet 2021, puis relier les DPE actuels à la méthode 3CL-DPE 2021.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta name="referrer" content="no-referrer">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/dpe/">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .dpe-stack{display:grid;gap:22px;padding-top:34px;padding-bottom:64px}
+    .panel,.result-panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin:0}
+    .summary-grid>div{border-bottom:1px solid var(--line);padding:10px 0}
+    .summary-grid dt{font-weight:700}.summary-grid dd{margin:4px 0 0;color:var(--muted);overflow-wrap:anywhere}
+    .principle-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:16px 0}
+    .principle-grid article{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+    .principle-grid strong{display:block;margin-bottom:6px;color:var(--accent)}
+    .principle-grid span{color:var(--muted)}
+    .platform-formula{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:18px 0;padding:14px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
+    .platform-formula strong{font-size:.82rem}.platform-formula span{color:var(--muted)}
+    .callout{background:#eef3f8;border-left:4px solid var(--accent);padding:12px 16px;margin:16px 0}
+    .content-stack{display:grid;gap:12px}.muted,.help{color:var(--muted);font-size:.92rem}
+    .field{display:grid;gap:7px}.field label{font-weight:700}.field input{width:100%;max-width:520px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    button,.button{display:inline-block;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer}
+    .button.secondary{background:#fff;color:var(--accent)}.inline{color:var(--accent)}
+    .status{color:var(--muted);margin-top:12px}
+    details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}details summary{cursor:pointer;font-weight:700}
+    .dpe-nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.dpe-nav a{color:var(--accent);font-weight:700;text-decoration:none}
+    @media(max-width:800px){.summary-grid,.principle-grid{grid-template-columns:1fr}.platform-formula{align-items:flex-start}}
+  </style>
+</head>
+<body>
+  <!-- Google Tag Manager (noscript) -->
+  <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5ZZ27N8W"
+  height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+  <!-- End Google Tag Manager (noscript) -->
+<header class="hero"><div class="wrap">
+    <p class="eyebrow">Outil public · ADEME · diagnostic énergétique</p>
+    <h1>Comprendre mon DPE</h1>
+    <p class="lead">Retrouver un DPE dans les jeux publics ADEME, identifier sa génération méthodologique, comprendre les colonnes disponibles et relier ses valeurs au référentiel qui les a effectivement produites.</p>
+    <div class="badges"><span>DPE actuels</span><span>DPE historiques</span><span>3CL-DPE</span><span>Données ADEME</span></div>
+    <nav class="dpe-nav" aria-label="Navigation du module DPE"><a href="../">← Observatoire public</a><a href="../ardeche-habitat-dpe-renovation-2020-2026.html">DPE & rénovation Ardèche Habitat</a></nav>
+  </div></header>
+
+<main class="wrap dpe-stack">
+  <section class="panel rgpd-local-header" aria-labelledby="dpe-rgpd-title">
+    <p class="eyebrow">RGPD local · ce module</p>
+    <h2 id="dpe-rgpd-title">Où vont les données dans le module DPE ?</h2>
+    <div class="principle-grid rgpd-module-grid">
+      <article><strong>Donnée saisie</strong><span>Numéro de DPE, utilisé pour rechercher une ligne dans les sources publiques ADEME actuelles puis historiques.</span></article>
+      <article><strong>Source externe</strong><span>Requête directe du navigateur vers data.ademe.fr. La requête de recherche part du navigateur vers la source publique ADEME ; ce module n’ajoute pas de serveur applicatif intermédiaire.</span></article>
+      <article><strong>Affichage</strong><span>Résumé minimisé. Adresse complète seulement après action explicite ; adresse précise et coordonnées masquées dans le dictionnaire détaillé.</span></article>
+      <article><strong>Limite</strong><span>Lecture documentaire et pédagogique. Aucun nouveau DPE réglementaire n’est produit.</span></article>
+    </div>
+  </section>
+
+
+  <section class="panel" aria-labelledby="lookup-title">
+    <p class="eyebrow">Source publique ADEME</p>
+    <h2 id="lookup-title">Rechercher un DPE</h2>
+    <form id="dpe-form">
+      <div class="field full">
+        <label for="dpe-number">Numéro de DPE</label>
+        <input id="dpe-number" name="dpe-number" type="text" maxlength="13" autocomplete="off" placeholder="1234A1234567B" aria-describedby="dpe-help dpe-status">
+        <span id="dpe-help" class="help">Saisir les 13 caractères du numéro ADEME. La recherche couvre les jeux depuis juillet 2021 et le jeu historique des logements antérieur à juillet 2021.</span>
+      </div>
+      <div class="actions">
+        <button type="submit">Récupérer les données</button>
+        <a class="button secondary" href="https://observatoire-dpe-audit.ademe.fr/accueil" target="_blank" rel="noopener noreferrer">Observatoire ADEME</a>
+      </div>
+    </form>
+    <p id="dpe-status" class="status" role="status" aria-live="polite">Aucune recherche effectuée.</p>
+  </section>
+
+  <section id="dpe-result" class="result-panel" hidden aria-labelledby="result-title">
+    <p class="eyebrow">Résultat ADEME</p>
+    <h2 id="result-title">DPE retrouvé</h2>
+    <dl id="dpe-summary" class="summary-grid"></dl>
+    <div class="actions">
+      <a id="xlsx-link" class="button secondary" href="#" target="_blank" rel="noopener noreferrer" hidden>Télécharger la ligne ADEME (.xlsx)</a>
+    </div>
+    <details id="address-details" hidden>
+      <summary>Afficher l’adresse complète renvoyée par la source publique</summary>
+      <p id="full-address" class="muted"></p>
+    </details>
+  </section>
+
+  <section id="dpe-historical-panel" class="panel" hidden aria-labelledby="historical-title">
+    <p class="eyebrow">DPE historique · avant juillet 2021</p>
+    <h2 id="historical-title">Ouvrir la méthode qui a produit l’ancienne valeur.</h2>
+    <dl id="dpe-historical-summary" class="summary-grid"></dl>
+    <div class="platform-formula" aria-label="Chaîne de lecture d’un DPE historique">
+      <strong>nom_methode_dpe + version_methode_dpe</strong><span>→</span><strong>RÉFÉRENTIEL</strong><span>→</span><strong>ENTRÉES</strong><span>→</span><strong>CALCUL / FACTURES</strong><span>→</span><strong>EP &amp; GES</strong><span>→</span><strong>CLASSES HISTORIQUES</strong>
+    </div>
+    <div id="dpe-historical-method-explanation" class="content-stack" aria-live="polite"></div>
+    <div class="principle-grid">
+      <article><strong>3CL-DPE historique</strong><span>La méthode conventionnelle calcule les besoins à partir du bâtiment et d’un usage standardisé, puis les consommations de chauffage, d’eau chaude sanitaire et de refroidissement.</span></article>
+      <article><strong>Factures / consommations réelles</strong><span>Lorsque ce référentiel s’appliquait, la valeur pouvait provenir de consommations réellement relevées ou facturées, généralement moyennées sur les années précédant le diagnostic.</span></article>
+      <article><strong>Énergie primaire historique</strong><span>Dans le régime historique logement, l’électricité était convertie avec un facteur 2,58 et les autres énergies avec un facteur 1 avant classement par rapport à la surface.</span></article>
+      <article><strong>Deux étiquettes indépendantes</strong><span>L’ancienne étiquette énergie dépendait de la consommation primaire ; l’ancienne étiquette climat dépendait séparément des émissions. Il n’existait pas le double seuil de la méthode 2021.</span></article>
+    </div>
+    <div class="callout">
+      <p><strong>Grilles historiques logement :</strong> énergie A ≤ 50, B ≤ 90, C ≤ 150, D ≤ 230, E ≤ 330, F ≤ 450, G &gt; 450 kWhEP/m².an ; climat A ≤ 5, B ≤ 10, C ≤ 20, D ≤ 35, E ≤ 55, F ≤ 80, G &gt; 80 kgCO₂e/m².an. La page recompose la classe à partir de la valeur ADEME et la compare à la classe publiée sans transformer automatiquement un écart en erreur réglementaire.</p>
+    </div>
+    <div class="callout">
+      <p><strong>Historique ≠ actuel.</strong> Une ancienne classe A à G reste une information sur le DPE établi à l’époque. Elle ne constitue pas une nouvelle étiquette réglementaire selon la méthode en vigueur aujourd’hui.</p>
+    </div>
+    <div class="actions">
+      <a class="button secondary" href="https://data.ademe.fr/datasets/dpe-france" target="_blank" rel="noopener noreferrer">Jeu ADEME historique</a>
+      <a class="button secondary" href="https://rt-re-batiment.developpement-durable.gouv.fr/IMG/pdf/annexe_methode_de_calcul_3cl-dpe_v1.3.pdf" target="_blank" rel="noopener noreferrer">Méthode officielle 3CL-DPE v1.3</a>
+      <a class="button secondary" href="https://www.legifrance.gouv.fr/loda/id/LEGITEXT000020491551/2021-04-03/" target="_blank" rel="noopener noreferrer">Référentiel historique — Légifrance</a>
+      <a class="button secondary" href="https://www.service-public.gouv.fr/particuliers/vosdroits/F16096" target="_blank" rel="noopener noreferrer">Validité des DPE — Service Public</a>
+    </div>
+  </section>
+
+  <section id="dpe-calculation-panel" class="panel" hidden aria-labelledby="calculation-title">
+    <p class="eyebrow">Résultats calculés · lecture 3CL</p>
+    <h2 id="calculation-title">Comment les valeurs conduisent-elles à l’étiquette ?</h2>
+    <dl id="dpe-calculation-summary" class="summary-grid"></dl>
+    <div class="platform-formula" aria-label="Chaîne de calcul 3CL-DPE">
+      <strong>ENTRÉES</strong><span>→</span><strong>DÉPERDITIONS &amp; APPORTS</strong><span>→</span><strong>BESOINS</strong><span>→</span><strong>SYSTÈMES</strong><span>→</span><strong>ÉNERGIE FINALE</strong><span>→</span><strong>EP &amp; GES</strong><span>→</span><strong>ÉTIQUETTE</strong>
+    </div>
+    <div class="principle-grid">
+      <article><strong>1 · Entrées</strong><span>Géométrie, parois, baies, orientation, isolation, renouvellement d’air, climat et équipements décrivent le logement conventionnellement évalué.</span></article>
+      <article><strong>2 · Besoins</strong><span>La méthode évalue les pertes et les apports puis les besoins conventionnels de chauffage, d’eau chaude sanitaire et, le cas échéant, de refroidissement.</span></article>
+      <article><strong>3 · Systèmes</strong><span>Les rendements et pertes de génération, distribution, émission et stockage, ainsi que les auxiliaires et l’éclairage, conduisent aux consommations d’énergie finale.</span></article>
+      <article><strong>4 · Conversion</strong><span>L’énergie finale est convertie en énergie primaire selon l’énergie utilisée ; les facteurs d’émission conduisent en parallèle aux émissions de gaz à effet de serre.</span></article>
+      <article><strong>5 · Deux indicateurs</strong><span>Les résultats des cinq usages sont rapportés à la surface de référence : CEP en kWhEP/m²/an et EGES en kgCO₂e/m²/an.</span></article>
+      <article><strong>6 · Note finale</strong><span>L’étiquette DPE applique un double seuil : la classe finale est contrainte par la plus défavorable des deux dimensions énergie primaire et émissions.</span></article>
+    </div>
+    <div class="callout">
+      <p><strong>Seuils de base — logement de plus de 40 m² situé sous 800 m d’altitude :</strong> A &lt; 70 / 6 ; B &lt; 110 / 11 ; C &lt; 180 / 30 ; D &lt; 250 / 50 ; E &lt; 330 / 70 ; F &lt; 420 / 100 ; G au-delà de l’un des deux seuils. Les seuils sont adaptés pour les petites surfaces et certaines situations d’altitude/zone climatique.</p>
+    </div>
+    <p class="muted">Le coefficient de conversion de l’électricité en énergie primaire est temporel : 1,9 depuis le 1er janvier 2026 ; 1,7 à compter du 1er janvier 2027. L’interface affiche le coefficient correspondant à la date du DPE et celui applicable au jour de consultation, sans recalculer artificiellement un DPE à partir de données agrégées insuffisantes.</p>
+    <div class="actions">
+      <a class="button secondary" href="https://rt-re-batiment.developpement-durable.gouv.fr/IMG/pdf/consolide_annexe_1_arrete_du_31_03_2021_relatif_aux_methodes_et_procedures_applicables.pdf" target="_blank" rel="noopener noreferrer">Méthode officielle 3CL-DPE 2021</a>
+      <a class="button secondary" href="https://www.legifrance.gouv.fr/loda/id/JORFTEXT000043353335/" target="_blank" rel="noopener noreferrer">Arrêté DPE consolidé</a>
+    </div>
+  </section>
+
+  <section id="dpe-fields-panel" class="panel" hidden aria-labelledby="fields-title">
+    <p class="eyebrow">XLSX · dictionnaire ADEME</p>
+    <h2 id="fields-title">Que signifie chaque colonne ?</h2>
+    <p>Le bouton Excel exporte la ligne du jeu ADEME réellement interrogé. Le dictionnaire ci-dessous est construit au moment de la consultation depuis le <strong>schéma API du même jeu de données</strong> : nom public, clé technique, type, groupe et description officielle lorsqu’elle est fournie. Le dictionnaire s’adapte donc également au jeu historique.</p>
+    <p id="dpe-fields-status" class="status" role="status" aria-live="polite"></p>
+    <div id="dpe-fields-container" class="content-stack"></div>
+    <div class="callout">
+      <p><strong>Valeur manquante ≠ valeur nulle calculée.</strong> Un tiret signifie que la colonne existe dans le schéma mais qu’aucune valeur n’est présente dans la ligne retournée. Les champs d’adresse précise et de coordonnées sont volontairement masqués dans cette vue détaillée.</p>
+    </div>
+  </section>
+
+  <section class="panel" aria-labelledby="calculator-status-title">
+    <p class="eyebrow">Calculateur · état de la chaîne</p>
+    <h2 id="calculator-status-title">Pourquoi le recalcul complet est-il séparé de la ligne Open Data ?</h2>
+    <p>La ligne ADEME accessible ici est une vue synthétique. Pour un DPE depuis juillet 2021, elle suffit pour expliquer les résultats publiés et de nombreuses variables, mais pas nécessairement pour rejouer toutes les équations 3CL composant par composant. Pour un DPE historique, le module ouvre maintenant le référentiel identifié par son nom et sa version avant de déterminer ce qui peut réellement être recomposé.</p>
+    <div class="principle-grid">
+      <article><strong>API Open Data ADEME</strong><span>Active ici : recherche actuelle et historique, ligne JSON, schéma des colonnes et export XLSX.</span></article>
+      <article><strong>DPE depuis juillet 2021</strong><span>Le XML détaillé est l’entrée adaptée à un rejeu 3CL complet. Il ne doit pas conduire à exposer une clé ou un secret dans une page statique.</span></article>
+      <article><strong>DPE avant juillet 2021</strong><span>Le couple méthode/version sélectionne une explication historique ; les valeurs finales permettent de recomposer les classes, mais pas nécessairement tout le moteur qui les a produites.</span></article>
+      <article><strong>Comparaison</strong><span>Pour un DPE rejouable, la cible reste : valeur ADEME ↔ valeur recalculée ↔ écart ↔ explication, sans transformer automatiquement un écart en verdict.</span></article>
+    </div>
+    <p class="muted">Open3CL est un moteur open source indépendant implémentant 3CL-DPE 2021. Il constitue une piste technique pour le rejeu pédagogique des DPE compatibles avec ce référentiel ; il n’est pas utilisé ici comme moteur de recalcul des DPE antérieurs à juillet 2021.</p>
+    <a class="inline" href="https://open3cl.github.io/engine/build" target="_blank" rel="noopener noreferrer">Consulter le démonstrateur Open3CL</a>
+  </section>
+
+  <section class="panel">
+    <h2>Comment lire ce résultat ?</h2>
+    <div class="callout"><p><strong>Un DPE est une donnée réglementaire déclarée et calculée dans un référentiel daté.</strong> Une consommation réelle, une observation du logement ou un autre document peuvent apporter un contexte différent sans constituer, à eux seuls, un verdict sur le DPE.</p></div>
+    <p class="muted">Pour une vérification approfondie, comparer les informations avec le document DPE, les justificatifs disponibles et les caractéristiques effectivement observables du logement, en conservant la méthode applicable à sa date d’établissement.</p>
+  </section>
+
+  <section class="panel">
+    <p class="eyebrow">Confidentialité · portée publique</p>
+    <h2>Adresse minimisée par défaut</h2>
+    <p>Lorsque la source ADEME renvoie une adresse complète, le résumé privilégie une localisation réduite. L’adresse complète n’apparaît qu’après une action explicite. Les coordonnées précises restent masquées dans le dictionnaire détaillé.</p>
+    <p class="muted">Ce module généraliste permet de consulter des DPE publics. Une recherche effectuée ici n’établit aucun lien avec Ardèche Habitat ou SC Amplitudes sauf si ce lien est documenté indépendamment.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Muse-IRS · Observatoire public Ardèche Habitat & SC Amplitudes · outil DPE · 2026</div></footer>
+<script src="./app.js"></script>
+</body>
+</html>
