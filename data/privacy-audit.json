@@ -45,7 +45,7 @@
     "/privacy.html"
   ],
   "local_har_analyzer": {
-    "route": "/ardeche-habitat-audit-site-web-2026.html#session-har",
+    "route": "/rgpd/har-audit.html",
     "processing": "browser-local-only",
     "raw_har_upload": false,
     "automatic_persistence": false,
@@ -53,6 +53,7 @@
     "authorization_headers_exported": false,
     "request_bodies_exported": false,
     "query_strings_exported": false,
-    "minimized_report_export": "explicit-user-action"
+    "minimized_report_export": "explicit-user-action",
+    "scope": "generic-target-domain"
   }
 }

@@ -13,7 +13,6 @@
   <meta property="og:type" content="article">
   <meta property="og:url" content="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/ardeche-habitat-audit-site-web-2026.html">
   <link rel="stylesheet" href="assets/styles.css">
-  <script src="assets/har-audit.js" defer></script>
   <style>
     .audit-table{width:100%;border-collapse:collapse;background:#fff}
     .audit-table th,.audit-table td{padding:11px;border:1px solid var(--line);vertical-align:top;text-align:left}
@@ -384,94 +383,10 @@
     <p>Lorsqu’un contenu disparaît réellement, la réponse doit être cohérente avec cet état plutôt que rediriger indistinctement toutes les anciennes pages vers l’accueil. Les pages à forte valeur fonctionnelle — mentions légales, accessibilité, confidentialité, contacts, démarches et paiement — doivent rester stables et faciles à retrouver.</p>
   </section>
 
-  <section id="session-har">
-    <h2>Session navigateur instrumentée / HAR</h2>
-    <p>Cette interface analyse un fichier HAR <strong>directement dans votre navigateur</strong>. Le fichier brut n’est pas envoyé à GitHub ni à un serveur de l’observatoire. Seul un rapport minimisé peut être exporté volontairement.</p>
-    <div class="notice">
-      <strong>Limite technique :</strong> cette page ne peut pas inspecter directement <code>ardechehabitat.fr</code> à travers la politique same-origin. Elle analyse une capture réseau produite par le navigateur qui a réellement chargé le site.
-    </div>
-
-    <div class="audit-tool" data-har-audit>
-      <div class="grid two">
-        <article class="card">
-          <h3>1. Import local</h3>
-          <label for="har-file"><strong>Fichier HAR</strong></label>
-          <input id="har-file" data-har-file type="file" accept=".har,application/json">
-          <p class="small">Taille maximale analysée : 50 Mio. Aucun contenu du fichier n’est téléversé.</p>
-
-          <label for="har-vpn"><strong>NordVPN pendant la capture</strong></label>
-          <select id="har-vpn" data-har-vpn>
-            <option value="UNKNOWN">Non renseigné</option>
-            <option value="ON">Activé</option>
-            <option value="OFF">Désactivé</option>
-          </select>
-
-          <label for="har-browser"><strong>Navigateur de capture</strong></label>
-          <input id="har-browser" data-har-browser type="text" placeholder="Safari iPhone, Safari macOS, Firefox…">
-
-          <label for="har-phase"><strong>Phase de capture</strong></label>
-          <select id="har-phase" data-har-phase>
-            <option value="INITIAL_NO_INTERACTION">Avant interaction / consentement</option>
-            <option value="AFTER_CONSENT_ACCEPT">Après acceptation</option>
-            <option value="AFTER_CONSENT_REFUSE">Après refus</option>
-            <option value="AFTER_USER_ACTION">Après action utilisateur</option>
-            <option value="UNKNOWN">Non renseigné</option>
-          </select>
-
-          <label for="har-local-storage"><strong>Clés localStorage observées — noms uniquement</strong></label>
-          <textarea id="har-local-storage" data-storage-local rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
-
-          <label for="har-session-storage"><strong>Clés sessionStorage observées — noms uniquement</strong></label>
-          <textarea id="har-session-storage" data-storage-session rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
-
-          <div class="audit-actions">
-            <button type="button" data-har-analyze>Analyser localement</button>
-            <button type="button" data-har-export disabled>Exporter le rapport minimisé</button>
-            <button type="button" data-har-clear>Effacer la session locale</button>
-          </div>
-          <p data-har-status class="small" role="status" aria-live="polite">Aucun HAR chargé.</p>
-        </article>
-
-        <article class="card">
-          <h3>2. Ce qui est extrait</h3>
-          <ul>
-            <li>statuts HTTP et redirections ;</li>
-            <li>security response headers sélectionnés ;</li>
-            <li>signaux TLS présents dans le HAR ;</li>
-            <li>cookies sous forme de métadonnées, jamais leurs valeurs ;</li>
-            <li>domaines tiers et requêtes HTTP non chiffrées observées ;</li>
-            <li>signaux analytics, captcha et paiement par heuristique documentée.</li>
-          </ul>
-          <p class="small"><strong>Exclus de l’export :</strong> corps POST, valeurs de cookies, Authorization, paramètres de requête et fragments d’URL.</p>
-        </article>
-      </div>
-
-      <h3>3. Accessibilité — observations manuelles de la même session</h3>
-      <p>Le HAR ne contient pas la navigation clavier, le focus, le lecteur d’écran ni le comportement au zoom. Ces observations sont donc consignées séparément dans le même rapport.</p>
-      <div class="table-wrap">
-        <table class="audit-table har-checklist">
-          <thead><tr><th>Test</th><th>État observé</th></tr></thead>
-          <tbody>
-            <tr><td>Navigation clavier complète</td><td><select data-a11y="keyboard"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Focus visible et ordre cohérent</td><td><select data-a11y="focus"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Titres et landmarks</td><td><select data-a11y="structure"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Alternatives d’images</td><td><select data-a11y="images"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Zoom texte 200 %</td><td><select data-a11y="zoom200"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Reflow / zoom 400 %</td><td><select data-a11y="zoom400"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Formulaires et erreurs</td><td><select data-a11y="forms"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Lecteur d’écran</td><td><select data-a11y="screen_reader"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-            <tr><td>Responsive / orientation</td><td><select data-a11y="responsive"><option>NON_TESTE</option><option>CONVERGENT_OBSERVED</option><option>DIVERGENT_OBSERVED</option><option>INDETERMINATE</option></select></td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h3>4. Résultat minimisé</h3>
-      <div data-har-summary class="audit-summary" hidden></div>
-      <details>
-        <summary>Voir le JSON minimisé avant export</summary>
-        <pre data-har-json class="har-json">Aucune analyse.</pre>
-      </details>
-    </div>
+  <section class="notice">
+    <h2>Outil transversal RGPD — analyse HAR locale</h2>
+    <p>L’analyseur HAR n’est plus contenu dans cette page de domaine. Il est désormais rattaché à la surface RGPD générale afin d’être réutilisable pour n’importe quel site audité.</p>
+    <p><a href="rgpd/har-audit.html?target=ardechehabitat.fr&amp;context=AH-WEB-AUDIT-2026"><strong>Ouvrir l’analyseur HAR avec Ardèche Habitat prérempli →</strong></a></p>
   </section>
 
   <section>
