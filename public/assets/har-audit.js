@@ -4,6 +4,8 @@
   const root = document.querySelector("[data-har-audit]");
   if (!root) return;
 
+  const targetInput = root.querySelector("[data-har-target]");
+  const contextInput = root.querySelector("[data-har-context]");
   const fileInput = root.querySelector("[data-har-file]");
   const vpnInput = root.querySelector("[data-har-vpn]");
   const browserInput = root.querySelector("[data-har-browser]");
@@ -19,7 +21,6 @@
   const a11yInputs = [...root.querySelectorAll("[data-a11y]")];
 
   const MAX_BYTES = 50 * 1024 * 1024;
-  const TARGET_DOMAIN = "ardechehabitat.fr";
   const SECURITY_HEADERS = [
     "strict-transport-security",
     "content-security-policy",
@@ -75,8 +76,19 @@
     }
   }
 
-  function isFirstPartyHost(host) {
-    return host === TARGET_DOMAIN || host.endsWith("." + TARGET_DOMAIN);
+  function normalizeTargetDomain(value) {
+    const raw = String(value || "").trim().toLowerCase();
+    if (!raw) return "";
+    try {
+      const candidate = raw.includes("://") ? new URL(raw).hostname : new URL("https://" + raw).hostname;
+      return candidate.replace(/^www\./, "");
+    } catch {
+      return "";
+    }
+  }
+
+  function isFirstPartyHost(host, targetDomain) {
+    return Boolean(targetDomain) && (host === targetDomain || host.endsWith("." + targetDomain));
   }
 
   function headerMap(headers) {
@@ -145,7 +157,7 @@
     return keywords.some(keyword => value.includes(keyword));
   }
 
-  function summarizeDomains(entries) {
+  function summarizeDomains(entries, targetDomain) {
     const counts = new Map();
     for (const entry of entries) {
       const host = hostname(entry?.request?.url);
@@ -156,7 +168,7 @@
       .map(([domain, requests]) => ({
         domain,
         requests,
-        first_party: isFirstPartyHost(domain)
+        first_party: isFirstPartyHost(domain, targetDomain)
       }))
       .sort((a, b) => b.requests - a.requests || a.domain.localeCompare(b.domain));
   }
@@ -182,8 +194,10 @@
     const entries = Array.isArray(har?.log?.entries) ? har.log.entries : [];
     if (!entries.length) throw new Error("Le fichier ne contient aucune entrée HAR exploitable.");
 
-    const domains = summarizeDomains(entries);
-    const firstPartyEntries = entries.filter(entry => isFirstPartyHost(hostname(entry?.request?.url)));
+    const targetDomain = normalizeTargetDomain(targetInput?.value);
+    if (!targetDomain) throw new Error("Renseignez un domaine cible valide.");
+    const domains = summarizeDomains(entries, targetDomain);
+    const firstPartyEntries = entries.filter(entry => isFirstPartyHost(hostname(entry?.request?.url), targetDomain));
     const documentCandidates = firstPartyEntries.filter(entry => {
       const mime = String(entry?.response?.content?.mimeType || "").toLowerCase();
       const type = String(entry?._resourceType || entry?.resourceType || "").toLowerCase();
@@ -243,7 +257,7 @@
 
     return {
       schema_version: "1.0",
-      audit_id: "AH-WEB-AUDIT-2026-HAR-001",
+      audit_id: "PUBLIC-RGPD-HAR-AUDIT-001",
       generated_at: new Date().toISOString(),
       processing: "browser-local-only",
       source_file: {
@@ -251,12 +265,13 @@
         raw_har_exported: false
       },
       session: {
+        context: contextInput?.value.trim().slice(0, 120) || "UNSPECIFIED",
         vpn: vpnInput.value || "UNKNOWN",
         browser: browserInput.value.trim().slice(0, 120) || "UNKNOWN",
         phase: phaseInput.value || "UNKNOWN"
       },
       target: {
-        domain: TARGET_DOMAIN,
+        domain: targetDomain,
         first_party_request_count: firstPartyEntries.length,
         observed_status_codes: [...new Set(targetStatuses)].sort((a, b) => a - b),
         main_document: {
@@ -392,6 +407,12 @@
     }
     setStatus("Session locale effacée.");
   }
+
+  const params = new URLSearchParams(window.location.search);
+  const prefilledTarget = params.get("target");
+  const prefilledContext = params.get("context");
+  if (prefilledTarget && targetInput) targetInput.value = prefilledTarget;
+  if (prefilledContext && contextInput) contextInput.value = prefilledContext;
 
   analyzeButton.addEventListener("click", analyze);
   exportButton.addEventListener("click", exportReport);
