@@ -7,6 +7,9 @@
   const fileInput = root.querySelector("[data-har-file]");
   const vpnInput = root.querySelector("[data-har-vpn]");
   const browserInput = root.querySelector("[data-har-browser]");
+  const phaseInput = root.querySelector("[data-har-phase]");
+  const localStorageInput = root.querySelector("[data-storage-local]");
+  const sessionStorageInput = root.querySelector("[data-storage-session]");
   const analyzeButton = root.querySelector("[data-har-analyze]");
   const exportButton = root.querySelector("[data-har-export]");
   const clearButton = root.querySelector("[data-har-clear]");
@@ -162,6 +165,19 @@
     return Object.fromEntries(a11yInputs.map(input => [input.dataset.a11y, input.value]));
   }
 
+  function storageKeyNames(input) {
+    return String(input?.value || "")
+      .split(/\r?\n|,/)
+      .map(value => value.trim())
+      .filter(Boolean)
+      .map(value => {
+        if (value.length > 80) return "[redacted-long-key]";
+        if (value.includes("@")) return "[redacted-key]";
+        return value;
+      })
+      .slice(0, 200);
+  }
+
   function buildReport(har, fileName) {
     const entries = Array.isArray(har?.log?.entries) ? har.log.entries : [];
     if (!entries.length) throw new Error("Le fichier ne contient aucune entrée HAR exploitable.");
@@ -231,12 +247,13 @@
       generated_at: new Date().toISOString(),
       processing: "browser-local-only",
       source_file: {
-        name: String(fileName || "capture.har").replace(/[^a-z0-9._-]/gi, "_").slice(0, 120),
+        name: "[local-har-redacted]",
         raw_har_exported: false
       },
       session: {
         vpn: vpnInput.value || "UNKNOWN",
-        browser: browserInput.value.trim().slice(0, 120) || "UNKNOWN"
+        browser: browserInput.value.trim().slice(0, 120) || "UNKNOWN",
+        phase: phaseInput.value || "UNKNOWN"
       },
       target: {
         domain: TARGET_DOMAIN,
@@ -258,8 +275,14 @@
         cookies_metadata_only: uniqueCookies,
         third_party_domains: domains.filter(item => !item.first_party),
         all_domains_summary: domains,
-        local_storage: "NOT_IN_HAR",
-        session_storage: "NOT_IN_HAR"
+        local_storage: {
+          source: "MANUAL_KEY_NAMES_ONLY",
+          keys: storageKeyNames(localStorageInput)
+        },
+        session_storage: {
+          source: "MANUAL_KEY_NAMES_ONLY",
+          keys: storageKeyNames(sessionStorageInput)
+        }
       },
       heuristic_signals: {
         note: "Heuristics based on URL/domain strings only; signal != qualification.",
@@ -355,6 +378,9 @@
     fileInput.value = "";
     browserInput.value = "";
     vpnInput.value = "UNKNOWN";
+    phaseInput.value = "INITIAL_NO_INTERACTION";
+    localStorageInput.value = "";
+    sessionStorageInput.value = "";
     for (const input of a11yInputs) input.value = "NON_TESTE";
     summaryNode.hidden = true;
     summaryNode.replaceChildren();
