@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Audit technique public du site Ardèche Habitat — refonte 2026</title>
+  <meta name="description" content="Audit technique public et daté du site ardechehabitat.fr pendant sa refonte : mentions légales, RGPD, droits des personnes, cookies, accessibilité, formulaires, indexation et migration.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/ardeche-habitat-audit-site-web-2026.html">
+  <meta property="og:title" content="Audit technique public du site Ardèche Habitat — refonte 2026">
+  <meta property="og:description" content="État observé, obligations applicables, points indéterminés et tests à conduire pendant la refonte du site Ardèche Habitat.">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/ardeche-habitat-audit-site-web-2026.html">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .audit-table{width:100%;border-collapse:collapse;background:#fff}
+    .audit-table th,.audit-table td{padding:11px;border:1px solid var(--line);vertical-align:top;text-align:left}
+    .audit-table th{background:#eef3f8}
+    .table-wrap{overflow-x:auto}
+    .state{font-weight:800;white-space:nowrap}
+    .established{color:#1f6b4b}
+    .observed-state{color:#1f4b7a}
+    .unknown{color:#7a5a1f}
+    .test{color:#7a1f1f}
+    .formula{display:flex;gap:8px;flex-wrap:wrap;align-items:center;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff;margin:10px 0}
+    .small{font-size:.92rem;color:var(--muted)}
+    code{word-break:break-word}
+  </style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Audit technique public · 20 septembre 2026</p>
+    <h1>Site Ardèche Habitat — audit de la refonte</h1>
+    <p class="lead">Mentions légales, RGPD, droits des personnes, cookies et traceurs, accessibilité, formulaires, services tiers, sécurité de surface et continuité du référencement.</p>
+    <div class="badges"><span>Refonte en cours</span><span>Audit non intrusif</span><span>Sources publiques</span><span>Statuts bornés</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="notice">
+    <h2>Objet et limite</h2>
+    <p>Cette page ne déclare pas une conformité ou une non-conformité globale. Elle documente un état public daté, distingue les éléments observés des éléments seulement indexés historiquement, et liste les contrôles encore nécessaires.</p>
+    <p><strong>Règle :</strong> absence dans un moteur de recherche ≠ absence sur le système ; échec d’un chemin d’accès ≠ indisponibilité globale ; contenu ancien indexé ≠ état actuel du site.</p>
+  </section>
+
+  <section>
+    <h2>Deux états à ne pas fusionner</h2>
+    <div class="grid two">
+      <article class="card observed">
+        <h3>État A — page de refonte observée</h3>
+        <p>La page d’accueil actuellement consultable annonce que le site est en cours de refonte pour devenir plus simple, moderne et accessible. Des accès opérationnels restent proposés, notamment pour le paiement du loyer et d’autres démarches.</p>
+        <p class="small">Source de référence : <a href="https://www.ardechehabitat.fr/" rel="noopener noreferrer">www.ardechehabitat.fr</a>. Observation manuelle mobile datée du 20 septembre 2026.</p>
+      </article>
+      <article class="card">
+        <h3>État B — ancien corpus encore indexé</h3>
+        <p>Des pages de l’ancien site restent visibles dans les index publics : contacts, gestion locative, liens utiles, mentions légales et autres contenus Joomla. Elles constituent un état historique utile pour contrôler la migration, mais ne doivent pas être assimilées automatiquement au site actuellement servi.</p>
+        <p class="small">Exemple : ancienne page « Liens utiles » et ancienne URL de mentions légales encore retrouvées par indexation.</p>
+      </article>
+    </div>
+    <div class="formula"><strong>REFONTE ACTUELLE</strong><span>≠</span><strong>CORPUS HISTORIQUE INDEXÉ</strong><span>→</span><strong>MIGRATION À CONTRÔLER</strong></div>
+  </section>
+
+  <section>
+    <h2>Registre d’audit v0.1</h2>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Axe</th><th>Observation</th><th>Statut</th><th>Contrôle suivant</th></tr></thead>
+        <tbody>
+          <tr><td>Page d’accueil</td><td>Page de refonte accessible manuellement sur mobile et annonçant explicitement une refonte.</td><td class="state observed-state">OBSERVÉ</td><td>Conserver un état daté et recontrôler à chaque changement de version.</td></tr>
+          <tr><td>Disponibilité technique</td><td>Un contrôle automatisé distant a retourné HTTP 503 alors qu’un accès mobile manuel aboutissait pendant la même période.</td><td class="state unknown">INDÉTERMINÉ</td><td>Répéter depuis plusieurs réseaux et agents ; distinguer protection anti-bot, maintenance et indisponibilité réelle.</td></tr>
+          <tr><td>Mentions légales</td><td>Une page et un PDF de mentions légales étaient indexés sur l’ancien site.</td><td class="state established">ÉTABLI — historique</td><td>Vérifier leur accessibilité depuis la page de refonte et leur mise à jour pour le nouveau site.</td></tr>
+          <tr><td>Identification de l’éditeur</td><td>L’ancien index identifiait Ardèche Habitat comme éditeur. Le contenu complet courant n’a pas été vérifié depuis la page de refonte.</td><td class="state unknown">INDÉTERMINÉ — actuel</td><td>Contrôler dénomination, siège, téléphone, directeur de publication et hébergeur au regard de la LCEN.</td></tr>
+          <tr><td>Information RGPD</td><td>Aucune politique de confidentialité actuelle n’a été retrouvée par la recherche ciblée effectuée pour cet audit.</td><td class="state unknown">INDÉTERMINÉ</td><td>Rechercher sur le site refondu, les formulaires et les extranets ; vérifier finalités, bases, destinataires, durées, transferts et droits.</td></tr>
+          <tr><td>DPO / droits des personnes</td><td>Les coordonnées actuelles du DPO n’ont pas été établies par les recherches publiques réalisées pour cette version.</td><td class="state test">À TESTER</td><td>Identifier le canal DPO publié et vérifier qu’il permet l’exercice effectif des droits sans exposition publique de données sensibles.</td></tr>
+          <tr><td>Cookies / traceurs</td><td>Le comportement actuel de la page de refonte n’a pas été caractérisé au niveau réseau ou stockage navigateur.</td><td class="state test">À TESTER</td><td>Inventorier cookies, localStorage, sessionStorage, pixels, analytics, tags et appels tiers avant toute conclusion.</td></tr>
+          <tr><td>Accessibilité — champ</td><td>Ardèche Habitat est un OPH ; les OPH sont des établissements publics locaux à caractère industriel et commercial.</td><td class="state established">ÉTABLI</td><td>Appliquer le cadre de l’article 47 et du RGAA à la refonte.</td></tr>
+          <tr><td>Accessibilité — publication</td><td>La présence actuelle d’une mention « Accessibilité : … », d’une déclaration, d’un schéma pluriannuel et d’un plan annuel n’a pas été établie.</td><td class="state test">À TESTER</td><td>Contrôle dédié RGAA 4.1.2 puis publication des documents requis.</td></tr>
+          <tr><td>Formulaires</td><td>L’ancien site indexait un formulaire de contact demandant nom, e-mail, sujet, message et captcha.</td><td class="state established">ÉTABLI — historique</td><td>Vérifier si un formulaire équivalent subsiste ; auditer information au point de collecte, captcha, sous-traitants et conservation.</td></tr>
+          <tr><td>Services tiers</td><td>Des parcours publics renvoient ou renvoyaient vers des services externes, notamment paiement et extranet.</td><td class="state observed-state">OBSERVÉ / historique</td><td>Cartographier chaque changement de domaine, les données transmises et l’information donnée avant redirection.</td></tr>
+          <tr><td>SEO / migration</td><td>Des URL de l’ancien site restent indexées alors qu’une page de refonte est servie aujourd’hui.</td><td class="state observed-state">OBSERVÉ</td><td>Préparer table de correspondance, redirections 301, canonicals, sitemap et traitement des pages supprimées.</td></tr>
+          <tr><td>Sécurité HTTP/TLS</td><td>Les en-têtes de sécurité, la politique CSP, HSTS, Permissions-Policy et la chaîne TLS n’ont pas encore été audités dans cette version.</td><td class="state test">À TESTER</td><td>Audit non intrusif des en-têtes et du certificat depuis plusieurs points d’accès.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><a href="data/ardeche-habitat-audit-site-web-2026.csv">Télécharger le registre structuré CSV →</a></p>
+  </section>
+
+  <section>
+    <h2>Mentions légales : contrôle de présence et d’actualisation</h2>
+    <p>La LCEN impose aux éditeurs d’un service de communication au public en ligne de rendre accessibles des informations d’identification dans un standard ouvert. Pour une personne morale, le contrôle porte notamment sur la dénomination ou raison sociale, le siège, le téléphone, le directeur ou codirecteur de publication et l’hébergeur.</p>
+    <div class="grid two">
+      <article class="card">
+        <h3>Ancien état retrouvé</h3>
+        <p>Une page « Mentions légales » et un PDF associé étaient référencés par l’ancien site :</p>
+        <ul>
+          <li><a href="https://www.ardechehabitat.fr/liste-des-actualites/166-mentions-legales.html" rel="noopener noreferrer">ancienne page de mentions légales</a></li>
+          <li><a href="https://www.ardechehabitat.fr/images/mentions_legales.pdf" rel="noopener noreferrer">ancien PDF de mentions légales</a></li>
+        </ul>
+        <p class="small">Leur existence historique est établie par l’indexation ; leur disponibilité et leur actualité pendant la refonte restent à vérifier.</p>
+      </article>
+      <article class="card">
+        <h3>Référence actuelle</h3>
+        <p><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000049568614" rel="noopener noreferrer">LCEN — article 1-1</a></p>
+        <p>La refonte est l’occasion de faire des mentions légales une page HTML accessible et directement liée depuis toutes les pages, plutôt qu’un document difficile à retrouver.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>RGPD et droits sur les données</h2>
+    <p>Pour chaque traitement visible ou déclenché depuis le site — formulaire, paiement, espace locataire, extranet, recrutement, mesure d’audience ou autre service — l’information doit être rattachée au traitement réellement mis en œuvre et rester compréhensible.</p>
+    <div class="grid three">
+      <article class="card"><h3>Informer</h3><p>Finalité, base juridique, destinataires, durée de conservation, droits, transferts éventuels et réclamation auprès de la CNIL.</p></article>
+      <article class="card"><h3>Exercer les droits</h3><p>Prévoir un canal praticable pour l’accès, la rectification, l’effacement, la limitation et, selon la base juridique, l’opposition ou la portabilité.</p></article>
+      <article class="card"><h3>DPO</h3><p>Pour un organisme public, la désignation d’un DPO est obligatoire et ses coordonnées doivent être publiées. Le contrôle porte ici sur la visibilité et l’utilisabilité du canal, pas sur l’identité personnelle du délégué.</p></article>
+    </div>
+    <ul class="sources">
+      <li><a href="https://www.cnil.fr/fr/conformite-rgpd-information-des-personnes-et-transparence" rel="noopener noreferrer">CNIL — information des personnes</a></li>
+      <li><a href="https://www.cnil.fr/fr/le-delegue-la-protection-des-donnees-dpo/devenir-delegue-la-protection-des-donnees" rel="noopener noreferrer">CNIL — désignation du DPO</a></li>
+      <li><a href="https://eur-lex.europa.eu/eli/reg/2016/679/oj?locale=fr" rel="noopener noreferrer">RGPD — texte consolidé EUR-Lex</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Cookies, analytics et services tiers</h2>
+    <p>Aucun jugement n’est porté sur les traceurs actuels sans inventaire réseau. La règle de test est simple : identifier d’abord ce qui est lu ou écrit sur le terminal, puis qualifier finalité, destinataire et régime de consentement.</p>
+    <div class="formula"><span>PAGE</span><span>→</span><span>REQUÊTES RÉSEAU</span><span>→</span><span>COOKIES / STOCKAGE</span><span>→</span><span>TIERS</span><span>→</span><strong>QUALIFICATION</strong></div>
+    <p>La CNIL rappelle que les traceurs non essentiels nécessitent en principe un consentement préalable. Certains outils de mesure d’audience peuvent être exemptés seulement sous des conditions strictes, notamment lorsqu’ils restent limités à une mesure pour le compte exclusif de l’éditeur et produisent des statistiques anonymes.</p>
+    <ul class="sources">
+      <li><a href="https://www.cnil.fr/fr/cookies-et-autres-traceurs/regles" rel="noopener noreferrer">CNIL — règles sur les cookies et traceurs</a></li>
+      <li><a href="https://www.cnil.fr/fr/cookies-solutions-pour-les-outils-de-mesure-daudience" rel="noopener noreferrer">CNIL — mesure d’audience</a></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Accessibilité numérique : obligation structurante de la refonte</h2>
+    <p>Le Code de la construction et de l’habitation qualifie les offices publics de l’habitat d’établissements publics locaux à caractère industriel et commercial. L’article 47 de la loi du 11 février 2005 vise les personnes morales de droit public et impose l’accessibilité de leurs services de communication au public en ligne.</p>
+    <div class="grid two">
+      <article class="card observed">
+        <h3>À intégrer avant mise en production</h3>
+        <ul>
+          <li>audit RGAA sur un échantillon représentatif ;</li>
+          <li>mention visible « Accessibilité : totalement / partiellement / non conforme » ;</li>
+          <li>déclaration d’accessibilité ;</li>
+          <li>schéma pluriannuel, durée maximale trois ans ;</li>
+          <li>plan d’actions de l’année en cours ;</li>
+          <li>canal permettant de signaler une difficulté d’accessibilité.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Références</h3>
+        <ul>
+          <li><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000053546314" rel="noopener noreferrer">CCH — article L421-1</a></li>
+          <li><a href="https://www.legifrance.gouv.fr/codes/article_lc/LEGIARTI000048050213" rel="noopener noreferrer">Loi du 11 février 2005 — article 47</a></li>
+          <li><a href="https://accessibilite.numerique.gouv.fr/obligations/mentions-et-pages-obligatoires/" rel="noopener noreferrer">RGAA 4.1.2 — mentions et pages obligatoires</a></li>
+          <li><a href="https://accessibilite.numerique.gouv.fr/obligations/schema-pluriannuel/" rel="noopener noreferrer">RGAA 4.1.2 — schéma pluriannuel</a></li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>Refonte et référencement : conserver la continuité</h2>
+    <p>Le corpus historique encore indexé crée un enjeu de migration distinct de la seule apparence du nouveau site.</p>
+    <div class="formula"><span>ANCIENNE URL</span><span>→</span><strong>ÉQUIVALENT NOUVEAU</strong><span>→</span><span>301</span><span>→</span><span>CANONICAL</span><span>→</span><span>SITEMAP</span></div>
+    <p>Lorsqu’un contenu disparaît réellement, la réponse doit être cohérente avec cet état plutôt que rediriger indistinctement toutes les anciennes pages vers l’accueil. Les pages à forte valeur fonctionnelle — mentions légales, accessibilité, confidentialité, contacts, démarches et paiement — doivent rester stables et faciles à retrouver.</p>
+  </section>
+
+  <section>
+    <h2>Tests techniques à conduire ensuite</h2>
+    <div class="grid three">
+      <article class="card"><h3>Transport et sécurité</h3><p>TLS, HSTS, CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy, mixed content, redirections HTTP→HTTPS.</p></article>
+      <article class="card"><h3>Navigateur et données</h3><p>Cookies avant consentement, localStorage, sessionStorage, scripts tiers, iframes, formulaires, captcha, analytics, paiement et redirections.</p></article>
+      <article class="card"><h3>Accessibilité et qualité</h3><p>Navigation clavier, focus, titres, landmarks, alternatives d’images, contrastes, zoom 200/400 %, formulaires, erreurs, lecteurs d’écran et responsive.</p></article>
+    </div>
+  </section>
+
+  <section class="notice">
+    <h2>Conclusion provisoire</h2>
+    <p>La refonte annoncée ne constitue ni une preuve de conformité ni une anomalie. Elle crée un point de contrôle particulièrement utile : les obligations juridiques et techniques peuvent être intégrées avant la publication du nouveau site, tandis que l’ancien corpus indexé permet de vérifier ce qui a été conservé, corrigé, déplacé ou supprimé.</p>
+    <p><strong>État v0.1 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
+  </section>
+
+  <p><a href="./">← Retour à l’observatoire</a></p>
+</main>
+
+<footer>
+  <div class="wrap">Muse-IRS · Observatoire public · Audit technique Ardèche Habitat · 2026</div>
+  <div class="wrap privacy-links" data-transversal-privacy-nav><a href="information/">Information</a><a href="rgpd/">RGPD</a><a href="privacy.html">Confidentialité</a></div>
+</footer>
+</body>
+</html>
