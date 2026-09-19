@@ -93,11 +93,21 @@
     return values && values.length ? values[0] : null;
   }
 
+  function sanitizeSecurityHeaderValue(name, value) {
+    const text = String(value || "");
+    if (name === "content-security-policy" || name === "content-security-policy-report-only") {
+      return text.replace(/'nonce-[^']+'/gi, "'nonce-[redacted]'");
+    }
+    return text;
+  }
+
   function securityHeaders(entry) {
     const map = headerMap(entry?.response?.headers);
     const out = {};
     for (const name of SECURITY_HEADERS) {
-      if (map.has(name)) out[name] = map.get(name).join(", ");
+      if (map.has(name)) {
+        out[name] = map.get(name).map(value => sanitizeSecurityHeaderValue(name, value)).join(", ");
+      }
     }
     return out;
   }
