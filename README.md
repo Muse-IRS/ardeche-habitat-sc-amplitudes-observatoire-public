@@ -30,6 +30,8 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 
 ## Pages publiques spécialisées
 
+- **Audit technique du site Ardèche Habitat — refonte 2026** : `public/ardeche-habitat-audit-site-web-2026.html`
+- **Registre structuré de cet audit** : `public/data/ardeche-habitat-audit-site-web-2026.csv`
 - **Contester sans perdre la preuve — méthode documentaire publique** : `public/information/contester-sans-perdre-la-preuve.html`
 - **État des lieux, DPE et commissaire de justice** : `public/information/etat-des-lieux-dpe-commissaire-justice.html`
 - **SCP Masse-Vandenberghe — audit RGPD et actes de commissaire de justice** : `public/commissaire-justice-masse-vandenberghe-rgpd.html`
