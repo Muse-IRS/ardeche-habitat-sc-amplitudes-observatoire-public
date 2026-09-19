@@ -63,7 +63,7 @@
   </section>
 
   <section>
-    <h2>Registre d’audit v0.3</h2>
+    <h2>Registre d’audit v0.4</h2>
     <div class="table-wrap">
       <table class="audit-table">
         <thead><tr><th>Axe</th><th>Observation</th><th>Statut</th><th>Contrôle suivant</th></tr></thead>
@@ -149,6 +149,76 @@
       <article class="card"><h3>Partiellement fermé</h3><p>Migration SEO : plusieurs anciennes représentations sont encore indexées, et au moins une ancienne URL testée retourne 404.</p></article>
       <article class="card"><h3>Encore ouvert</h3><p>HAR, cookies, stockage Web, DOM de la refonte, en-têtes HTTP complets, CSP/HSTS/Permissions-Policy et chaîne TLS actuelle.</p></article>
     </div>
+  </section>
+
+  <section>
+    <h2>Session v0.4 — REQUEST_AUTH / BOT_GATEWAY et chemin réseau</h2>
+    <p>La v0.4 introduit une couche intermédiaire entre le navigateur et les en-têtes de réponse. Elle vise à expliquer pourquoi deux clients peuvent recevoir des réponses différentes sans attribuer trop tôt la divergence au serveur d’origine.</p>
+
+    <div class="formula">
+      <span>CLIENT / BROWSER</span><span>→</span>
+      <span>NETWORK_PATH</span><span>→</span>
+      <span>EGRESS_IDENTITY</span><span>→</span>
+      <strong>REQUEST_AUTH / BOT_GATEWAY</strong><span>→</span>
+      <span>EDGE / WAF / CDN</span><span>→</span>
+      <span>ORIGIN</span><span>→</span>
+      <span>SECURITY_RESPONSE_HEADERS</span><span>→</span>
+      <span>CONTENT / STATUS</span>
+    </div>
+
+    <div class="grid three">
+      <article class="card observed">
+        <h3>Chemin navigateur observé</h3>
+        <p>La consultation mobile ayant affiché la page de refonte était réalisée depuis un iPhone / Safari avec un tunnel NordVPN actif.</p>
+        <p><strong>Qualification :</strong> <span class="state observed-state">OBSERVÉ</span>. L’adresse IP de sortie, l’ASN, le pays de sortie, le protocole de transport et les en-têtes exacts n’ont pas été enregistrés.</p>
+      </article>
+      <article class="card">
+        <h3>Chemin automatisé</h3>
+        <p>La récupération web automatisée a reçu <code>503 Service Unavailable</code> sur l’accueil, alors que le navigateur mobile recevait la page de refonte.</p>
+        <p><strong>Qualification :</strong> <span class="state test">DIVERGENT_ACCESS_PATH</span>. L’identité réseau, les en-têtes de requête et le fingerprint transport diffèrent potentiellement du chemin mobile.</p>
+      </article>
+      <article class="card">
+        <h3>REQUEST_AUTH / BOT_GATEWAY</h3>
+        <p>Cette couche regroupe les signaux utilisés avant l’origine : User-Agent, adresse/ASN de sortie, réputation IP, classification automatisée, éventuels challenges, cookies techniques, signatures ou autres mécanismes d’authentification de requête.</p>
+        <p><strong>État :</strong> <span class="state test">À TESTER</span>. Aucun de ces mécanismes n’est attribué à Ardèche Habitat sans observation directe.</p>
+      </article>
+    </div>
+
+    <h3>Variables discriminantes</h3>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Couche</th><th>Chemin mobile</th><th>Chemin automatisé</th><th>État v0.4</th></tr></thead>
+        <tbody>
+          <tr><td>Client</td><td>Safari sur iPhone</td><td>Client web automatisé</td><td class="state established">DISTINCT</td></tr>
+          <tr><td>Network path</td><td>Encapsulé via NordVPN</td><td>Infrastructure distincte</td><td class="state established">DISTINCT</td></tr>
+          <tr><td>Egress identity</td><td>Sortie NordVPN ; IP/ASN exacts non capturés</td><td>IP/ASN exacts non capturés</td><td class="state test">À MESURER</td></tr>
+          <tr><td>Request headers</td><td>Non capturés</td><td>Non exposés dans cet audit</td><td class="state test">À MESURER</td></tr>
+          <tr><td>Bot / request classification</td><td>Non observée</td><td>Non observée</td><td class="state unknown">INDÉTERMINÉ</td></tr>
+          <tr><td>Edge / WAF / CDN</td><td>Présence et règles non établies</td><td>Présence et règles non établies</td><td class="state unknown">INDÉTERMINÉ</td></tr>
+          <tr><td>Réponse</td><td>Page de refonte visible</td><td>HTTP 503</td><td class="state test">DIVERGENT</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Test discriminant minimal</h3>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Test</th><th>Configuration</th><th>But</th></tr></thead>
+        <tbody>
+          <tr><td>T1</td><td>Safari + NordVPN activé</td><td>Reproduire l’état déjà observé.</td></tr>
+          <tr><td>T2</td><td>Safari + NordVPN désactivé</td><td>Tester l’effet du chemin réseau / egress à client constant.</td></tr>
+          <tr><td>T3</td><td>Safari + autre sortie NordVPN</td><td>Tester l’effet de l’IP/ASN de sortie à navigateur constant.</td></tr>
+          <tr><td>T4</td><td>Autre navigateur sur le même appareil et même réseau</td><td>Tester l’effet du client / fingerprint à chemin réseau proche.</td></tr>
+          <tr><td>T5</td><td>Accès automatisé externe</td><td>Comparer avec le chemin qui produit actuellement 503.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="small">La v0.4 ne contourne aucun mécanisme de protection et ne tente pas de forcer l’accès. Le test consiste uniquement à comparer des accès ordinaires et à conserver les différences observées.</p>
+
+    <h3>Frontière avec les security response headers</h3>
+    <p><code>REQUEST_AUTH / BOT_GATEWAY</code> porte sur la requête et sa qualification avant l’origine. Les en-têtes tels que CSP, HSTS, Referrer-Policy, Permissions-Policy ou X-Content-Type-Options appartiennent à la réponse HTTP et restent une couche distincte.</p>
+    <div class="formula"><strong>REQUEST SIDE</strong><span>≠</span><strong>RESPONSE SIDE</strong></div>
   </section>
 
   <section>
@@ -244,7 +314,7 @@
   <section class="notice">
     <h2>Conclusion provisoire</h2>
     <p>La refonte annoncée ne constitue ni une preuve de conformité ni une anomalie. Elle crée un point de contrôle particulièrement utile : les obligations juridiques et techniques peuvent être intégrées avant la publication du nouveau site, tandis que l’ancien corpus indexé permet de vérifier ce qui a été conservé, corrigé, déplacé ou supprimé.</p>
-    <p><strong>État v0.3 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
+    <p><strong>État v0.4 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
   </section>
 
   <p><a href="./">← Retour à l’observatoire</a></p>
