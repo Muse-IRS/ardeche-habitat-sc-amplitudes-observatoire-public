@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "observed_at": "2026-09-18",
+  "observed_at": "2026-09-20",
   "scope": "public application code served by Muse-IRS/ardeche-habitat-sc-amplitudes-observatoire-public",
   "status": "PUBLIC_SELF_AUDIT",
   "analytics": {
@@ -43,5 +43,16 @@
     "/information/",
     "/rgpd/",
     "/privacy.html"
-  ]
+  ],
+  "local_har_analyzer": {
+    "route": "/ardeche-habitat-audit-site-web-2026.html#session-har",
+    "processing": "browser-local-only",
+    "raw_har_upload": false,
+    "automatic_persistence": false,
+    "cookie_values_exported": false,
+    "authorization_headers_exported": false,
+    "request_bodies_exported": false,
+    "query_strings_exported": false,
+    "minimized_report_export": "explicit-user-action"
+  }
 }
