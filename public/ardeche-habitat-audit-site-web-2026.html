@@ -63,21 +63,21 @@
   </section>
 
   <section>
-    <h2>Registre d’audit v0.2</h2>
+    <h2>Registre d’audit v0.3</h2>
     <div class="table-wrap">
       <table class="audit-table">
         <thead><tr><th>Axe</th><th>Observation</th><th>Statut</th><th>Contrôle suivant</th></tr></thead>
         <tbody>
           <tr><td>Page d’accueil</td><td>Page de refonte accessible manuellement sur mobile et annonçant explicitement une refonte.</td><td class="state observed-state">OBSERVÉ</td><td>Conserver un état daté et recontrôler à chaque changement de version.</td></tr>
           <tr><td>Disponibilité technique</td><td>Un navigateur mobile a servi la page de refonte tandis qu’une récupération web automatisée contemporaine a retourné HTTP 503.</td><td class="state test">DIVERGENT</td><td>La divergence d’accès est établie ; sa cause reste indéterminée. Répéter multi-réseaux et multi-agents sans assimiler 503 à une indisponibilité générale.</td></tr>
-          <tr><td>Mentions légales</td><td>Une page et un PDF de mentions légales étaient indexés sur l’ancien site.</td><td class="state established">ÉTABLI — historique</td><td>Vérifier leur accessibilité depuis la page de refonte et leur mise à jour pour le nouveau site.</td></tr>
+          <tr><td>Mentions légales</td><td>Une page et un PDF de mentions légales étaient indexés sur l’ancien site. Leur récupération automatisée actuelle retourne 503 sur les deux chemins testés.</td><td class="state test">DIVERGENT — historique/live</td><td>Distinguer existence historique, accessibilité actuelle et intégration dans la refonte. Ne pas assimiler 503 à une suppression.</td></tr>
           <tr><td>Identification de l’éditeur</td><td>L’ancien index identifiait Ardèche Habitat comme éditeur. Le contenu complet courant n’a pas été vérifié depuis la page de refonte.</td><td class="state unknown">INDÉTERMINÉ — actuel</td><td>Contrôler dénomination, siège, téléphone, directeur de publication et hébergeur au regard de la LCEN.</td></tr>
           <tr><td>Information RGPD</td><td>Aucune politique de confidentialité actuelle n’a été retrouvée par la recherche ciblée effectuée pour cet audit.</td><td class="state unknown">INDÉTERMINÉ</td><td>Rechercher sur le site refondu, les formulaires et les extranets ; vérifier finalités, bases, destinataires, durées, transferts et droits.</td></tr>
           <tr><td>DPO / droits des personnes</td><td>Les coordonnées actuelles du DPO n’ont pas été établies par les recherches publiques réalisées pour cette version.</td><td class="state test">À TESTER</td><td>Identifier le canal DPO publié et vérifier qu’il permet l’exercice effectif des droits sans exposition publique de données sensibles.</td></tr>
           <tr><td>Cookies / traceurs</td><td>Le comportement actuel de la page de refonte n’a pas été caractérisé au niveau réseau ou stockage navigateur.</td><td class="state test">À TESTER</td><td>Inventorier cookies, localStorage, sessionStorage, pixels, analytics, tags et appels tiers avant toute conclusion.</td></tr>
           <tr><td>Accessibilité — champ</td><td>Ardèche Habitat est un OPH ; les OPH sont des établissements publics locaux à caractère industriel et commercial.</td><td class="state established">ÉTABLI</td><td>Appliquer le cadre de l’article 47 et du RGAA à la refonte.</td></tr>
           <tr><td>Accessibilité — publication</td><td>La présence actuelle d’une mention « Accessibilité : … », d’une déclaration, d’un schéma pluriannuel et d’un plan annuel n’a pas été établie.</td><td class="state test">À TESTER</td><td>Contrôle dédié RGAA 4.1.2 puis publication des documents requis.</td></tr>
-          <tr><td>Formulaires</td><td>L’ancien site indexait un formulaire de contact demandant nom, e-mail, sujet, message et captcha.</td><td class="state established">ÉTABLI — historique</td><td>Vérifier si un formulaire équivalent subsiste ; auditer information au point de collecte, captcha, sous-traitants et conservation.</td></tr>
+          <tr><td>Formulaires</td><td>L’ancien site indexait un formulaire de contact demandant nom, e-mail, sujet, message et captcha. L’ancienne URL de contact testée retourne aujourd’hui 404.</td><td class="state test">DIVERGENT — historique/live</td><td>Identifier l’éventuel nouveau canal de contact et vérifier information au point de collecte, captcha, sous-traitants et conservation.</td></tr>
           <tr><td>Services tiers</td><td>Des parcours publics renvoient ou renvoyaient vers des services externes, notamment paiement et extranet.</td><td class="state observed-state">OBSERVÉ / historique</td><td>Cartographier chaque changement de domaine, les données transmises et l’information donnée avant redirection.</td></tr>
           <tr><td>SEO / migration</td><td>Les moteurs renvoient encore l’ancien accueil et d’anciennes pages crawlées plusieurs mois auparavant, alors que le navigateur mobile reçoit aujourd’hui une page de refonte différente.</td><td class="state test">DIVERGENT</td><td>Contrôler migration, redirections 301, canonicals, sitemap, 404/410 et délai de réindexation.</td></tr>
           <tr><td>Sécurité HTTP/TLS</td><td>Les en-têtes de sécurité, la politique CSP, HSTS, Permissions-Policy et la chaîne TLS n’ont pas encore été audités dans cette version.</td><td class="state test">À TESTER</td><td>Audit non intrusif des en-têtes et du certificat depuis plusieurs points d’accès.</td></tr>
@@ -121,6 +121,34 @@
     </div>
     <p class="small">Ces rapports sont calculés à partir des pixels de la capture JPEG fournie. Ils ne remplacent pas un contrôle des valeurs CSS calculées dans le navigateur. Un écart de compression ou de colorimétrie suffit à modifier le ratio ; le bouton orange n’est donc pas qualifié non conforme à ce stade.</p>
     <div class="formula"><span>RENDU VISUEL</span><span>→</span><span>MESURE CAPTURE</span><span>→</span><strong>SIGNAL</strong><span>≠</span><strong>CONCLUSION CSS/RGAA</strong></div>
+  </section>
+
+  <section>
+    <h2>Session v0.3 — matrice des endpoints et séparation live / index / cache</h2>
+    <p>La v0.3 ajoute un contrôle endpoint par endpoint. Un même domaine présente plusieurs états selon le chemin et le mode d’observation ; ces états sont conservés séparément.</p>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Chemin / objet</th><th>Observation v0.3</th><th>Statut</th><th>Portée probatoire</th></tr></thead>
+        <tbody>
+          <tr><td><code>/</code></td><td>Navigateur mobile réel : page de refonte visible. Fetch web automatisé : <code>503 Service Unavailable</code>.</td><td class="state test">DIVERGENT_ACCESS_PATH</td><td>Établit une divergence entre chemins d’accès ; n’établit pas sa cause.</td></tr>
+          <tr><td><code>/infos-pratiques/contacts-horaires-plan-d-acces.html</code></td><td>L’ancienne page reste présente dans l’index historique, mais le fetch actuel retourne <code>404 Not Found</code>.</td><td class="state test">DIVERGENT_INDEX_LIVE</td><td>Établit qu’une représentation indexée ancienne ne correspond plus à l’état live de cette URL.</td></tr>
+          <tr><td><code>/liste-des-actualites/166-mentions-legales.html</code></td><td>L’ancienne page est référencée par le corpus historique ; le fetch automatisé actuel retourne <code>503</code>.</td><td class="state unknown">LIVE INDETERMINATE</td><td>Le 503 ne permet pas de conclure si la ressource existe, est filtrée ou indisponible sur ce chemin.</td></tr>
+          <tr><td><code>/images/mentions_legales.pdf</code></td><td>L’ancien PDF est référencé historiquement ; le fetch automatisé actuel retourne <code>503</code>.</td><td class="state unknown">LIVE INDETERMINATE</td><td>Même borne : historique établi, disponibilité actuelle non établie.</td></tr>
+          <tr><td>Ancienne page « Liens utiles »</td><td>Une représentation crawlée antérieure reste consultable dans l’index et expose l’ancienne navigation Joomla, paiement Systempay, extranet copropriété et liens externes.</td><td class="state established">ÉTABLI — CACHE/INDEX</td><td>Documente l’ancien état ; ne décrit pas automatiquement la nouvelle page de refonte.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Domaines tiers : ce qui est établi historiquement</h3>
+    <p>Dans le corpus historique indexé, des liens sortants sont établis vers plusieurs services, dont <code>jepaieenligne.systempay.fr</code> pour le paiement et <code>extranet2.ics.fr</code> pour l’extranet de copropriété, ainsi que des sites institutionnels. La capture actuelle montre toujours des boutons « Payer votre loyer en ligne » et « Extranet syndic de copropriété », mais leurs URL actuelles n’ont pas été extraites du DOM de la refonte.</p>
+    <div class="formula"><span>LIEN HISTORIQUE ÉTABLI</span><span>≠</span><span>URL ACTUELLE DU BOUTON</span><span>→</span><strong>À TESTER DANS LE DOM COURANT</strong></div>
+
+    <h3>État des couches réellement instrumentées</h3>
+    <div class="grid three">
+      <article class="card observed"><h3>Fermé en v0.3</h3><p>Codes HTTP observés sur plusieurs endpoints, divergence live/index, présence historique de services tiers, pré-contrôle de contraste sur capture.</p></article>
+      <article class="card"><h3>Partiellement fermé</h3><p>Migration SEO : plusieurs anciennes représentations sont encore indexées, et au moins une ancienne URL testée retourne 404.</p></article>
+      <article class="card"><h3>Encore ouvert</h3><p>HAR, cookies, stockage Web, DOM de la refonte, en-têtes HTTP complets, CSP/HSTS/Permissions-Policy et chaîne TLS actuelle.</p></article>
+    </div>
   </section>
 
   <section>
@@ -216,7 +244,7 @@
   <section class="notice">
     <h2>Conclusion provisoire</h2>
     <p>La refonte annoncée ne constitue ni une preuve de conformité ni une anomalie. Elle crée un point de contrôle particulièrement utile : les obligations juridiques et techniques peuvent être intégrées avant la publication du nouveau site, tandis que l’ancien corpus indexé permet de vérifier ce qui a été conservé, corrigé, déplacé ou supprimé.</p>
-    <p><strong>État v0.2 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
+    <p><strong>État v0.3 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
   </section>
 
   <p><a href="./">← Retour à l’observatoire</a></p>
