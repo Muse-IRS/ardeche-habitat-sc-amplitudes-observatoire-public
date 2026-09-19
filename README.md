@@ -31,6 +31,8 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 ## Pages publiques spécialisées
 
 - **Audit technique du site Ardèche Habitat — refonte 2026** : `public/ardeche-habitat-audit-site-web-2026.html`
+  - projection publique de l’état canonique privé `AH-WEB-AUDIT-2026 v0.4` ;
+  - seules les observations, statuts, limites et références nécessaires à la compréhension publique sont exposés.
 - **Registre structuré de cet audit** : `public/data/ardeche-habitat-audit-site-web-2026.csv`
 - **Contester sans perdre la preuve — méthode documentaire publique** : `public/information/contester-sans-perdre-la-preuve.html`
 - **État des lieux, DPE et commissaire de justice** : `public/information/etat-des-lieux-dpe-commissaire-justice.html`
