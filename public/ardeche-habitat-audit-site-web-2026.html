@@ -409,6 +409,21 @@
           <label for="har-browser"><strong>Navigateur de capture</strong></label>
           <input id="har-browser" data-har-browser type="text" placeholder="Safari iPhone, Safari macOS, Firefox…">
 
+          <label for="har-phase"><strong>Phase de capture</strong></label>
+          <select id="har-phase" data-har-phase>
+            <option value="INITIAL_NO_INTERACTION">Avant interaction / consentement</option>
+            <option value="AFTER_CONSENT_ACCEPT">Après acceptation</option>
+            <option value="AFTER_CONSENT_REFUSE">Après refus</option>
+            <option value="AFTER_USER_ACTION">Après action utilisateur</option>
+            <option value="UNKNOWN">Non renseigné</option>
+          </select>
+
+          <label for="har-local-storage"><strong>Clés localStorage observées — noms uniquement</strong></label>
+          <textarea id="har-local-storage" data-storage-local rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
+
+          <label for="har-session-storage"><strong>Clés sessionStorage observées — noms uniquement</strong></label>
+          <textarea id="har-session-storage" data-storage-session rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
+
           <div class="audit-actions">
             <button type="button" data-har-analyze>Analyser localement</button>
             <button type="button" data-har-export disabled>Exporter le rapport minimisé</button>
