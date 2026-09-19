@@ -47,7 +47,7 @@
 
   <section class="notice">
     <h2>Filiation de publication</h2>
-    <p>Cette page est la projection publique bornée de l’état canonique <strong>AH-WEB-AUDIT-2026 v0.4</strong>. Les observations, statuts et limites sont qualifiés dans l’espace canonique avant publication ; la méthode interne et les éléments non destinés au public ne sont pas reproduits ici.</p>
+    <p>Cette page est la projection publique bornée de l’état canonique <strong>AH-WEB-AUDIT-2026 v0.5</strong>. Les observations, statuts et limites sont qualifiés dans l’espace canonique avant publication ; la méthode interne et les éléments non destinés au public ne sont pas reproduits ici.</p>
     <div class="formula"><span>ÉTAT CANONIQUE PRIVÉ</span><span>→</span><span>QUALIFICATION</span><span>→</span><strong>PROJECTION PUBLIQUE</strong></div>
   </section>
 
@@ -69,7 +69,7 @@
   </section>
 
   <section>
-    <h2>Registre d’audit v0.4</h2>
+    <h2>Registre d’audit v0.5</h2>
     <div class="table-wrap">
       <table class="audit-table">
         <thead><tr><th>Axe</th><th>Observation</th><th>Statut</th><th>Contrôle suivant</th></tr></thead>
@@ -228,6 +228,81 @@
   </section>
 
   <section>
+    <h2>Session v0.5 — transport, navigateur/données, accessibilité/qualité</h2>
+    <p>Cette étape sépare ce qui est observable aujourd’hui, ce qui n’est établi qu’historiquement et ce qui exige encore un navigateur instrumenté.</p>
+    <div class="formula"><strong>OBSERVÉ MAINTENANT</strong><span>≠</span><strong>HISTORIQUE ÉTABLI</strong><span>≠</span><strong>À TESTER DANS LE NAVIGATEUR</strong></div>
+
+    <h3>Transport et sécurité</h3>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Contrôle</th><th>État v0.5</th><th>Qualification</th></tr></thead>
+        <tbody>
+          <tr><td>HTTPS — chemin automatisé</td><td>Le chemin automatisé retourne toujours <code>503 Service Unavailable</code>, tandis qu’un navigateur mobile réel a servi la page de refonte.</td><td class="state test">DIVERGENT_ACCESS_PATH</td></tr>
+          <tr><td>DNS — client local d’audit</td><td>Le client local de contrôle n’a pas résolu <code>www.ardechehabitat.fr</code>.</td><td class="state unknown">AUDIT_CLIENT_FAILURE — ne prouve pas un défaut DNS global</td></tr>
+          <tr><td>HTTP → HTTPS</td><td>Le chemin automatisé aboutit sur HTTPS, mais le client peut lui-même suivre ou normaliser le schéma.</td><td class="state unknown">INDÉTERMINÉ</td></tr>
+          <tr><td>TLS / certificat</td><td>Version TLS, chaîne de certificat et cipher non établis depuis un chemin atteignant la page courante.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Security response headers</td><td>HSTS, CSP, X-Content-Type-Options, Referrer-Policy, Permissions-Policy et protections de framing non récupérés sur la réponse servie au navigateur.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Mixed content</td><td>Non caractérisé sur la page de refonte. L’ancien corpus contient un lien externe en <code>http://</code>, ce qui n’établit pas à lui seul un mixed content.</td><td class="state test">À TESTER — courant</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>Navigateur et données</h3>
+    <div class="grid two">
+      <article class="card observed">
+        <h3>Historique établi</h3>
+        <ul>
+          <li>ancien formulaire : nom, e-mail, sujet, message et captcha ;</li>
+          <li>marqueurs <code>iframe</code> sur l’ancien accueil ;</li>
+          <li>parcours historiques vers paiement et extranet de copropriété.</li>
+        </ul>
+        <p class="small">Ces constats décrivent l’ancien corpus indexé, pas automatiquement la refonte.</p>
+      </article>
+      <article class="card">
+        <h3>État courant encore ouvert</h3>
+        <ul>
+          <li>cookies avant interaction ;</li>
+          <li><code>localStorage</code> / <code>sessionStorage</code> ;</li>
+          <li>scripts tiers et iframes actuelles ;</li>
+          <li>analytics ;</li>
+          <li>formulaires/captcha actuels ;</li>
+          <li>chaînes de redirection paiement et extranet.</li>
+        </ul>
+        <p><strong>État :</strong> <span class="state test">À TESTER par HAR + stockage navigateur.</span></p>
+      </article>
+    </div>
+    <div class="formula"><span>INITIAL_LOAD</span><span>→</span><span>NETWORK</span><span>→</span><span>COOKIES / STORAGE</span><span>→</span><span>TIERS</span><span>→</span><span>ACTION</span><span>→</span><strong>REDIRECT / POST-ACTION STATE</strong></div>
+
+    <h3>Accessibilité et qualité</h3>
+    <div class="table-wrap">
+      <table class="audit-table">
+        <thead><tr><th>Contrôle</th><th>État v0.5</th><th>Qualification</th></tr></thead>
+        <tbody>
+          <tr><td>Contraste blanc / bleu principal</td><td>≈ <strong>5,45:1</strong> depuis la capture mobile.</td><td class="state established">CONVERGENT_VISUAL_PRECHECK</td></tr>
+          <tr><td>Contraste blanc / bleu secondaire</td><td>≈ <strong>4,41:1</strong>.</td><td class="state unknown">À CONFIRMER sur couleurs CSS et taille/gras réels</td></tr>
+          <tr><td>Contraste blanc / orange</td><td>≈ <strong>2,72:1</strong>.</td><td class="state test">SIGNAL À CONFIRMER sur CSS réel</td></tr>
+          <tr><td>Responsive mobile</td><td>Pas de débordement horizontal évident sur la portion capturée.</td><td class="state observed-state">OBSERVÉ PARTIELLEMENT</td></tr>
+          <tr><td>Clavier / ordre / focus</td><td>Non testé sur la page courante.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Titres / landmarks / noms accessibles</td><td>DOM et accessibility tree courants non récupérés.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Alternatives d’images</td><td>Une capture visuelle ne permet pas de connaître <code>alt</code>, ARIA ou le nom accessible.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Zoom texte 200 % / reflow 400 %</td><td>Non testé.</td><td class="state test">À TESTER</td></tr>
+          <tr><td>Lecteur d’écran</td><td>Non testé.</td><td class="state test">À TESTER</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>WCAG 2.2 demande notamment un contraste minimal de 4,5:1 pour le texte normal, la possibilité de redimensionner le texte à 200 %, un reflow adapté et un focus visible pour les interfaces opérables au clavier.</p>
+    <ul class="sources">
+      <li><a href="https://www.w3.org/TR/WCAG22/" rel="noopener noreferrer">W3C — WCAG 2.2</a></li>
+      <li><a href="https://www.w3.org/Translations/WCAG22-fr/" rel="noopener noreferrer">W3C — traduction française WCAG 2.2</a></li>
+      <li><a href="https://www.w3.org/WAI/WCAG22/Understanding/focus-visible.html" rel="noopener noreferrer">W3C — Focus Visible</a></li>
+    </ul>
+
+    <div class="notice">
+      <strong>Borne de la v0.5 :</strong> les en-têtes HTTP/TLS, le stockage navigateur et les tests d’interaction accessibilité restent ouverts. La prochaine étape discriminante est une capture navigateur instrumentée de la page de refonte actuelle.
+    </div>
+  </section>
+
+  <section>
     <h2>Mentions légales : contrôle de présence et d’actualisation</h2>
     <p>La LCEN impose aux éditeurs d’un service de communication au public en ligne de rendre accessibles des informations d’identification dans un standard ouvert. Pour une personne morale, le contrôle porte notamment sur la dénomination ou raison sociale, le siège, le téléphone, le directeur ou codirecteur de publication et l’hébergeur.</p>
     <div class="grid two">
@@ -320,7 +395,7 @@
   <section class="notice">
     <h2>Conclusion provisoire</h2>
     <p>La refonte annoncée ne constitue ni une preuve de conformité ni une anomalie. Elle crée un point de contrôle particulièrement utile : les obligations juridiques et techniques peuvent être intégrées avant la publication du nouveau site, tandis que l’ancien corpus indexé permet de vérifier ce qui a été conservé, corrigé, déplacé ou supprimé.</p>
-    <p><strong>État v0.4 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
+    <p><strong>État v0.5 :</strong> l’accessibilité applicable à un OPH est établie ; l’existence historique de mentions légales et d’un formulaire est documentée ; la visibilité actuelle des mentions légales, du DPO, de l’information RGPD, des traceurs et des documents d’accessibilité reste à tester sur le site refondu.</p>
   </section>
 
   <p><a href="./">← Retour à l’observatoire</a></p>
