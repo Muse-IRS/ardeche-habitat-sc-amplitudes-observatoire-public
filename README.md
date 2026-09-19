@@ -30,6 +30,8 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 
 ## Pages publiques spécialisées
 
+- **Contester sans perdre la preuve — méthode documentaire publique** : `public/information/contester-sans-perdre-la-preuve.html`
+- **État des lieux, DPE et commissaire de justice** : `public/information/etat-des-lieux-dpe-commissaire-justice.html`
 - **SCP Masse-Vandenberghe — audit RGPD et actes de commissaire de justice** : `public/commissaire-justice-masse-vandenberghe-rgpd.html`
 - **Registre public des incohérences, écarts neutralisés et points de contrôle** : `public/data/commissaire-justice-masse-vandenberghe-incoherences.csv`
 
