@@ -54,6 +54,12 @@
     "request_bodies_exported": false,
     "query_strings_exported": false,
     "minimized_report_export": "explicit-user-action",
-    "scope": "generic-target-domain"
+    "scope": "generic-target-domain",
+    "storage_guidance": {
+      "manual_storage_fields_optional": true,
+      "current_page_storage_demo": "key-names-only",
+      "values_read_by_demo": false,
+      "cross_origin_storage_access": false
+    }
   }
 }
