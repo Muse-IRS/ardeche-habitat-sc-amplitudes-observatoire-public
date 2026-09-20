@@ -279,6 +279,71 @@ highlights:
     - offer: "Le Cheylard — 250_LE_CHEYLARD"
       description: "DPE EN COURS"
       technical_block: "Bien non soumis au DPE"
+verification_source_policy:
+  rule: "REPETITION != INDEPENDENT_CORROBORATION"
+  sources:
+    - id: "ARDECHE_PREFECTURE_HABITAT"
+      url: "https://www.ardeche.gouv.fr/Actions-de-l-Etat/Amenagement-du-territoire.-construction.-habitat.-urbanisme/Habitat"
+      class: "A_INSTITUTIONAL"
+      use:
+        - "official_housing_policy_context"
+        - "social_housing_framework"
+        - "official_registration_services"
+      may_establish_alone:
+        - "institutional_context"
+        - "officially_published_public_process"
+    - id: "ANNUAIRE_COPROPRIETES_AH"
+      url: "https://annuairedescoproprietes.fr/syndic/privas/ardeche-habitat-/27070001600032.html"
+      class: "B_PUBLIC_REGISTER_DERIVED"
+      upstream_source: "Registre national des copropriétés / ANAH"
+      observed:
+        managed_coproperties: 22
+        total_lots: 367
+        housing_lots: 194
+      use:
+        - "coproperty_identity"
+        - "address"
+        - "lot_counts"
+        - "syndic_relation"
+      caveat: "Registry declarations may contain inaccuracies; sensitive attributes require corroboration."
+    - id: "ETREPROPRIO_AH"
+      url: "https://www.etreproprio.com/agences-immobilieres/ardeche/privas/ardeche-habitat"
+      class: "C_MARKETPLACE_AGGREGATOR"
+      observed:
+        agency_listing_count: 14
+      use:
+        - "cross_channel_offer_presence"
+        - "transaction_type"
+        - "public_price"
+        - "program_discovery"
+      may_not_establish_alone:
+        - "legal_property_status"
+        - "exact_dpe_identity"
+        - "construction_history"
+    - id: "DEMANDE_LOGEMENT_AH"
+      url: "https://demande-logement.fr/ardeche-habitat/"
+      class: "D_THIRD_PARTY_GUIDE"
+      use:
+        - "discovery"
+        - "terminology"
+        - "links_to_verify"
+      observed_quality_issue: "Page dedicated to Ardèche Habitat states that ADIS will examine the request."
+      rule: "NEVER_USE_ALONE_FOR_PROCEDURAL_FACT"
+    - id: "GOWORK_AH"
+      url: "https://gowork.fr/ardeche-habitat-privas"
+      class: "E_USER_REVIEW_SIGNAL"
+      profile_status: "NON_OFFICIAL"
+      user_experience_verification: false
+      use:
+        - "qualitative_signal_generation"
+        - "topic_discovery"
+      may_not_establish_alone:
+        - "technical_fact"
+        - "legal_fact"
+        - "housing_condition"
+        - "allocation_practice"
+        - "statistical_claim"
+
 sources:
   - name: "Bienveo — page organisme Ardèche Habitat"
     url: "https://www.bienveo.fr/H07105-Commercialisation"
@@ -288,6 +353,16 @@ sources:
     url: "https://www.superimmo.com/"
   - name: "Alentoor — reprises d'annonces Ardèche Habitat"
     url: "https://www.alentoor.fr/"
+  - name: "Annuaire des copropriétés — Ardèche Habitat"
+    url: "https://annuairedescoproprietes.fr/syndic/privas/ardeche-habitat-/27070001600032.html"
+  - name: "Préfecture de l'Ardèche — Habitat"
+    url: "https://www.ardeche.gouv.fr/Actions-de-l-Etat/Amenagement-du-territoire.-construction.-habitat.-urbanisme/Habitat"
+  - name: "demande-logement.fr — Ardèche Habitat"
+    url: "https://demande-logement.fr/ardeche-habitat/"
+  - name: "EtreProprio — agence Ardèche Habitat"
+    url: "https://www.etreproprio.com/agences-immobilieres/ardeche/privas/ardeche-habitat"
+  - name: "GoWork — Ardèche Habitat"
+    url: "https://gowork.fr/ardeche-habitat-privas"
 deployment:
   source_path: "public/ardeche-habitat-offres-logements-dpe.html"
   manifest_source_path: "public/data/ardeche-habitat-offres-logements-dpe.yml"
