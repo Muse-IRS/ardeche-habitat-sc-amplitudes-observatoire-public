@@ -20,6 +20,210 @@ dpe_status_vocabulary:
   SOURCE_DIVERGENCE: "Les informations publiques ne concordent pas."
   FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED: "Programme futur sans DPE individuel observé."
   UNKNOWN: "Non qualifiable avec la source observée."
+offers:
+  - id: "SARRAS5048"
+    commune: "Sarras"
+    label: "Résidence Peyrouse"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 65
+    heating: "gaz individuel"
+    dpe_status: "IN_PROGRESS_DECLARED"
+    source: "Superimmo / Ardèche Habitat"
+  - id: "ST-MARTIN-VALAMAS-T3"
+    commune: "Saint-Martin-de-Valamas"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 67
+    dpe_status: "IN_PROGRESS_DECLARED"
+  - id: "CROS-GEORAND-T3"
+    commune: "Cros-de-Géorand"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 72
+    dpe_status: "IN_PROGRESS_DECLARED"
+  - id: "3346TOURNON"
+    commune: "Tournon-sur-Rhône"
+    transaction: "location"
+    typology: "T3"
+    surface_index_m2: 65
+    surface_description_m2: 53
+    heating: "gaz individuel"
+    dpe_status: "IN_PROGRESS_DECLARED"
+    data_quality: "SOURCE_DIVERGENCE"
+  - id: "ECLASSAN-DOMINAN-92"
+    commune: "Eclassan"
+    label: "Résidence Le Dominan"
+    transaction: "location"
+    typology: "T4 duplex"
+    surface_m2: 92
+    heating: "gaz individuel"
+    dpe_status: "IN_PROGRESS_DECLARED"
+  - id: "ECLASSAN-DOMINAN-77"
+    commune: "Eclassan"
+    label: "Résidence Le Dominan"
+    transaction: "location"
+    typology: "T4"
+    surface_m2: 77
+    heating: "gaz individuel"
+    dpe_status: "IN_PROGRESS_DECLARED"
+  - id: "250_LE_CHEYLARD"
+    commune: "Le Cheylard"
+    transaction: "location"
+    typology: "T4"
+    surface_m2: 70
+    heating: "collectif"
+    dpe_status: "SOURCE_DIVERGENCE"
+  - id: "CHANDOLAS_T3"
+    commune: "Chandolas"
+    label: "Ancien Presbytère de Maisonneuve"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 63.89
+    heating: "gaz individuel"
+    dpe_status: "COMPLETE"
+    dpe_class: "D"
+    dpe_kwh_m2_year: 225
+    ges_class: "E"
+    ges_kgco2_m2_year: 46
+  - id: "CHANDOLAS_T3_RES_ECOLE"
+    commune: "Chandolas"
+    label: "Résidence Ecole"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 87.40
+    heating: "gaz individuel"
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "BAIX_LA_CURE"
+    commune: "Baix"
+    label: "La Cure"
+    transaction: "location"
+    typology: "T2"
+    surface_m2: 42
+    heating: "gaz individuel"
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "THUEYTS_LE_CHATEAU"
+    commune: "Thueyts"
+    label: "Le Château"
+    transaction: "location"
+    typology: "T3"
+    surface_m2: 45
+    heating: "électrique"
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "MARCOLSAHGIL"
+    commune: "Marcols-les-Eaux"
+    transaction: "location"
+    typology: "T4"
+    surface_m2: 92
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "LEMPS_MAISON_DARU"
+    commune: "Lemps"
+    label: "Maison Daru"
+    transaction: "location"
+    typology: "T5"
+    surface_m2: 121
+    heating: "gaz collectif"
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "LA_MEANSOLE"
+    commune: "Flaviac"
+    transaction: "vente"
+    typology: "T5"
+    construction_year: 1957
+    surface_characteristics_m2: 78
+    surface_description_m2: 98
+    heating: "électrique"
+    dpe_status: "COMPLETE"
+    dpe_class: "D"
+    dpe_kwh_m2_year: 202
+    ges_class: "B"
+    ges_kgco2_m2_year: 8
+    data_quality: "SOURCE_DIVERGENCE"
+  - id: "ANDANCE_LE_CHATELET"
+    commune: "Andance"
+    label: "Résidence Le Châtelet"
+    transaction: "vente"
+    typology: "T3"
+    surface_m2: 64
+    construction_year: 1998
+    heating: "électrique"
+    dpe_status: "COMPLETE"
+    dpe_class: "C"
+    dpe_kwh_m2_year: 134
+    ges_class: "A"
+    ges_kgco2_m2_year: 5
+  - id: "LES_FERRATS"
+    commune: "Vion"
+    label: "Les Ferrats"
+    transaction: "vente"
+    typology: "T3 duplex"
+    surface_m2: 71.5
+    construction_year: 2009
+    heating: "gaz individuel"
+    dpe_status: "COMPLETE"
+    dpe_class: "D"
+    dpe_kwh_m2_year: 208
+    ges_class: "D"
+    ges_kgco2_m2_year: 30
+  - id: "VION_LES_FERRATS"
+    commune: "Vion"
+    label: "Les Ferrats"
+    transaction: "vente"
+    typology: "T3 plain-pied PMR"
+    surface_m2: 69.5
+    construction_year: 2009
+    heating: "gaz individuel"
+    dpe_status: "COMPLETE"
+    dpe_class: "C"
+    dpe_kwh_m2_year: 145
+    ges_class: "D"
+    ges_kgco2_m2_year: 22
+  - id: "LE_BEAGE"
+    commune: "Le Béage"
+    transaction: "vente"
+    typology: "T5"
+    surface_m2: 106
+    construction_year: 2009
+    heating: "gaz"
+    dpe_status: "COMPLETE"
+    dpe_class: "D"
+    dpe_kwh_m2_year: 159
+    ges_class: "D"
+    ges_kgco2_m2_year: 32
+  - id: "ST-JEAN-DE-MUZOLS-T3"
+    commune: "Saint-Jean-de-Muzols"
+    transaction: "vente"
+    typology: "T3"
+    surface_m2: 80
+    dpe_status: "UNKNOWN"
+  - id: "LE_BALCON_DES_ALPES"
+    commune: "Annonay"
+    label: "Le Balcon des Alpes"
+    transaction: "location-accession"
+    typology: "T4"
+    surface_m2: 84
+    delivery: "2024-07"
+    dpe_status: "NOT_DISPLAYED_ON_OBSERVED_SOURCE"
+  - id: "VALLON_TERRASSES_PONT_ARC"
+    commune: "Vallon-Pont-d'Arc"
+    label: "Les Terrasses du Pont d'Arc"
+    transaction: "location-accession"
+    delivery: "2028-Q2"
+    lots_announced: 25
+    dpe_status: "FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED"
+  - id: "PSLA_VIVIERS"
+    commune: "Viviers"
+    transaction: "location-accession"
+    delivery: "2029-Q1"
+    lots_announced: 15
+    dpe_status: "FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED"
+  - id: "ST-SYMPHORIEN-SOUS-CHOMERAC-T3"
+    commune: "Saint-Symphorien-sous-Chomérac"
+    transaction: "location-accession"
+    typology: "T3"
+    surface_m2: 61
+    delivery: "2027-12"
+    dpe_status: "FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED"
+
 highlights:
   peyrouse:
     reference: "SARRAS5048"
