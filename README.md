@@ -34,6 +34,7 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
   - projection publique de l’état canonique privé `AH-WEB-AUDIT-2026 v0.4` ;
   - seules les observations, statuts, limites et références nécessaires à la compréhension publique sont exposés.
 - **Registre structuré de cet audit** : `public/data/ardeche-habitat-audit-site-web-2026.csv`
+- **Lignage juridique des prestataires diagnostics AED / AC ENVIRONNEMENT** : `public/data/ardeche-habitat-diagnostics-prestataires-lineage-2022-2026.csv`
 - **Traçabilité publique du bâti — cas pilotes 2000–2015 + Résidence Peyrouse** : `public/patrimoine-tracabilite-batiments.html`
 - **Manifeste public de cette page** : `public/data/patrimoine-tracabilite-batiments.yml`
 - **Offres Ardèche Habitat — DPE, GES et qualité des données** : `public/ardeche-habitat-offres-logements-dpe.html`
