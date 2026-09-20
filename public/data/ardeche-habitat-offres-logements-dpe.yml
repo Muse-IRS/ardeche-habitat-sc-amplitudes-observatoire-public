@@ -1,0 +1,64 @@
+schema_version: "1.0.0"
+artifact_id: "AH-PUBLIC-OFFERS-DPE-001"
+title: "Offres Ardèche Habitat — DPE, GES et qualité des données"
+observed_at: "2026-09-20"
+scope:
+  target: "Ardèche Habitat"
+  categories:
+    - "location"
+    - "vente"
+    - "location-accession"
+    - "programme-neuf"
+  public_sources_only: true
+  personal_data_included: false
+  exhaustive_inventory_proven: false
+  coverage_status: "PUBLICLY_OBSERVED_SNAPSHOT"
+dpe_status_vocabulary:
+  COMPLETE: "Classe énergie et GES publiées avec valeurs."
+  IN_PROGRESS_DECLARED: "La source indique explicitement DPE en cours."
+  NOT_DISPLAYED_ON_OBSERVED_SOURCE: "Aucun DPE visible dans la source observée."
+  SOURCE_DIVERGENCE: "Les informations publiques ne concordent pas."
+  FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED: "Programme futur sans DPE individuel observé."
+  UNKNOWN: "Non qualifiable avec la source observée."
+highlights:
+  peyrouse:
+    reference: "SARRAS5048"
+    commune: "Sarras"
+    residence: "Résidence Peyrouse"
+    surface_m2: 65
+    heating: "gaz individuel"
+    dpe_status: "IN_PROGRESS_DECLARED"
+    dpe_number: null
+    dpe_class: null
+    ges_class: null
+    ademe_exact_match: "NOT_ESTABLISHED"
+  surface_divergences:
+    - offer: "Tournon — Rue du Doux"
+      index_surface_m2: 65
+      description_surface_m2: 53
+    - offer: "Flaviac — La Meansole"
+      characteristics_surface_m2: 78
+      description_surface_m2: 98
+    - offer: "Désaignes — Résidence La Digue"
+      index_surface_m2: 63
+      description_surface_m2: 66
+  dpe_divergence:
+    - offer: "Le Cheylard — 250_LE_CHEYLARD"
+      description: "DPE EN COURS"
+      technical_block: "Bien non soumis au DPE"
+sources:
+  - name: "Bienveo — page organisme Ardèche Habitat"
+    url: "https://www.bienveo.fr/H07105-Commercialisation"
+  - name: "Superimmo — reprises d'annonces Ardèche Habitat"
+    url: "https://www.superimmo.com/"
+  - name: "Alentoor — reprises d'annonces Ardèche Habitat"
+    url: "https://www.alentoor.fr/"
+deployment:
+  source_path: "public/ardeche-habitat-offres-logements-dpe.html"
+  manifest_source_path: "public/data/ardeche-habitat-offres-logements-dpe.yml"
+  deployed_path: "ardeche-habitat-offres-logements-dpe.html"
+  deployed_manifest_path: "data/ardeche-habitat-offres-logements-dpe.yml"
+  source_branch: "main"
+  deployment_branch: "gh-pages"
+  branch_validation: "pending_after_write"
+  live_verification: "unknown_from_automated_path"
