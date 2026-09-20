@@ -264,5 +264,5 @@ deployment:
   deployed_manifest_path: "data/ardeche-habitat-offres-logements-dpe.yml"
   source_branch: "main"
   deployment_branch: "gh-pages"
-  branch_validation: "pending_after_write"
+  branch_validation: "passed"
   live_verification: "unknown_from_automated_path"
