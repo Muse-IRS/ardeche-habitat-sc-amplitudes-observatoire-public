@@ -224,6 +224,35 @@ offers:
     delivery: "2027-12"
     dpe_status: "FUTURE_PROGRAM_NO_INDIVIDUAL_DPE_OBSERVED"
 
+superimmo_agency_locations_snapshot:
+  source_url: "https://www.superimmo.com/agence/privas-07000/ardeche-habitat-xpa01/location"
+  observed_at: "2026-09-20"
+  provider_display_count: 21
+  coverage_status: "EXACT_FOR_RENDERED_AGENCY_INDEX_AT_OBSERVATION_TIME"
+  dpe_from_index_page: "NOT_DISPLAYED"
+  offers:
+    - {published: "2026-07-27", commune: "Eclassan", transaction: "location", asset_type: "appartement", typology: "T3", surface_index_m2: 75, surface_description_m2: 75.90, rent_cc_eur: 572, residence: "Le Dominan", address: "40 rue de la Cure", data_quality: "SURFACE_ROUNDING_INDEX_VS_DESCRIPTION"}
+    - {published: "2026-07-23", commune: "Eclassan", transaction: "location", asset_type: "appartement", typology: "T4 duplex", surface_m2: 92, rent_cc_eur: 710, residence: "Le Dominan"}
+    - {published: "2026-07-23", commune: "Sarras", transaction: "location", asset_type: "appartement", typology: "T3", surface_m2: 65, rent_cc_eur: 507, residence: "Peyrouse"}
+    - {published: "2026-07-16", commune: "Andance", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 69, rent_cc_eur: 517, residence: "Les Lauriers"}
+    - {published: "2026-07-02", commune: "Baix", transaction: "location", asset_type: "appartement", typology: "T2", surface_m2: 42, rent_cc_eur: 339.31}
+    - {published: "2026-06-05", commune: "Tournon-sur-Rhône", transaction: "location", asset_type: "appartement", typology: "T3", surface_index_m2: 65, surface_description_m2: 53, rent_cc_eur: 624, address: "Rue du Doux", data_quality: "SOURCE_DIVERGENCE"}
+    - {published: "2026-05-18", commune: "Désaignes", transaction: "location", asset_type: "appartement", typology: "T3", surface_index_m2: 63, surface_description_m2: 66, rent_cc_eur: 495, residence: "La Digue", data_quality: "SOURCE_DIVERGENCE"}
+    - {published: "2026-05-04", commune: "La Voulte-sur-Rhône", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 74, rent_cc_eur: 458}
+    - {published: "2026-03-19", commune: "Tournon-sur-Rhône", transaction: "location", asset_type: "parking", surface_m2: 11, rent_cc_eur: 32, residence: "Grenier à Sel", address: "7 rue du Grenier à Sel"}
+    - {published: "2026-01-23", commune: "Saint-Martin-de-Valamas", transaction: "location", asset_type: "appartement", typology: "T3", surface_m2: 67, rent_cc_eur: 509}
+    - {published: "2026-01-23", commune: "Saint-Cirgues-en-Montagne", transaction: "location", asset_type: "appartement", typology: "T2", surface_m2: 45, rent_cc_eur: 327, dpe_class: "E", ges_class: "F", annual_energy_cost_status: "IN_PROGRESS"}
+    - {published: "2026-01-23", commune: "Cros-de-Géorand", transaction: "location", asset_type: "appartement", typology: "T2", surface_m2: 39, rent_cc_eur: 365}
+    - {published: "2026-01-23", commune: "Cros-de-Géorand", transaction: "location", asset_type: "appartement", typology: "T2", surface_m2: 37, rent_cc_eur: 379}
+    - {published: "2026-01-23", commune: "Cros-de-Géorand", transaction: "location", asset_type: "appartement", typology: "T3", surface_m2: 72, rent_cc_eur: 520, dpe_status: "IN_PROGRESS_DECLARED"}
+    - {published: "2026-01-20", commune: "Berzème", transaction: "location", asset_type: "appartement", typology: "T3", surface_m2: 69, rent_cc_eur: 465}
+    - {published: "2026-01-20", commune: "Berzème", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 97, rent_cc_eur: 638}
+    - {published: "2026-01-20", commune: "Berzème", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 91, rent_cc_eur: 595}
+    - {published: "2026-01-20", commune: "Le Cheylard", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 70, rent_cc_eur: 514, title_floor: "1er étage sans ascenseur", description_floor: "2e étage", data_quality: "SOURCE_DIVERGENCE"}
+    - {published: "2026-01-20", commune: "Le Cheylard", transaction: "location", asset_type: "appartement", typology: "T4", surface_m2: 70, rent_cc_eur: 513, floor: "RDC"}
+    - {published: "2026-01-20", commune: "La Rochette", transaction: "location", asset_type: "appartement", typology: "T3", surface_m2: 57, rent_cc_eur: 474}
+    - {published: "2026-01-20", commune: "Saint-Martin-de-Valamas", transaction: "location", asset_type: "appartement", typology: "T4", surface_index_m2: 78, surface_description_m2: 78.17, rent_cc_eur: 721, data_quality: "SURFACE_ROUNDING_INDEX_VS_DESCRIPTION"}
+
 highlights:
   peyrouse:
     reference: "SARRAS5048"
@@ -253,6 +282,8 @@ highlights:
 sources:
   - name: "Bienveo — page organisme Ardèche Habitat"
     url: "https://www.bienveo.fr/H07105-Commercialisation"
+  - name: "Superimmo — page agence Ardèche Habitat / locations"
+    url: "https://www.superimmo.com/agence/privas-07000/ardeche-habitat-xpa01/location"
   - name: "Superimmo — reprises d'annonces Ardèche Habitat"
     url: "https://www.superimmo.com/"
   - name: "Alentoor — reprises d'annonces Ardèche Habitat"
