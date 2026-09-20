@@ -96,6 +96,10 @@ datasets:
     url: "https://www.data.gouv.fr/datasets/donnees-detaillees-au-logement-du-repertoire-des-logements-locatifs-des-bailleurs-sociaux-rpls"
   - name: "Sitadel — autorisations d'urbanisme"
     url: "https://www.data.gouv.fr/datasets/liste-des-permis-de-construire-et-autres-autorisations-durbanisme"
+  - name: "Registre des copropriétés — vue syndic Ardèche Habitat"
+    url: "https://annuairedescoproprietes.fr/syndic/privas/ardeche-habitat-/27070001600032.html"
+    role: "cross_check_coproperty_identity_address_lots_syndic"
+    caveat: "derived_from_ANAH_registry_and_requires_attribute_level_corroboration_when_values_diverge"
 actor_identity:
   historical_name: "Vivarais Habitat"
   current_name: "Ardèche Habitat"
