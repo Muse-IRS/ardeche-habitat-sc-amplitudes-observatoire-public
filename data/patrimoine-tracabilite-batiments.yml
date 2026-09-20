@@ -1,0 +1,40 @@
+schema_version: "1.0.0"
+artifact_id: "AH-PUBLIC-BUILDING-TRACE-001"
+title: "Traçabilité publique du bâti — deux cas pilotes en Ardèche"
+scope:
+  public_sources_only: true
+  personal_data_included: false
+  purpose: "Documenter ce qui peut être reconstitué sur des actifs immobiliers à partir de sources ouvertes."
+page:
+  source_path: "public/patrimoine-tracabilite-batiments.html"
+  deployed_path: "patrimoine-tracabilite-batiments.html"
+  canonical_url: "https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/patrimoine-tracabilite-batiments.html"
+cases:
+  - id: "AH-PUBLIC-ASSET-001"
+    label: "Le Chemin de l'École 1 — Préaux"
+    construction_year: 2011
+    traceability_focus: "patrimonial_lifecycle"
+    public_sources:
+      - "https://politique.pappers.fr/commune/document/2588083985b39c6e79847a25e3a997d8"
+      - "https://preaux.fr/wp-content/uploads/2020/02/bulletin-preaux-2019.pdf"
+      - "https://preaux.fr/wp-content/uploads/2024/05/CR6-PLU_PREAUX_V2.pdf"
+    unresolved:
+      - "actual_sale_after_2026"
+  - id: "AH-PUBLIC-ASSET-002"
+    label: "Le Pradel — Chassiers"
+    construction_year: 2015
+    delivery: "2016-03"
+    traceability_focus: "technical_identity"
+    public_sources:
+      - "https://www.observatoirebbc.org/1509"
+      - "https://www.pays-beaumedrobie.com/communaute-communes-ardeche/uploads/2019/11/Rendu-PLH-CdC-Pays-Beaume-Drobie.pdf"
+datasets:
+  - name: "RPLS détaillé au logement"
+    url: "https://www.data.gouv.fr/datasets/donnees-detaillees-au-logement-du-repertoire-des-logements-locatifs-des-bailleurs-sociaux-rpls"
+  - name: "Sitadel — autorisations d'urbanisme"
+    url: "https://www.data.gouv.fr/datasets/liste-des-permis-de-construire-et-autres-autorisations-durbanisme"
+deployment:
+  source_branch: "main"
+  deployment_branch: "gh-pages"
+  last_publication_date: "2026-09-20"
+  live_verification: "pending_after_write"
