@@ -38,7 +38,8 @@
 
   <section>
     <h2>Ce que l’outil ne remplace pas</h2>
-    <p>Un HAR ne contient pas nécessairement le contenu de <code>localStorage</code>, <code>sessionStorage</code>, le comportement clavier, le focus, le zoom ou les annonces d’un lecteur d’écran. Ces observations restent séparées et doivent être renseignées manuellement lorsqu’elles sont réellement testées.</p>
+    <p>Un HAR ne contient pas nécessairement le contenu du stockage local du navigateur (<code>localStorage</code> et <code>sessionStorage</code>), ni le comportement clavier, le focus, le zoom ou les annonces d’un lecteur d’écran. Ces observations restent séparées.</p>
+    <p><strong>Important :</strong> le stockage navigateur est un complément facultatif. Si vous ne savez pas le relever, laissez les champs vides plutôt que de copier une donnée sensible.</p>
   </section>
 
   <section id="session-har">
@@ -77,11 +78,46 @@
             <option value="UNKNOWN">Non renseigné</option>
           </select>
 
-          <label for="har-local-storage"><strong>Clés localStorage observées — noms uniquement</strong></label>
-          <textarea id="har-local-storage" data-storage-local rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
+          <div class="notice">
+            <h3>Stockage du navigateur — facultatif</h3>
+            <p>Vous pouvez analyser le HAR sans remplir les deux champs suivants. Ils servent seulement à compléter l'observation si vous avez regardé ce que le site conserve localement dans votre navigateur.</p>
+            <p><strong>Nous attendons uniquement les noms des clés</strong>, par exemple <code>cookie_consent</code>, <code>theme</code> ou <code>analytics_state</code>. Ne copiez jamais la colonne des valeurs, un jeton, un identifiant de session, une adresse e-mail ou du JSON complet.</p>
+          </div>
 
-          <label for="har-session-storage"><strong>Clés sessionStorage observées — noms uniquement</strong></label>
-          <textarea id="har-session-storage" data-storage-session rows="3" placeholder="Une clé par ligne. Ne collez aucune valeur."></textarea>
+          <label for="har-local-storage"><strong>Clés du carnet local (localStorage) — facultatif, noms uniquement</strong></label>
+          <textarea id="har-local-storage" data-storage-local rows="4" placeholder="Exemple :
+cookie_consent
+theme
+analytics_state"></textarea>
+          <p class="small">Une clé par ligne. Si vous ne savez pas où les trouver, laissez ce champ vide : l'analyse HAR fonctionnera quand même.</p>
+
+          <label for="har-session-storage"><strong>Clés de session (sessionStorage) — facultatif, noms uniquement</strong></label>
+          <textarea id="har-session-storage" data-storage-session rows="4" placeholder="Exemple :
+checkout_step
+temporary_notice"></textarea>
+          <p class="small">Même règle : noms seulement, jamais les valeurs.</p>
+
+          <details class="card">
+            <summary><strong>Comment trouver ces noms dans mon navigateur ?</strong></summary>
+            <p>Ouvrez d'abord le <strong>site que vous auditez</strong>, puis utilisez les outils du navigateur. Vous cherchez uniquement la colonne qui contient les noms des clés.</p>
+            <ul>
+              <li><strong>Chrome / Edge / Chromium sur ordinateur :</strong> ouvrez les outils de développement → <em>Application</em> → <em>Storage</em> → <em>Local Storage</em> ou <em>Session Storage</em> → choisissez le domaine du site. Recopiez seulement les noms de la colonne <em>Key</em>.</li>
+              <li><strong>Firefox sur ordinateur :</strong> ouvrez les outils de développement → <em>Stockage</em> → <em>Stockage local</em> ou <em>Stockage de session</em> → choisissez le domaine. Recopiez seulement les noms.</li>
+              <li><strong>Safari sur Mac :</strong> ouvrez l'inspecteur Web depuis le menu de développement, puis la zone de stockage. Recopiez uniquement les noms de clés.</li>
+              <li><strong>iPhone / iPad :</strong> il n'existe pas de chemin simple équivalent directement dans Safari mobile. Vous pouvez laisser ces champs vides. Ils ne sont pas obligatoires.</li>
+            </ul>
+            <p class="small"><strong>À ne pas coller :</strong> la valeur d'un cookie, un contenu ressemblant à <code>eyJ...</code>, une longue chaîne aléatoire, un e-mail, un identifiant personnel, un objet JSON ou toute donnée que vous ne comprenez pas.</p>
+          </details>
+
+          <article class="card">
+            <h3>Voir un exemple sans ouvrir l'inspecteur</h3>
+            <p>Ce bouton affiche uniquement les <strong>noms</strong> des clés de stockage visibles pour cette page. Il permet de comprendre à quoi ressemble un inventaire de stockage.</p>
+            <div class="audit-actions">
+              <button type="button" data-storage-self-inspect>Voir le stockage de cette page</button>
+            </div>
+            <pre data-storage-self-output class="har-json">Aucune lecture locale demandée.</pre>
+            <p class="small">Par sécurité, un site Web ne peut pas lire librement le stockage d'un autre domaine. Cette démonstration concerne donc uniquement la page actuelle, pas le site que vous auditez.</p>
+          </article>
 
           <div class="audit-actions">
             <button type="button" data-har-analyze>Analyser localement</button>
