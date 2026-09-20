@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Vie réelle d’un équipement — traçabilité technique</title>
+  <meta name="description" content="Prototype public de traçabilité du cycle de vie d’un équipement : identité, installation, entretien, panne, mesure, réparation, remplacement, garantie, fin de vie et preuves associées.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/vie-reelle-equipement.html">
+  <link rel="stylesheet" href="assets/styles.css">
+  <style>
+    .table-wrap{overflow-x:auto}.audit-table{width:100%;border-collapse:collapse;background:#fff;font-size:.92rem}.audit-table th,.audit-table td{padding:10px;border:1px solid var(--line);vertical-align:top;text-align:left}.audit-table th{background:#eef3f8}.small{font-size:.9rem;color:var(--muted)}code{white-space:nowrap}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Prototype public · cycle de vie technique</p>
+  <h1>Vie réelle d’un équipement</h1>
+  <p class="lead">Un équipement ne se résume pas à sa présence à une date donnée. Il possède une identité, des états successifs, des interventions, des mesures, des documents et éventuellement une fin de vie.</p>
+  <div class="badges"><span>Identité persistante</span><span>États successifs</span><span>Interventions</span><span>Preuves</span></div>
+</div></header>
+
+<main class="wrap">
+  <section class="notice">
+    <h2>Principe</h2>
+    <pre>BÂTIMENT
+→ LOGEMENT / LOCAL
+→ ÉQUIPEMENT
+→ ÉTAT
+→ INTERVENTION
+→ DOCUMENT
+→ ÉTAT SUIVANT</pre>
+    <p>La règle déterminante est la suivante : <strong>un remplacement crée un nouvel équipement</strong>. L’ancien équipement reste dans l’historique avec sa période d’existence et sa fin de vie.</p>
+    <pre>E1(t0)
+→ entretien
+→ E1(t1)
+→ panne
+→ réparation
+→ E1(t2)
+→ remplacement
+→ E1(fin)
+
+puis
+
+E2(t0)
+→ mise en service
+→ entretien
+→ ...</pre>
+  </section>
+
+  <section>
+    <h2>1 — Identité minimale d’un équipement</h2>
+    <div class="grid three">
+      <article class="card"><h3>Identification</h3><p><code>EQUIPMENT_ID</code>, catégorie, fabricant, modèle, numéro de série lorsqu’il est disponible.</p></article>
+      <article class="card"><h3>Localisation</h3><p>Bâtiment, logement ou local technique, position utile à l’identification physique.</p></article>
+      <article class="card"><h3>Fonction</h3><p>Chauffage, eau chaude sanitaire, ventilation, relevage, assainissement, régulation ou autre fonction technique.</p></article>
+      <article class="card"><h3>Temporalité</h3><p>Date ou période d’installation, mise en service, dernière observation et fin de vie lorsqu’elle est documentée.</p></article>
+      <article class="card"><h3>Responsabilité</h3><p>Propriétaire, exploitant, mainteneur et prestataire intervenant, lorsqu’ils sont publiquement ou contractuellement identifiables.</p></article>
+      <article class="card"><h3>Documents liés</h3><p>Garantie, facture, attestation, rapport d’intervention, certificat, notice, fiche technique, photographie ou autre preuve.</p></article>
+    </div>
+  </section>
+
+  <section>
+    <h2>2 — Les événements qui composent sa vie</h2>
+    <div class="table-wrap"><table class="audit-table">
+      <thead><tr><th>Événement</th><th>Effet sur l’équipement</th><th>Preuve utile</th><th>Règle de traçabilité</th></tr></thead>
+      <tbody>
+        <tr><td><strong>INSTALLATION</strong></td><td>Création de l’existence physique de l’équipement dans le bâtiment.</td><td>Facture, bon de pose, procès-verbal, garantie, fiche de mise en service.</td><td>Crée ou initialise <code>EQUIPMENT_ID</code>.</td></tr>
+        <tr><td><strong>MISE EN SERVICE</strong></td><td>Passage de « posé » à « utilisable ».</td><td>PV ou fiche de mise en service, mesures initiales.</td><td>Ne doit pas être confondue avec la seule date d’achat.</td></tr>
+        <tr><td><strong>ENTRETIEN</strong></td><td>Conserve l’équipement ; ne change normalement pas son identité.</td><td>Attestation, bon d’intervention, rapport de maintenance.</td><td><code>E1 avant = E1 après</code> sauf pièce déterminante remplacée.</td></tr>
+        <tr><td><strong>MESURE / CONTRÔLE</strong></td><td>Produit une observation sur l’état ou la performance.</td><td>Mesures, analyse combustion, débit, température, CO, inspection caméra.</td><td>La mesure doit être rattachée à l’équipement exact et à une date.</td></tr>
+        <tr><td><strong>PANNE / ANOMALIE</strong></td><td>État dégradé ou non-conforme observé.</td><td>Signalement, diagnostic, rapport technique, code défaut.</td><td>Un signalement prouve une déclaration ; le diagnostic qualifie la cause.</td></tr>
+        <tr><td><strong>RÉPARATION</strong></td><td>Modification destinée à restaurer le fonctionnement.</td><td>Bon d’intervention, pièces remplacées, facture, mesures après intervention.</td><td>Conserve l’identité si l’équipement principal reste le même.</td></tr>
+        <tr><td><strong>REMPLACEMENT</strong></td><td>Fin de l’ancien équipement et création d’un nouveau.</td><td>Dépose, facture, bon de pose, garantie, mise en service.</td><td><strong><code>E1 ≠ E2</code></strong>. L’historique de E1 ne doit jamais être réécrit comme s’il concernait E2.</td></tr>
+        <tr><td><strong>MISE HORS SERVICE</strong></td><td>Fin d’exploitation.</td><td>Bon de dépose, rapport, décision technique.</td><td>Clôt l’intervalle d’existence sans effacer les événements antérieurs.</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>3 — État avant / état après</h2>
+    <p>Chaque intervention peut être représentée comme une transition :</p>
+    <pre>STATE_BEFORE
+→ ACTION
+→ OBSERVATION / MEASURE
+→ DOCUMENT
+→ STATE_AFTER</pre>
+    <p>Exemple générique :</p>
+    <pre>EQUIPMENT_ID = BOILER-001
+
+2024-05-14
+STATE_BEFORE : en service
+ACTION       : entretien annuel
+MEASURES     : température fumées / rendement / CO
+DOCUMENT     : attestation entretien
+STATE_AFTER  : en service
+
+2025-02-03
+STATE_BEFORE : panne
+ACTION       : remplacement circulateur
+DOCUMENT     : bon intervention + référence pièce
+STATE_AFTER  : en service
+
+2027-09-01
+ACTION       : remplacement complet
+OLD          : BOILER-001 → FIN
+NEW          : BOILER-002 → INSTALLÉ</pre>
+    <p class="note">Cet exemple est synthétique. Il illustre la structure de données ; il ne décrit aucun logement réel.</p>
+  </section>
+
+  <section>
+    <h2>4 — Ce qui permet d’affirmer qu’il s’agit du même équipement</h2>
+    <div class="grid two">
+      <article class="card observed">
+        <h3>Identifiants forts</h3>
+        <ul>
+          <li>numéro de série ;</li>
+          <li>référence fabricant + modèle + série ;</li>
+          <li>identifiant patrimonial interne lorsqu’il est stable ;</li>
+          <li>photographie de plaque signalétique datée et localisée.</li>
+        </ul>
+      </article>
+      <article class="card">
+        <h3>Identifiants faibles</h3>
+        <ul>
+          <li>« chaudière gaz » sans modèle ;</li>
+          <li>adresse seule ;</li>
+          <li>nom de résidence seul ;</li>
+          <li>marque sans numéro de série ;</li>
+          <li>description générique issue d’un DPE ou d’une annonce.</li>
+        </ul>
+        <p>Ces éléments peuvent aider au rapprochement mais ne suffisent pas toujours à établir l’identité persistante.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
+    <h2>5 — Une divergence devient un événement à résoudre</h2>
+    <pre>DOCUMENT A : équipement = X
+DOCUMENT B : équipement = Y
+
+si X != Y :
+X → ? TRANSITION ? → Y</pre>
+    <p>La divergence ne doit pas être lissée. Elle ouvre une recherche sur la transition : date de remplacement, intervenant, bon de pose, garantie, mise en service ou autre document permettant d’expliquer le passage de X à Y.</p>
+    <p>Cette logique permet notamment de distinguer :</p>
+    <ul>
+      <li>une erreur documentaire ;</li>
+      <li>une mise à jour tardive ;</li>
+      <li>un remplacement réellement intervenu ;</li>
+      <li>une confusion entre équipement individuel et collectif ;</li>
+      <li>une donnée générique utilisée à la place d’une donnée réelle.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>6 — Registre machine-readable</h2>
+    <p>Le registre public associé définit les champs minimaux à conserver pour chaque événement d’équipement : identité, type d’événement, date, état avant/après, prestataire, document, mesure et statut de preuve.</p>
+    <p><a href="data/ardeche-habitat-vie-reelle-equipement-schema.csv"><strong>Consulter le schéma CSV →</strong></a></p>
+  </section>
+
+  <section class="notice">
+    <h2>Frontière</h2>
+    <p>Cette page décrit un modèle public de traçabilité technique. Elle n’identifie aucun locataire et ne publie aucun équipement privé non documenté par une source destinée à publication. Les exemples sont génériques ou synthétiques.</p>
+  </section>
+
+  <p><a href="ardeche-habitat-prestataires-maintenance-technique.html">← Prestataires techniques et attestations</a></p>
+  <p><a href="patrimoine-tracabilite-batiments.html">Voir la traçabilité du bâti →</a></p>
+</main>
+
+<footer><div class="wrap">Muse-IRS · Observatoire public Ardèche Habitat & SC Amplitudes · 2026</div><div class="wrap privacy-links" data-transversal-privacy-nav><a href="information/">Information</a><a href="rgpd/">RGPD</a><a href="privacy.html">Confidentialité</a></div></footer>
+</body>
+</html>
