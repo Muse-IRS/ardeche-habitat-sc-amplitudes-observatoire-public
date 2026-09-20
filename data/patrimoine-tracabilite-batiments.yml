@@ -1,10 +1,11 @@
 schema_version: "1.0.0"
 artifact_id: "AH-PUBLIC-BUILDING-TRACE-001"
-title: "Traçabilité publique du bâti — deux cas pilotes en Ardèche"
+revision: "2026-09-20.2"
+title: "Traçabilité publique du bâti — cas pilotes en Ardèche"
 scope:
   public_sources_only: true
   personal_data_included: false
-  purpose: "Documenter ce qui peut être reconstitué sur des actifs immobiliers à partir de sources ouvertes."
+  purpose: "Documenter ce qui peut être reconstitué sur des actifs immobiliers à partir de sources ouvertes, en conservant les divergences et les inconnues."
 page:
   source_path: "public/patrimoine-tracabilite-batiments.html"
   deployed_path: "patrimoine-tracabilite-batiments.html"
@@ -28,11 +29,78 @@ cases:
     public_sources:
       - "https://www.observatoirebbc.org/1509"
       - "https://www.pays-beaumedrobie.com/communaute-communes-ardeche/uploads/2019/11/Rendu-PLH-CdC-Pays-Beaume-Drobie.pdf"
+  - id: "AH-PUBLIC-ASSET-003"
+    label: "Les Pierres Hautes — Lavilledieu"
+    construction_year:
+      puca_ush: 2000
+      current_coproperty_registry_period: "1975-1993"
+      status: "DIVERGENT"
+    composition:
+      dwellings: 10
+      housing_types: "2 T3, 6 T4, 2 T5"
+      parking_lots_current_registry: 10
+    actor_at_construction: "Vivarais Habitat"
+    current_syndic_publicly_listed: "Ardèche Habitat"
+    public_sources:
+      - "https://www.urbanisme-puca.gouv.fr/IMG/pdf/rapport-habitat-intermediaire-centre-est.pdf"
+      - "https://annuairedescoproprietes.fr/france/auvergne-rhone-alpes/ardeche/lavilledieu/residence-les-pierres-hautes/ai8027930.html"
+    unresolved:
+      - "construction_period_divergence"
+  - id: "AH-PUBLIC-ASSET-004"
+    label: "Cité de Bernaudin — opération 22 logements individuels"
+    location: "Annonay"
+    operation_period: "2009-2010"
+    actor_at_operation: "Vivarais Habitat"
+    traceability_focus: "operation_vs_preexisting_site"
+    public_sources:
+      - "https://www.juliengeometre.fr/portfolio/citee-de-bernaudin-annonay-07100/"
+      - "https://www.archives.developpement-durable.gouv.fr/IMG/pdf/19770828.pdf"
+    unresolved:
+      - "exact_mapping_between_2009_2010_units_and_current_units"
+  - id: "AH-PUBLIC-ASSET-005"
+    label: "Les Mûrets — Bourg-Saint-Andéol"
+    construction_market:
+      object: "Construction de 26 logements individuels"
+      lots_awarded_at: "2008-06-04"
+    actor_at_market: "Vivarais Habitat"
+    completion_year: null
+    public_sources:
+      - "https://www.boamp.fr/telechargements/PDF/2008/MPC20080062/BWP08210041144C.pdf"
+    unresolved:
+      - "delivery_date"
+      - "completion_date"
+  - id: "AH-PUBLIC-ASSET-006"
+    label: "Résidence Peyrouse — Sarras"
+    construction_year: null
+    current_public_address_level: "Route de la Rivière / Route de la Rivière d'Ay, Sarras 07370"
+    traceability_focus: "persistent_identity_and_address_continuity"
+    publicly_observed_characteristics:
+      sample_unit: "T3, 65 m², 3e étage sans ascenseur"
+      heating: "individuel gaz"
+      annexes: "balcon, cave, stationnement extérieur"
+    historical_mapping:
+      plu_2016_sector: "PEYRUSSE"
+      plu_2016_road_label_observed: "d'Ardoix"
+      status: "TO_CORROBORATE"
+    public_sources:
+      - "https://www.bienveo.fr/offre/SARRAS%20TYPE%20III/SARRAS5048"
+      - "https://www.sarras.fr/IMG/pdf/4-1-Reglement_Graphique-_PLU_SARRAS_approbation_27_avril_2016.pdf"
+      - "https://rues.openalfa.fr/rues/route-de-la-riviere-d-ay-07370-sarras-au-moulin-sarras"
+    unresolved:
+      - "exact_completion_year"
+      - "exact_street_number"
+      - "route_d_ardoix_to_route_de_la_riviere_d_ay_documentary_equivalence"
+      - "exact_rpls_row"
 datasets:
   - name: "RPLS détaillé au logement"
     url: "https://www.data.gouv.fr/datasets/donnees-detaillees-au-logement-du-repertoire-des-logements-locatifs-des-bailleurs-sociaux-rpls"
   - name: "Sitadel — autorisations d'urbanisme"
     url: "https://www.data.gouv.fr/datasets/liste-des-permis-de-construire-et-autres-autorisations-durbanisme"
+actor_identity:
+  historical_name: "Vivarais Habitat"
+  current_name: "Ardèche Habitat"
+  change_date: "2015-01-01"
+  source: "https://www.ardechehabitat.fr/qui-sommes-nous/historique-chiffres-cles.html"
 deployment:
   source_branch: "main"
   deployment_branch: "gh-pages"
