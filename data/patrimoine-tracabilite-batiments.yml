@@ -37,4 +37,5 @@ deployment:
   source_branch: "main"
   deployment_branch: "gh-pages"
   last_publication_date: "2026-09-20"
-  live_verification: "pending_after_write"
+  branch_validation: "passed"
+  live_verification: "unknown_from_automated_path"
