@@ -12,6 +12,8 @@
   const phaseInput = root.querySelector("[data-har-phase]");
   const localStorageInput = root.querySelector("[data-storage-local]");
   const sessionStorageInput = root.querySelector("[data-storage-session]");
+  const selfStorageButton = root.querySelector("[data-storage-self-inspect]");
+  const selfStorageOutput = root.querySelector("[data-storage-self-output]");
   const analyzeButton = root.querySelector("[data-har-analyze]");
   const exportButton = root.querySelector("[data-har-export]");
   const clearButton = root.querySelector("[data-har-clear]");
@@ -344,7 +346,43 @@
   function updateManualStates() {
     if (!report) return;
     report.accessibility_manual_observations = a11yState();
+    report.browser_data.local_storage.keys = storageKeyNames(localStorageInput);
+    report.browser_data.session_storage.keys = storageKeyNames(sessionStorageInput);
     jsonNode.textContent = JSON.stringify(report, null, 2);
+  }
+
+  function safeStorageKeys(storage) {
+    const keys = [];
+    try {
+      for (let i = 0; i < storage.length; i += 1) {
+        const raw = String(storage.key(i) || "").trim();
+        if (!raw) continue;
+        if (raw.length > 80) {
+          keys.push("[redacted-long-key]");
+        } else if (raw.includes("@")) {
+          keys.push("[redacted-key]");
+        } else {
+          keys.push(raw);
+        }
+      }
+    } catch {
+      return ["[storage-unavailable]"];
+    }
+    return [...new Set(keys)].sort();
+  }
+
+  function inspectCurrentPageStorage() {
+    if (!selfStorageOutput) return;
+    const localKeys = safeStorageKeys(window.localStorage);
+    const sessionKeys = safeStorageKeys(window.sessionStorage);
+    const snapshot = {
+      scope: "current-page-origin-only",
+      values_read: false,
+      localStorage_key_names: localKeys,
+      sessionStorage_key_names: sessionKeys,
+      explanation: "Cette page ne peut pas lire le stockage d'un autre domaine."
+    };
+    selfStorageOutput.textContent = JSON.stringify(snapshot, null, 2);
   }
 
   async function analyze() {
@@ -417,5 +455,8 @@
   analyzeButton.addEventListener("click", analyze);
   exportButton.addEventListener("click", exportReport);
   clearButton.addEventListener("click", clearSession);
+  if (selfStorageButton) selfStorageButton.addEventListener("click", inspectCurrentPageStorage);
+  if (localStorageInput) localStorageInput.addEventListener("input", updateManualStates);
+  if (sessionStorageInput) sessionStorageInput.addEventListener("input", updateManualStates);
   for (const input of a11yInputs) input.addEventListener("change", updateManualStates);
 })();
