@@ -1,11 +1,14 @@
 schema_version: "1.0.0"
 artifact_id: "AH-PUBLIC-BUILDING-TRACE-001"
-revision: "2026-09-20.2"
+revision: "2026-09-22.1"
 title: "Traçabilité publique du bâti — cas pilotes en Ardèche"
 scope:
   public_sources_only: true
   personal_data_included: false
   purpose: "Documenter ce qui peut être reconstitué sur des actifs immobiliers à partir de sources ouvertes, en conservant les divergences et les inconnues."
+  parcel_traceability_enabled: true
+  person_reidentification_prohibited: true
+  mutation_value_rule: "building != parcel != mutation != building_value"
 page:
   source_path: "public/patrimoine-tracabilite-batiments.html"
   deployed_path: "patrimoine-tracabilite-batiments.html"
@@ -91,7 +94,29 @@ cases:
       - "exact_street_number"
       - "route_d_ardoix_to_route_de_la_riviere_d_ay_documentary_equivalence"
       - "exact_rpls_row"
+mutation_qualification:
+  statuses:
+    - "MUTATION_SIMPLE"
+    - "MUTATION_COMPLEXE"
+    - "NON_RATTACHE"
+  rules:
+    - "No automatic price_per_m2 derivation without prior mutation qualification."
+    - "A cadastral match does not establish owner or occupant identity."
+    - "Unresolved parcel-to-building relations remain explicitly indeterminate."
 datasets:
+  - name: "Demandes de valeurs foncières (DVF)"
+    url: "https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres"
+    role: "notarial_and_cadastral_mutation_source"
+    caveat: "reuse_must_not_enable_indirect_reidentification"
+  - name: "DVF+ open-data"
+    url: "https://www.data.gouv.fr/datasets/dvf-open-data"
+    role: "geolocated_mutation_analysis"
+  - name: "API données foncières"
+    url: "https://www.data.gouv.fr/dataservices/api-donnees-foncieres"
+    role: "mutation_and_geomutation_queries_by_commune_or_extent"
+  - name: "Plan cadastral / documentation DVF"
+    url: "https://cadastre.data.gouv.fr/dvf"
+    role: "parcel_reference_and_spatial_linkage"
   - name: "RPLS détaillé au logement"
     url: "https://www.data.gouv.fr/datasets/donnees-detaillees-au-logement-du-repertoire-des-logements-locatifs-des-bailleurs-sociaux-rpls"
   - name: "Sitadel — autorisations d'urbanisme"
@@ -108,6 +133,6 @@ actor_identity:
 deployment:
   source_branch: "main"
   deployment_branch: "gh-pages"
-  last_publication_date: "2026-09-20"
+  last_publication_date: "2026-09-22"
   branch_validation: "passed"
   live_verification: "unknown_from_automated_path"
