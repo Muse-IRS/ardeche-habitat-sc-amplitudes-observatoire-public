@@ -110,6 +110,33 @@
   </section>
 
   <section>
+    <h2>Du bâtiment à la parcelle — conserver un invariant spatial</h2>
+    <article class="card observed">
+      <p>Lorsque le nom d’une résidence, une voie ou une adresse évolue, la parcelle cadastrale peut fournir un repère spatial plus stable. Elle ne remplace pas l’identité documentaire du bâtiment&nbsp;: elle sert à relier des états successifs sans supposer que deux libellés différents désignent nécessairement le même objet.</p>
+      <div class="formula"><span>ancienne adresse</span><span>→</span><span>parcelle</span><span>→</span><span>bâtiment</span><span>→</span><span>adresse actuelle</span></div>
+      <p><strong>Règle de qualification&nbsp;:</strong> une correspondance parcellaire n’est publiée comme établie que si les références cadastrales et la géométrie permettent un rattachement suffisamment précis. Sinon, la relation reste <strong>INDÉTERMINÉE</strong>.</p>
+      <p class="note"><strong>Limite RGPD&nbsp;:</strong> cette couche décrit des actifs immobiliers. Elle n’a pas pour objet de rechercher, publier ou reconstruire l’identité de propriétaires, vendeurs, acquéreurs ou occupants.</p>
+    </article>
+  </section>
+
+  <section>
+    <h2>Mutations foncières — ce que DVF permet réellement d’établir</h2>
+    <div class="grid two">
+      <article class="card">
+        <h3>DVF / DVF+</h3>
+        <p>La base Demandes de valeurs foncières publie les transactions immobilières issues des actes notariés et des informations cadastrales. DVF+ les restructure sous forme géolocalisée afin de faciliter l’analyse des mutations.</p>
+        <p>Ces données permettent notamment de documenter une date de mutation, une valeur foncière, une nature de bien et les parcelles associées, puis de confronter ces événements à la chronologie du bâtiment.</p>
+      </article>
+      <article class="card">
+        <h3>Ne pas confondre mutation et prix du bâtiment</h3>
+        <div class="formula"><span>bâtiment</span><span>≠</span><span>parcelle</span><span>≠</span><span>mutation</span><span>≠</span><span>valeur du bâtiment</span></div>
+        <p>Une mutation peut regrouper plusieurs parcelles, locaux ou dépendances. La valeur foncière porte alors sur l’ensemble de la transaction. Un prix au mètre carré ne doit donc pas être calculé automatiquement sans qualification préalable.</p>
+        <p><strong>Trois états sont conservés&nbsp;:</strong> MUTATION_SIMPLE, MUTATION_COMPLEXE et NON_RATTACHÉ.</p>
+      </article>
+    </div>
+  </section>
+
+  <section>
     <h2>Les bases publiques qui permettent d’aller plus loin</h2>
     <div class="grid two">
       <article class="card">
@@ -146,7 +173,7 @@
       <li><a href="https://www.observatoirebbc.org/1509" rel="noopener">Observatoire BBC — Le Pradel, Vivarais Habitat</a></li>
       <li><a href="https://www.pays-beaumedrobie.com/communaute-communes-ardeche/uploads/2019/11/Rendu-PLH-CdC-Pays-Beaume-Drobie.pdf" rel="noopener">Pays Beaume-Drobie — document habitat citant l’écoquartier Le Pradel</a></li>
       <li><a href="https://www.data.gouv.fr/datasets/donnees-detaillees-au-logement-du-repertoire-des-logements-locatifs-des-bailleurs-sociaux-rpls" rel="noopener">data.gouv.fr — données détaillées RPLS</a></li>
-      <li><a href="https://www.data.gouv.fr/datasets/liste-des-permis-de-construire-et-autres-autorisations-durbanisme" rel="noopener">data.gouv.fr — autorisations d’urbanisme Sitadel</a></li>
+      <li><a href="https://www.data.gouv.fr/datasets/liste-des-permis-de-construire-et-autres-autorisations-durbanisme" rel="noopener">data.gouv.fr — autorisations d’urbanisme Sitadel</a></li>\n      <li><a href="https://www.data.gouv.fr/datasets/demandes-de-valeurs-foncieres" rel="noopener">DGFiP / data.gouv.fr — Demandes de valeurs foncières (DVF)</a></li>\n      <li><a href="https://www.data.gouv.fr/datasets/dvf-open-data" rel="noopener">Cerema / DGALN — DVF+ open-data</a></li>\n      <li><a href="https://www.data.gouv.fr/dataservices/api-donnees-foncieres" rel="noopener">Cerema — API données foncières</a></li>\n      <li><a href="https://cadastre.data.gouv.fr/dvf" rel="noopener">Etalab / DGFiP — référentiel cadastral et documentation DVF</a></li>
       <li><a href="https://www.urbanisme-puca.gouv.fr/IMG/pdf/rapport-habitat-intermediaire-centre-est.pdf" rel="noopener">PUCA / Union Sociale pour l’Habitat — habitat intermédiaire en Centre-Est, Les Pierres Hautes</a></li>
       <li><a href="https://annuairedescoproprietes.fr/france/auvergne-rhone-alpes/ardeche/lavilledieu/residence-les-pierres-hautes/ai8027930.html" rel="noopener">Registre national des copropriétés repris publiquement — Résidence Les Pierres Hautes</a></li>
       <li><a href="https://www.juliengeometre.fr/portfolio/citee-de-bernaudin-annonay-07100/" rel="noopener">Julien &amp; Associés — opération Cité de Bernaudin 2009–2010</a></li>
