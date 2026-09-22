@@ -40,7 +40,7 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 - **Matrice intervention → attestation / preuve** : `public/data/ardeche-habitat-interventions-attestations.csv`
 - **Vie réelle d’un équipement — cycle de vie technique** : `public/vie-reelle-equipement.html`
 - **Schéma public équipement / événements** : `public/data/ardeche-habitat-vie-reelle-equipement-schema.csv`
-- **Traçabilité publique du bâti — cas pilotes 2000–2015 + Résidence Peyrouse** : `public/patrimoine-tracabilite-batiments.html`
+- **Traçabilité publique du bâti — cas pilotes 2000–2015 + Résidence Peyrouse + couche parcellaire/DVF** : `public/patrimoine-tracabilite-batiments.html`
 - **Manifeste public de cette page** : `public/data/patrimoine-tracabilite-batiments.yml`
 - **Offres Ardèche Habitat — DPE, GES et qualité des données** : `public/ardeche-habitat-offres-logements-dpe.html`
 - **Manifeste public des offres / DPE** : `public/data/ardeche-habitat-offres-logements-dpe.yml`
