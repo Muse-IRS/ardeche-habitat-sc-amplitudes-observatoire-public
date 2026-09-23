@@ -28,6 +28,12 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 - **Notice de confidentialité** : `public/privacy.html`
 - **État machine-readable de confidentialité** : `public/data/privacy-audit.json`
 
+## Affiche QR — diffusion imprimable
+
+- Page A4 autonome : `public/affiche-qr-observatoire.html` ;
+- PDF A4 téléchargeable, QR vectoriel : `public/assets/affiche-qr-observatoire-a4.pdf` ;
+- QR code relié directement à l’accueil GitHub Pages ; fichier indépendant des services tiers, sans suivi ni données personnelles.
+
 ## Pages publiques spécialisées
 
 - **Audit technique du site Ardèche Habitat — refonte 2026** : `public/ardeche-habitat-audit-site-web-2026.html`
