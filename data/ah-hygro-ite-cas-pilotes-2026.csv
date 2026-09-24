@@ -1,0 +1,4 @@
+case_id,operation,commune,scope,construction_period,documented_works,old_iti_state,exterior_insulation,diagnostic_before_publicly_identified,works_status,subsequent_disorders_publicly_documented,source_refs,conclusion
+GRA-001,Le Granouly,Le Pouzin,64 logements / 3 bâtiments,1980,ITE laine de roche et VMC hygroréglable A,UNKNOWN,ITE_CONFIRMED_BY_DESIGN_TEAM,NO,RECEPTION_REPORTED_2020-10,NO,HY-SRC-001;HY-SRC-006,INDETERMINATE
+VIO-001,La Violette,Le Teil,102 logements / 8 bâtiments,milieu XXe siècle,bardage ventilé et nouvelle ITI,UNKNOWN,EXTERNAL_INSULATION_NOT_CONFIRMED,NO,COMPLETION_REPORTED_2018,NO,HY-SRC-002;HY-SRC-006,INDETERMINATE
+BER-001,Cité Bernaudin,Annonay,212 logements,NOT_VERIFIED_ALL_BUILDINGS,marchés façades et chauffage VMC,UNKNOWN,EXTERNAL_INSULATION_SYSTEM_UNKNOWN,NO,AWARDED_2026_NOT_RECEPTION,NO,HY-SRC-003;HY-SRC-004;HY-SRC-005,INDETERMINATE

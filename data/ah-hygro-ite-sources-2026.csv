@@ -1,0 +1,8 @@
+source_id,title,source_type,date,consulted_on,url,qualification
+HY-SRC-001,NEPSEN étude de cas Le Granouly,professional_project_team,undated,2026-09-24,https://nepsen.fr/project/renovation-de-logements-sociaux-collectifs/,Works and performance self-described by project team
+HY-SRC-002,Batiweb communiqué La Violette,publiredactionnel,2018-09-03,2026-09-24,https://www.batiweb.com/actualites/publi-redactionnels/une-transformation-radicale-pour-la-residence-la-violette-33109,Manufacturer-linked communication not independent audit
+HY-SRC-003,TED notice 212039-2026,official_procurement,2026-03-27,2026-09-24,https://ted.europa.eu/fr/notice/-/detail/212039-2026,Award does not establish works completion
+HY-SRC-004,TED notice 278867-2026,official_procurement,2026-04-21,2026-09-24,https://ted.europa.eu/fr/notice/-/detail/278867-2026,Relisted and awarded sixth lot
+HY-SRC-005,Akkel notice Bernaudin,secondary_procurement,2026-03-27,2026-09-24,https://www.akkel.fr/appel-offre/2026-ted212039-annonay-residence-bernaudin-212,Cross-check TED source
+HY-SRC-006,Cerema HUMIBATEX,technical_institutional,2017-04-04,2026-09-24,https://www.cerema.fr/fr/actualites/projet-humibatex-comment-predire-desordres-causes-humidite,Generic humidity risk methodology
+HY-SRC-007,Cerema CREBA renovation of old buildings,technical_institutional,2024,2026-09-24,https://www.cerema.fr/fr/actualites/rehabilitation-energetique-batiments-anciens-nouvelle,Old buildings not automatically representative of three sites
