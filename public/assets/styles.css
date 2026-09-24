@@ -4,3 +4,6 @@
 .audit-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin:.5rem 0 1rem}.audit-actions button{padding:.7rem .9rem;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer;font-weight:650}.audit-actions button:disabled{opacity:.55;cursor:not-allowed}
 .audit-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.7rem;margin:1rem 0}.audit-summary .metric{border:1px solid var(--line);border-radius:10px;padding:.8rem;background:#fff}.audit-summary .metric strong{display:block;font-size:1.3rem}
 .har-json{max-height:32rem;overflow:auto;white-space:pre-wrap;word-break:break-word}.har-checklist select{margin:0;min-width:14rem}
+
+/* Navigation entre les deux observatoires indépendants */
+.observatory-switch{margin:22px 0 0}.observatory-switch a{display:inline-flex;align-items:center;padding:11px 16px;border-radius:8px;background:#173e30;color:#fff;text-decoration:none;font-weight:700}.observatory-switch a:focus-visible{outline:3px solid #267453;outline-offset:3px}.observatory-switch a:hover{background:#267453}
