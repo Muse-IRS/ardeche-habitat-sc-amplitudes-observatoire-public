@@ -1,4 +1,4 @@
-export const DPE_ADEME_CORE_VERSION = '1.0.0';
+export const DPE_ADEME_CORE_VERSION = '1.0.1';
 export const DPE_ADEME_CONTRACT = 'DPE_ADEME_CORE_V1';
 
 export const DPE_PATTERN = /^[0-9A-Z]{13}$/;
@@ -66,8 +66,14 @@ export function isHistoricalDataset(dataset) {
   return dataset?.generation === 'historical' || dataset?.id === 'dpe-france';
 }
 
-export function electricityFactorForDate(value) {
-  const raw = value ? String(value).slice(0, 10) : '1970-01-01';
+function normalizeIsoDate(value) {
+  const raw = String(value ?? '').slice(0, 10);
+  return /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : null;
+}
+
+export function electricityFactorForDate(value, referenceDateValue) {
+  const raw = normalizeIsoDate(value) ?? normalizeIsoDate(referenceDateValue);
+  if (!raw) return null;
   if (raw >= '2027-01-01') return 1.7;
   if (raw >= '2026-01-01') return 1.9;
   return 2.3;
