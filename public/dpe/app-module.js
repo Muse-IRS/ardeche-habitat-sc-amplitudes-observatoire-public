@@ -24,6 +24,9 @@ import {
   OPEN_DATASET_URL,
   extractDiagnosticianContext,
 } from '../assets/diagnostician-cert/core.js'
+import {
+  findDiagnosticianCertifications,
+} from '../assets/diagnostician-cert/tabular-client.js'
 
 const form = document.querySelector('#dpe-form')
 const input = document.querySelector('#dpe-number')
@@ -50,6 +53,7 @@ const diagnosticianDatasetLink = document.querySelector('#dpe-diagnostician-data
 
 const referenceDate = new Date().toISOString().slice(0, 10)
 const metadataClient = createMetadataClient()
+let diagnosticianLookupSequence = 0
 
 function formatSurface(value) {
   if (!hasValue(value)) return null
@@ -310,9 +314,10 @@ function renderCalculation(row, dataset) {
   calculationPanel.hidden = false
 }
 
-function renderDiagnostician(row) {
+async function renderDiagnostician(row) {
   if (!diagnosticianPanel || !diagnosticianSummary || !diagnosticianStatus) return
 
+  const lookupSequence = ++diagnosticianLookupSequence
   const context = extractDiagnosticianContext(row)
   diagnosticianSummary.innerHTML = ''
 
@@ -320,7 +325,7 @@ function renderDiagnostician(row) {
   addDefinition(diagnosticianSummary, 'Numéro de certification publié', context.certificateNumber)
   addDefinition(
     diagnosticianSummary,
-    'Date à contrôler dans l’annuaire',
+    'Date du DPE contrôlée',
     formatIsoDateFr(context.diagnosticDate),
     context.diagnosticDate ? 'date de visite prioritaire, sinon date d’établissement du DPE' : ''
   )
@@ -334,18 +339,87 @@ function renderDiagnostician(row) {
   if (diagnosticianDirectoryLink) diagnosticianDirectoryLink.href = OFFICIAL_DIRECTORY_URL
   if (diagnosticianDatasetLink) diagnosticianDatasetLink.href = OPEN_DATASET_URL
 
-  if (context.certificateNumber) {
+  diagnosticianPanel.hidden = false
+
+  if (!context.certificateNumber && !context.fullName) {
     diagnosticianStatus.textContent =
-      'Numéro de certification détecté dans la ligne ADEME. Ouvrir l’annuaire officiel, rechercher ce numéro et contrôler le domaine « Performance énergétique (DPE individuel) » à la date indiquée.'
-  } else if (context.fullName) {
-    diagnosticianStatus.textContent =
-      'Le nom du diagnostiqueur est disponible, mais aucun numéro de certification exploitable n’est exposé dans cette ligne ADEME. Rechercher le diagnostiqueur par nom dans l’annuaire officiel ou relever le numéro sur le DPE.'
-  } else {
-    diagnosticianStatus.textContent =
-      'La vue Open Data ADEME interrogée ne fournit pas ici d’identifiant de certification directement exploitable. Utiliser le nom et le numéro inscrits sur le DPE pour effectuer la vérification dans l’annuaire officiel.'
+      'La ligne ADEME ne contient pas assez d’information pour lancer automatiquement la recherche du certificat. Le contrôle manuel reste disponible en source secondaire.'
+    return
   }
 
-  diagnosticianPanel.hidden = false
+  diagnosticianStatus.textContent =
+    'Recherche automatique du certificat dans l’API tabulaire data.gouv.fr…'
+
+  try {
+    const found = await findDiagnosticianCertifications({
+      certificateNumber: context.certificateNumber,
+      fullName: context.fullName,
+      diagnosticDate: context.diagnosticDate,
+      referenceDate,
+    })
+
+    if (lookupSequence !== diagnosticianLookupSequence) return
+
+    if (!found.records.length) {
+      diagnosticianStatus.textContent =
+        found.matchMode === 'certificate'
+          ? 'Aucune certification DPE correspondante n’a été retrouvée automatiquement pour ce numéro dans la ressource tabulaire interrogée. Le contrôle manuel reste disponible en source secondaire.'
+          : 'Aucune certification DPE correspondante n’a été retrouvée automatiquement par nom dans la ressource tabulaire interrogée. Le contrôle manuel reste disponible en source secondaire.'
+      return
+    }
+
+    const certification = found.records[0]
+    addDefinition(diagnosticianSummary, 'Diagnostiqueur dans l’annuaire national', certification.fullName)
+    addDefinition(diagnosticianSummary, 'Organisme certificateur', certification.certificationBody)
+    addDefinition(diagnosticianSummary, 'Code organisme', certification.certificationBodyCode)
+    addDefinition(diagnosticianSummary, 'Domaine certifié', certification.domain)
+    addDefinition(diagnosticianSummary, 'N° de certificat — annuaire', certification.certificateNumber)
+    addDefinition(diagnosticianSummary, 'Début de validité', formatIsoDateFr(certification.validFrom))
+    addDefinition(diagnosticianSummary, 'Fin de validité', formatIsoDateFr(certification.validUntil))
+    addDefinition(
+      diagnosticianSummary,
+      'Valide à la date du DPE',
+      certification.validOnDiagnosticDate === true
+        ? 'OUI'
+        : certification.validOnDiagnosticDate === false
+          ? 'NON'
+          : 'INDÉTERMINÉ'
+    )
+    addDefinition(
+      diagnosticianSummary,
+      'Valide au jour de consultation',
+      certification.validToday === true
+        ? 'OUI'
+        : certification.validToday === false
+          ? 'NON'
+          : 'INDÉTERMINÉ'
+    )
+    addDefinition(
+      diagnosticianSummary,
+      'Mode de rapprochement',
+      found.matchMode === 'certificate' ? 'Numéro de certificat' : 'Nom du diagnostiqueur'
+    )
+
+    if (certification.validOnDiagnosticDate === true) {
+      diagnosticianStatus.textContent =
+        'Certification DPE retrouvée automatiquement : la période publiée couvre la date du diagnostic. Cette vérification porte sur l’habilitation professionnelle, pas sur l’exactitude technique du DPE.'
+    } else if (certification.validOnDiagnosticDate === false) {
+      diagnosticianStatus.textContent =
+        'Certification DPE retrouvée automatiquement, mais la période publiée ne couvre pas la date du diagnostic. Vérifier la chronologie et la fiche officielle avant toute conclusion.'
+    } else {
+      diagnosticianStatus.textContent =
+        'Certification DPE retrouvée automatiquement, mais les dates disponibles ne permettent pas de conclure sur sa validité à la date du diagnostic.'
+    }
+
+    if (found.records.length > 1) {
+      diagnosticianStatus.textContent += ` ${found.records.length} lignes DPE pertinentes ont été retrouvées ; la ligne affichée en priorité est celle qui couvre la date du diagnostic lorsqu’elle existe.`
+    }
+  } catch (error) {
+    console.error(error)
+    if (lookupSequence !== diagnosticianLookupSequence) return
+    diagnosticianStatus.textContent =
+      'L’API tabulaire data.gouv.fr ne répond pas actuellement. Le DPE reste affiché et le contrôle manuel de la source officielle reste disponible.'
+  }
 }
 
 function schemaLabel(field) {
@@ -445,6 +519,7 @@ function resetExtendedViews() {
   if (diagnosticianPanel) diagnosticianPanel.hidden = true
   if (diagnosticianSummary) diagnosticianSummary.innerHTML = ''
   if (diagnosticianStatus) diagnosticianStatus.textContent = ''
+  diagnosticianLookupSequence += 1
 }
 
 function render(found, number) {
