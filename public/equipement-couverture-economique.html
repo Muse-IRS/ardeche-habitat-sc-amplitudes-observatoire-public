@@ -18,10 +18,10 @@
   <p class="eyebrow">Outil public · calcul local · équipement</p>
   <h1>Couverture économique d’un équipement</h1>
   <p class="lead">Mesurer quelle fraction des loyers cumulés serait nécessaire pour couvrir le coût initial d’un équipement, sans confondre ce résultat avec l’amortissement comptable, le remboursement d’un emprunt ou le bénéfice net du bailleur.</p>
-  <div class="badges"><span>Compteur à aiguille</span><span>Calcul transparent</span><span>Aucune donnée envoyée</span><span>Scénario ≠ comptabilité</span></div>
+  <div class="badges"><span>Compteur à aiguille</span><span>Calcul transparent</span><span>Aucune donnée envoyée</span><span>EEC_CORE_V1</span></div>
 </div></header>
 
-<main class="wrap">
+<main class="wrap" data-eec-calculator>
   <section class="notice">
     <h2>Ce que mesure l’aiguille</h2>
     <p><strong>Taux de couverture du coût initial</strong> = montant analytique des loyers affecté à l’équipement ÷ coût initial total.</p>
@@ -35,18 +35,18 @@
     <article class="card">
       <p class="eyebrow">Entrées du scénario</p>
       <h2>Renseigner les données</h2>
-      <form id="coverage-form">
+      <form id="coverage-form" data-eec-form>
         <div class="form-grid">
-          <div class="field"><label for="cost">Coût initial unitaire (€)</label><input id="cost" type="number" min="0.01" step="0.01" required placeholder="4000"><small>Facture réelle si connue, sinon estimation clairement identifiée.</small></div>
-          <div class="field"><label for="units">Nombre d’équipements</label><input id="units" type="number" min="1" step="1" required placeholder="1"></div>
-          <div class="field"><label for="rent">Loyer mensuel hors charges (€)</label><input id="rent" type="number" min="0" step="0.01" required placeholder="450"><small>Le calcul n’ajoute pas les charges au loyer.</small></div>
-          <div class="field"><label for="years">Durée observée (années)</label><input id="years" type="number" min="0.01" step="0.01" required placeholder="15"></div>
-          <div class="field"><label for="vacancy">Vacance / non-encaissement (%)</label><input id="vacancy" type="number" min="0" max="100" step="0.1" value="0"></div>
-          <div class="field"><label for="allocation">Part des loyers affectée à l’équipement (%)</label><input id="allocation" type="number" min="0" max="100" step="0.1" required value="5"></div>
-          <div class="field"><label for="cost-status">Statut du coût</label><select id="cost-status"><option value="estimate">Estimé / scénario</option><option value="documented">Documenté</option></select></div>
-          <div class="field"><label for="rent-status">Statut du loyer</label><select id="rent-status"><option value="scenario">Scénario constant</option><option value="documented">Historique documenté</option></select></div>
+          <div class="field"><label for="cost">Coût initial unitaire (€)</label><input id="cost" data-eec-input="equipmentCostUnit" type="number" min="0.01" step="0.01" required placeholder="4000"><small>Facture réelle si connue, sinon estimation clairement identifiée.</small></div>
+          <div class="field"><label for="units">Nombre d’équipements</label><input id="units" data-eec-input="units" type="number" min="1" step="1" required placeholder="1"></div>
+          <div class="field"><label for="rent">Loyer mensuel hors charges (€)</label><input id="rent" data-eec-input="monthlyRent" type="number" min="0" step="0.01" required placeholder="450"><small>Le calcul n’ajoute pas les charges au loyer.</small></div>
+          <div class="field"><label for="years">Durée observée (années)</label><input id="years" data-eec-input="years" type="number" min="0.01" step="0.01" required placeholder="15"></div>
+          <div class="field"><label for="vacancy">Vacance / non-encaissement (%)</label><input id="vacancy" data-eec-input="vacancyRate" type="number" min="0" max="100" step="0.1" value="0"></div>
+          <div class="field"><label for="allocation">Part des loyers affectée à l’équipement (%)</label><input id="allocation" data-eec-input="allocationRate" type="number" min="0" max="100" step="0.1" required value="5"></div>
+          <div class="field"><label for="cost-status">Statut du coût</label><select id="cost-status" data-eec-input="costStatus"><option value="estimate">Estimé / scénario</option><option value="documented">Documenté</option></select></div>
+          <div class="field"><label for="rent-status">Statut du loyer</label><select id="rent-status" data-eec-input="rentStatus"><option value="scenario">Scénario constant</option><option value="documented">Historique documenté</option></select></div>
         </div>
-        <div class="actions"><button type="submit">Calculer</button><button class="secondary" id="example" type="button">Charger un exemple synthétique</button><button class="secondary" id="reset" type="reset">Réinitialiser</button></div>
+        <div class="actions"><button type="submit">Calculer</button><button class="secondary" data-eec-action="example" type="button">Charger un exemple synthétique</button><button class="secondary" data-eec-action="reset" type="reset">Réinitialiser</button></div>
       </form>
       <p class="local-note">Le calcul est effectué uniquement dans votre navigateur. Les valeurs saisies ne sont ni envoyées ni enregistrées par cet outil.</p>
     </article>
@@ -58,25 +58,25 @@
         <path class="arc low" d="M30 150 A120 120 0 0 1 90 46.08"/>
         <path class="arc mid" d="M90 46.08 A120 120 0 0 1 210 46.08"/>
         <path class="arc high" d="M210 46.08 A120 120 0 0 1 270 150"/>
-        <line id="needle" class="needle" x1="150" y1="150" x2="150" y2="55" style="transform:rotate(-90deg)"/>
+        <line class="needle" data-eec-needle x1="150" y1="150" x2="150" y2="55" style="transform:rotate(-90deg)"/>
         <circle class="hub" cx="150" cy="150" r="8"/>
         <text x="21" y="174">0 %</text><text x="73" y="35">50 %</text><text x="194" y="35">100 %</text><text x="252" y="174">150 %</text>
       </svg>
-      <div id="gauge-value" class="gauge-value">—</div>
-      <div id="gauge-status" class="gauge-status">Aucun calcul</div>
-      <span id="epistemic" class="epistemic">SCÉNARIO NON CALCULÉ</span>
+      <div class="gauge-value" data-eec-output="coverageRate">—</div>
+      <div class="gauge-status" data-eec-status>Aucun calcul</div>
+      <span class="epistemic" data-eec-epistemic>SCÉNARIO NON CALCULÉ</span>
     </article>
   </section>
 
-  <section id="results" hidden>
+  <section data-eec-results hidden>
     <h2>Résultats</h2>
     <div class="result-grid">
-      <div class="metric">Loyers cumulés corrigés<strong id="rent-total">—</strong></div>
-      <div class="metric">Coût initial total<strong id="capex-total">—</strong></div>
-      <div class="metric">Montant affecté à l’équipement<strong id="allocated">—</strong></div>
-      <div class="metric">Part des loyers nécessaire<strong id="required-share">—</strong></div>
-      <div class="metric">Reste théorique à couvrir<strong id="remaining">—</strong></div>
-      <div class="metric">Dépassement du seul coût initial<strong id="excess">—</strong></div>
+      <div class="metric">Loyers cumulés corrigés<strong data-eec-output="rentTotal">—</strong></div>
+      <div class="metric">Coût initial total<strong data-eec-output="capexTotal">—</strong></div>
+      <div class="metric">Montant affecté à l’équipement<strong data-eec-output="allocatedAmount">—</strong></div>
+      <div class="metric">Part des loyers nécessaire<strong data-eec-output="requiredShare">—</strong></div>
+      <div class="metric">Reste théorique à couvrir<strong data-eec-output="remainingAmount">—</strong></div>
+      <div class="metric">Dépassement du seul coût initial<strong data-eec-output="excessAmount">—</strong></div>
     </div>
     <div class="notice warning">
       <h3>Résultat net du bailleur : indéterminé</h3>
@@ -104,46 +104,9 @@
 </main>
 
 <footer><div class="wrap">Muse-IRS · Observatoire public Ardèche Habitat & SC Amplitudes · 2026</div><div class="wrap privacy-links" data-transversal-privacy-nav><a href="information/">Information</a><a href="rgpd/">RGPD</a><a href="privacy.html">Confidentialité</a><a href="charte-editoriale.html" data-editorial-charter>Charte éditoriale</a></div></footer>
-<script>
-(() => {
-  const form = document.getElementById('coverage-form');
-  const needle = document.getElementById('needle');
-  const valueEl = document.getElementById('gauge-value');
-  const statusEl = document.getElementById('gauge-status');
-  const epistemicEl = document.getElementById('epistemic');
-  const results = document.getElementById('results');
-  const money = new Intl.NumberFormat('fr-FR',{style:'currency',currency:'EUR',maximumFractionDigits:2});
-  const pct = new Intl.NumberFormat('fr-FR',{maximumFractionDigits:1});
-  const n = id => Number(document.getElementById(id).value);
-  const set = (id,text) => document.getElementById(id).textContent = text;
-
-  function resetGauge(){needle.style.transform='rotate(-90deg)';valueEl.textContent='—';statusEl.textContent='Aucun calcul';epistemicEl.textContent='SCÉNARIO NON CALCULÉ';results.hidden=true;}
-
-  form.addEventListener('submit', event => {
-    event.preventDefault();
-    const cost=n('cost'), units=n('units'), rent=n('rent'), years=n('years'), vacancy=n('vacancy'), allocation=n('allocation');
-    if(!(cost>0) || !(units>=1) || !(rent>=0) || !(years>0) || vacancy<0 || vacancy>100 || allocation<0 || allocation>100){statusEl.textContent='Vérifier les valeurs saisies.';return;}
-    const R=units*rent*12*years*(1-vacancy/100);
-    const capex=units*cost;
-    const allocated=R*(allocation/100);
-    const coverage=capex>0 ? allocated/capex*100 : 0;
-    const required=R>0 ? capex/R*100 : Infinity;
-    const remaining=Math.max(capex-allocated,0);
-    const excess=Math.max(allocated-capex,0);
-    const clamped=Math.min(Math.max(coverage,0),150);
-    const angle=-90+(clamped/150)*180;
-    needle.style.transform=`rotate(${angle}deg)`;
-    valueEl.textContent=`${pct.format(coverage)} %`;
-    statusEl.textContent=coverage>=100?'Seuil du coût initial atteint selon ces données':coverage>=50?'Couverture en cours selon ces données':'Coût initial faiblement couvert selon ces données';
-    const documented=document.getElementById('cost-status').value==='documented' && document.getElementById('rent-status').value==='documented';
-    epistemicEl.textContent=documented?'DONNÉES DÉCLARÉES DOCUMENTÉES · CALCUL ARITHMÉTIQUE':'SCÉNARIO / ESTIMATION';
-    set('rent-total',money.format(R));set('capex-total',money.format(capex));set('allocated',money.format(allocated));set('required-share',Number.isFinite(required)?`${pct.format(required)} %`:'Indéterminable');set('remaining',money.format(remaining));set('excess',money.format(excess));
-    results.hidden=false;
-  });
-
-  document.getElementById('example').addEventListener('click',()=>{document.getElementById('cost').value='3500';document.getElementById('units').value='1';document.getElementById('rent').value='500';document.getElementById('years').value='15';document.getElementById('vacancy').value='5';document.getElementById('allocation').value='5';document.getElementById('cost-status').value='estimate';document.getElementById('rent-status').value='scenario';form.requestSubmit();});
-  document.getElementById('reset').addEventListener('click',()=>setTimeout(resetGauge,0));
-})();
+<script type="module">
+  import { autoBindEquipmentCoverageCalculators } from './assets/equipment-economic-coverage/browser-adapter.js';
+  autoBindEquipmentCoverageCalculators();
 </script>
 </body>
 </html>
