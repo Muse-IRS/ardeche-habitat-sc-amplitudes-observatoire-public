@@ -19,6 +19,12 @@ import {
   findDpeByNumber,
 } from '../assets/dpe-ademe/ademe-client.js'
 
+import {
+  OFFICIAL_DIRECTORY_URL,
+  OPEN_DATASET_URL,
+  extractDiagnosticianContext,
+} from '../assets/diagnostician-cert/core.js'
+
 const form = document.querySelector('#dpe-form')
 const input = document.querySelector('#dpe-number')
 const status = document.querySelector('#dpe-status')
@@ -35,6 +41,12 @@ const calculationSummary = document.querySelector('#dpe-calculation-summary')
 const fieldsPanel = document.querySelector('#dpe-fields-panel')
 const fieldsStatus = document.querySelector('#dpe-fields-status')
 const fieldsContainer = document.querySelector('#dpe-fields-container')
+
+const diagnosticianPanel = document.querySelector('#dpe-diagnostician-panel')
+const diagnosticianSummary = document.querySelector('#dpe-diagnostician-summary')
+const diagnosticianStatus = document.querySelector('#dpe-diagnostician-status')
+const diagnosticianDirectoryLink = document.querySelector('#dpe-diagnostician-directory-link')
+const diagnosticianDatasetLink = document.querySelector('#dpe-diagnostician-dataset-link')
 
 const referenceDate = new Date().toISOString().slice(0, 10)
 const metadataClient = createMetadataClient()
@@ -298,6 +310,44 @@ function renderCalculation(row, dataset) {
   calculationPanel.hidden = false
 }
 
+function renderDiagnostician(row) {
+  if (!diagnosticianPanel || !diagnosticianSummary || !diagnosticianStatus) return
+
+  const context = extractDiagnosticianContext(row)
+  diagnosticianSummary.innerHTML = ''
+
+  addDefinition(diagnosticianSummary, 'Diagnostiqueur publié dans la ligne ADEME', context.fullName)
+  addDefinition(diagnosticianSummary, 'Numéro de certification publié', context.certificateNumber)
+  addDefinition(
+    diagnosticianSummary,
+    'Date à contrôler dans l’annuaire',
+    formatIsoDateFr(context.diagnosticDate),
+    context.diagnosticDate ? 'date de visite prioritaire, sinon date d’établissement du DPE' : ''
+  )
+  addDefinition(
+    diagnosticianSummary,
+    'Identifiant interne ADEME du diagnostiqueur',
+    context.ademeDiagnosticianId,
+    'cet identifiant n’est pas un numéro de certification'
+  )
+
+  if (diagnosticianDirectoryLink) diagnosticianDirectoryLink.href = OFFICIAL_DIRECTORY_URL
+  if (diagnosticianDatasetLink) diagnosticianDatasetLink.href = OPEN_DATASET_URL
+
+  if (context.certificateNumber) {
+    diagnosticianStatus.textContent =
+      'Numéro de certification détecté dans la ligne ADEME. Ouvrir l’annuaire officiel, rechercher ce numéro et contrôler le domaine « Performance énergétique (DPE individuel) » à la date indiquée.'
+  } else if (context.fullName) {
+    diagnosticianStatus.textContent =
+      'Le nom du diagnostiqueur est disponible, mais aucun numéro de certification exploitable n’est exposé dans cette ligne ADEME. Rechercher le diagnostiqueur par nom dans l’annuaire officiel ou relever le numéro sur le DPE.'
+  } else {
+    diagnosticianStatus.textContent =
+      'La vue Open Data ADEME interrogée ne fournit pas ici d’identifiant de certification directement exploitable. Utiliser le nom et le numéro inscrits sur le DPE pour effectuer la vérification dans l’annuaire officiel.'
+  }
+
+  diagnosticianPanel.hidden = false
+}
+
 function schemaLabel(field) {
   return field?.['x-concept']?.title || field?.title || field?.label || field?.key || 'Champ ADEME'
 }
@@ -392,6 +442,9 @@ function resetExtendedViews() {
   if (fieldsPanel) fieldsPanel.hidden = true
   if (fieldsContainer) fieldsContainer.innerHTML = ''
   if (fieldsStatus) fieldsStatus.textContent = ''
+  if (diagnosticianPanel) diagnosticianPanel.hidden = true
+  if (diagnosticianSummary) diagnosticianSummary.innerHTML = ''
+  if (diagnosticianStatus) diagnosticianStatus.textContent = ''
 }
 
 function render(found, number) {
@@ -433,6 +486,7 @@ function render(found, number) {
   xlsxLink.href = buildDpeUrl(dataset.id, number, 'xlsx')
   xlsxLink.hidden = false
   result.hidden = false
+  renderDiagnostician(row)
   renderHistorical(row, dataset)
   renderCalculation(row, dataset)
 }
