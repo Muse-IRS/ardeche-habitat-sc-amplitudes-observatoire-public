@@ -1,4 +1,4 @@
-export const DIAGNOSTICIAN_CERT_CORE_VERSION = '1.0.0';
+export const DIAGNOSTICIAN_CERT_CORE_VERSION = '1.1.0';
 export const DIAGNOSTICIAN_CERT_CONTRACT = 'DIAGNOSTICIAN_CERT_CORE_V1';
 
 export const OFFICIAL_DIRECTORY_URL =
@@ -54,7 +54,7 @@ export function normalizeCertificateNumber(value) {
 }
 
 export function normalizeIsoDate(value) {
-  const raw = String(value ?? '').slice(0, 10);
+  const raw = String(value ?? '').trim().slice(0, 10).replaceAll('/', '-');
   return /^\d{4}-\d{2}-\d{2}$/.test(raw) ? raw : null;
 }
 
