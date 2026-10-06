@@ -1,0 +1,15 @@
+field,type,unit,required,meaning,public_status
+ equipment_cost_unit,number,EUR,true,Coût initial unitaire saisi par l'utilisateur,input
+ units,integer,count,true,Nombre d'équipements,input
+ monthly_rent,number,EUR/month,true,Loyer mensuel hors charges,input
+ years,number,years,true,Durée observée,input
+ vacancy_rate,number,percent,true,Vacance ou non-encaissement conventionnel,input
+ allocation_rate,number,percent,true,Part des loyers affectée analytiquement à l'équipement,input
+ rent_total,number,EUR,false,Loyers cumulés corrigés,derived
+ capex_total,number,EUR,false,Coût initial total,derived
+ allocated_amount,number,EUR,false,Montant des loyers analytiquement affecté,derived
+ coverage_rate,number,percent,false,Taux de couverture du coût initial,derived
+ required_share,number,percent,false,Part des loyers nécessaire pour couvrir le coût initial,derived
+ remaining_amount,number,EUR,false,Reste théorique à couvrir,derived
+ excess_amount,number,EUR,false,Dépassement du seul coût initial; ne vaut pas bénéfice,derived
+ net_profit,string,,false,Non calculé sans comptes complets,indeterminate
