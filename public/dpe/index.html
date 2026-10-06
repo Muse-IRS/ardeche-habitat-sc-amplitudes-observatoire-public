@@ -48,7 +48,7 @@
     <h2 id="dpe-rgpd-title">Où vont les données dans le module DPE ?</h2>
     <div class="principle-grid rgpd-module-grid">
       <article><strong>Donnée saisie</strong><span>Numéro de DPE, utilisé pour rechercher une ligne dans les sources publiques ADEME actuelles puis historiques.</span></article>
-      <article><strong>Source externe</strong><span>La requête de recherche part du navigateur vers data.ademe.fr uniquement après action sur « Récupérer les données ». Le module n’ajoute pas de serveur applicatif intermédiaire.</span></article>
+      <article><strong>Sources externes</strong><span>Après action sur « Récupérer les données », le navigateur interroge data.ademe.fr pour le DPE puis, lorsque l’auteur est identifiable, tabular-api.data.gouv.fr pour sa certification. Aucun serveur applicatif intermédiaire n’est ajouté par l’observatoire.</span></article>
       <article><strong>Affichage</strong><span>Résumé minimisé. Adresse complète seulement après action explicite ; adresse précise et coordonnées masquées dans le dictionnaire détaillé.</span></article>
       <article><strong>Limite</strong><span>Lecture documentaire et pédagogique. Aucun nouveau DPE réglementaire n’est produit et aucune mesure d’audience applicative n’est actuellement chargée par l’observatoire.</span></article>
     </div>
@@ -88,15 +88,15 @@
   <section id="dpe-diagnostician-panel" class="panel" hidden aria-labelledby="diagnostician-title">
     <p class="eyebrow">Auteur du DPE · certification professionnelle</p>
     <h2 id="diagnostician-title">Vérifier le certificat du diagnostiqueur</h2>
-    <p>Le DPE permet d’identifier son auteur. Lorsque la ligne Open Data ADEME expose le nom, le numéro de certification ou un identifiant associé, le module les présente ici afin de faciliter le contrôle dans l’annuaire national officiel.</p>
+    <p>Le DPE permet d’identifier son auteur. Le module réutilise automatiquement le nom ou le numéro de certification disponible dans la ligne ADEME pour interroger l’API tabulaire data.gouv.fr et afficher le résultat ici, sans seconde saisie.</p>
     <dl id="dpe-diagnostician-summary" class="summary-grid"></dl>
     <p id="dpe-diagnostician-status" class="status" role="status" aria-live="polite"></p>
     <div class="actions">
-      <a id="dpe-diagnostician-directory-link" class="button secondary" href="https://diagnostiqueurs.din.developpement-durable.gouv.fr/trouver-mon-diagnostiqueur" target="_blank" rel="noopener noreferrer">Vérifier dans l’annuaire officiel</a>
-      <a id="dpe-diagnostician-dataset-link" class="button secondary" href="https://www.data.gouv.fr/datasets/annuaire-des-diagnostiqueurs-immobiliers" target="_blank" rel="noopener noreferrer">Jeu national des diagnostiqueurs</a>
+      <a id="dpe-diagnostician-directory-link" class="button secondary" href="https://diagnostiqueurs.din.developpement-durable.gouv.fr/trouver-mon-diagnostiqueur" target="_blank" rel="noopener noreferrer">Annuaire officiel — contrôle manuel</a>
+      <a id="dpe-diagnostician-dataset-link" class="button secondary" href="https://www.data.gouv.fr/datasets/annuaire-des-diagnostiqueurs-immobiliers" target="_blank" rel="noopener noreferrer">Source data.gouv.fr</a>
     </div>
     <div class="callout">
-      <p><strong>Contrôle à effectuer à la date du diagnostic.</strong> Vérifier que le certificat correspond au domaine DPE requis et que sa période de validité couvre la date de visite ou d’établissement du diagnostic.</p>
+      <p><strong>Contrôle automatique à la date du diagnostic.</strong> La page vérifie le domaine DPE et compare la période publiée du certificat à la date de visite ou, à défaut, à la date d’établissement du diagnostic.</p>
     </div>
     <div class="callout">
       <p><strong>Certification valide ≠ DPE techniquement correct.</strong> Cette vérification porte sur l’habilitation professionnelle du diagnostiqueur. La cohérence des données, des équipements et du calcul du DPE reste une vérification distincte.</p>
