@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">SC Amplitudes vers Ardèche Habitat : Bilan Carbone, trajectoire à 10 ans et valeurs ouvertes</title>
+  <desc id="desc">Graphe probatoire synthétique. SC Amplitudes déclare que chaque organisme membre dispose d'un Bilan Carbone et d'une trajectoire de réduction des émissions à dix ans. Ardèche Habitat fait partie du collectif. Les valeurs propres restent non identifiées dans le corpus examiné.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#eef5f1"/>
+      <stop offset="0.55" stop-color="#f7faf8"/>
+      <stop offset="1" stop-color="#ffffff"/>
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#173e30" flood-opacity=".09"/>
+    </filter>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#267453"/>
+    </marker>
+    <style>
+      .sans{font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+      .title{font-size:54px;font-weight:800;fill:#173e30;letter-spacing:-1.4px}
+      .subtitle{font-size:24px;font-weight:500;fill:#4b5c55}
+      .overline{font-size:16px;font-weight:800;fill:#267453;letter-spacing:2.1px}
+      .nodeTitle{font-size:28px;font-weight:800;fill:#173e30}
+      .nodeText{font-size:19px;font-weight:500;fill:#4b5c55}
+      .tag{font-size:15px;font-weight:800;letter-spacing:1.4px}
+      .math{font-size:22px;font-weight:800;fill:#173e30}
+      .openTitle{font-size:27px;font-weight:800;fill:#254f73}
+      .chip{font-size:17px;font-weight:700;fill:#254f73}
+      .legend{font-size:17px;font-weight:650;fill:#4b5c55}
+      .footer{font-size:17px;font-weight:650;fill:#173e30}
+    </style>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1500" cy="-40" r="280" fill="#267453" opacity=".05"/>
+  <circle cx="70" cy="860" r="230" fill="#267453" opacity=".035"/>
+
+  <g class="sans">
+    <text x="90" y="80" class="overline">OBSERVATOIRE DOCUMENTAIRE · CORPUS DE PREMIÈRE PARTIE · 08 OCTOBRE 2026</text>
+    <text x="90" y="150" class="title">Du déclaratif climat aux valeurs encore ouvertes</text>
+    <text x="90" y="195" class="subtitle">SC Amplitudes → Bilan Carbone → trajectoire 10 ans → Ardèche Habitat → variables non publiées dans le corpus examiné</text>
+
+    <g transform="translate(90 305)" filter="url(#shadow)">
+      <rect width="250" height="190" rx="26" fill="#ffffff" stroke="#805b15" stroke-width="3"/>
+      <rect x="24" y="22" width="112" height="32" rx="16" fill="#fff5dc"/>
+      <text x="80" y="44" text-anchor="middle" class="tag" fill="#805b15">DÉCLARÉ</text>
+      <text x="24" y="95" class="nodeTitle">SC Amplitudes</text>
+      <text x="24" y="131" class="nodeText">Stratégie climat</text>
+      <text x="24" y="160" class="nodeText">du collectif</text>
+    </g>
+
+    <line x1="350" y1="400" x2="414" y2="400" stroke="#267453" stroke-width="5" marker-end="url(#arrowGreen)"/>
+
+    <g transform="translate(430 305)" filter="url(#shadow)">
+      <rect width="250" height="190" rx="26" fill="#ffffff" stroke="#805b15" stroke-width="3"/>
+      <rect x="24" y="22" width="112" height="32" rx="16" fill="#fff5dc"/>
+      <text x="80" y="44" text-anchor="middle" class="tag" fill="#805b15">DÉCLARÉ</text>
+      <text x="24" y="95" class="nodeTitle">Bilan Carbone</text>
+      <text x="24" y="131" class="math">∃ B_AH</text>
+      <text x="24" y="162" class="nodeText">existence annoncée</text>
+    </g>
+
+    <line x1="690" y1="400" x2="754" y2="400" stroke="#267453" stroke-width="5" marker-end="url(#arrowGreen)"/>
+
+    <g transform="translate(770 305)" filter="url(#shadow)">
+      <rect width="250" height="190" rx="26" fill="#ffffff" stroke="#805b15" stroke-width="3"/>
+      <rect x="24" y="22" width="112" height="32" rx="16" fill="#fff5dc"/>
+      <text x="80" y="44" text-anchor="middle" class="tag" fill="#805b15">DÉCLARÉ</text>
+      <text x="24" y="95" class="nodeTitle">Trajectoire</text>
+      <text x="24" y="128" class="nodeTitle">à 10 ans</text>
+      <text x="24" y="162" class="math">∃ T_AH</text>
+    </g>
+
+    <line x1="1030" y1="400" x2="1094" y2="400" stroke="#267453" stroke-width="5" marker-end="url(#arrowGreen)"/>
+
+    <g transform="translate(1110 305)" filter="url(#shadow)">
+      <rect width="300" height="190" rx="26" fill="#e5efe9" stroke="#267453" stroke-width="3"/>
+      <rect x="24" y="22" width="138" height="32" rx="16" fill="#d9eee3"/>
+      <text x="93" y="44" text-anchor="middle" class="tag" fill="#267453">ORGANISME</text>
+      <text x="24" y="97" class="nodeTitle">Ardèche Habitat</text>
+      <text x="24" y="134" class="nodeText">membre du collectif</text>
+      <text x="24" y="165" class="nodeText">visé par la déclaration</text>
+    </g>
+
+    <path d="M1260 505 C1260 555 1260 566 1260 600" fill="none" stroke="#267453" stroke-width="5" marker-end="url(#arrowGreen)"/>
+
+    <g transform="translate(690 620)">
+      <rect width="720" height="185" rx="28" fill="#ffffff" stroke="#254f73" stroke-width="3" stroke-dasharray="12 10"/>
+      <text x="28" y="43" class="openTitle">Valeurs ouvertes · non identifiées dans le corpus examiné</text>
+      <g transform="translate(28 68)">
+        <rect width="190" height="42" rx="21" fill="#eef3f8"/><text x="95" y="27" text-anchor="middle" class="chip">tCO₂e de référence</text>
+        <rect x="205" width="190" height="42" rx="21" fill="#eef3f8"/><text x="300" y="27" text-anchor="middle" class="chip">année de référence</text>
+        <rect x="410" width="250" height="42" rx="21" fill="#eef3f8"/><text x="535" y="27" text-anchor="middle" class="chip">% de réduction visé</text>
+        <rect y="58" width="190" height="42" rx="21" fill="#eef3f8"/><text x="95" y="85" text-anchor="middle" class="chip">trajectoire annuelle</text>
+        <rect x="205" y="58" width="190" height="42" rx="21" fill="#eef3f8"/><text x="300" y="85" text-anchor="middle" class="chip">DPE / kWh</text>
+        <rect x="410" y="58" width="250" height="42" rx="21" fill="#eef3f8"/><text x="535" y="85" text-anchor="middle" class="chip">budget travaux</text>
+      </g>
+    </g>
+
+    <g transform="translate(90 620)">
+      <rect width="520" height="185" rx="28" fill="#173e30"/>
+      <text x="28" y="45" class="tag" fill="#bfe0cf">VERROU PROBATOIRE</text>
+      <text x="28" y="88" class="nodeTitle" fill="#ffffff">Déclaration ≠ résultat observé</text>
+      <text x="28" y="124" class="nodeText" fill="#dce9e2">Aucun écart énergétique ou carbone</text>
+      <text x="28" y="153" class="nodeText" fill="#dce9e2">n’est établi par ce seul corpus.</text>
+    </g>
+
+    <g transform="translate(90 845)">
+      <rect width="18" height="18" rx="4" fill="#fff5dc" stroke="#805b15" stroke-width="2"/>
+      <text x="30" y="15" class="legend">élément déclaré par SC Amplitudes</text>
+      <rect x="375" width="18" height="18" rx="4" fill="#ffffff" stroke="#254f73" stroke-width="2" stroke-dasharray="5 4"/>
+      <text x="405" y="15" class="legend">valeur à documenter</text>
+      <text x="1120" y="15" class="footer">Muse-IRS · Observatoire public</text>
+    </g>
+  </g>
+</svg>
