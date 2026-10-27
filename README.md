@@ -115,7 +115,7 @@ The core performs no network request and no persistence. Domain repositories sho
 
 ## Simulation 3CL après travaux
 
-Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.2.0`.
+Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.3.0`.
 
 - scenario core: `public/assets/dpe-3cl-simulator/core.js`;
 - Open3CL provider: `public/assets/dpe-3cl-simulator/open3cl-provider.js`;
@@ -124,7 +124,7 @@ Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.2.0`.
 
 Current engine provider is pinned to `@open3cl/engine 1.9.1` (MIT) and loads lazily from jsDelivr after explicit user action.
 
-V0.2 supports envelope scenarios plus four guarded heating/ECS presets: recent gas-condensing boiler (heating only), recent air/water heat pump (heating only), matched mixed gas-condensing boiler (heating + ECS), and recent outdoor-air thermodynamic water heater. Unsupported collective, cascade or multi-generator topologies are refused rather than simplified. Ventilation and photovoltaic mappings remain deferred.
+V0.3 supports envelope scenarios, four guarded heating/ECS presets and four guarded ventilation presets (simple-flow auto, Hygro A, Hygro B, individual double-flow). The topology inspector reports heating/ECS installation and generator counts plus ventilation-object count. Collective, cascade, multi-generator or multi-ventilation topologies are detected and refused rather than simplified; photovoltaic mappings remain deferred.
 
 ```text
 BASELINE XML/JSON
@@ -136,4 +136,29 @@ BASELINE XML/JSON
 
 PROJECTION != REGULATORY_DPE
 SIMULATED_INPUT != OBSERVED_STATE
+```
+
+
+## DPE author and certification comparison
+
+Reusable contract: `DPE_AUTHOR_VERIFICATION_CORE_V1 v0.1.0`.
+
+The building comparison now keeps a separate professional-author axis:
+
+```text
+DPE
+ -> AVAILABLE AUTHOR FIELDS
+ -> OPTIONAL LOCAL ENRICHMENT FROM DPE DOCUMENT
+ -> MADI DIRECTORY
+ -> CERTIFICATE VALIDITY AT DPE DATE
+ -> AUTHOR / COMPANY / CERTIFICATION-BODY COMPARISON
+```
+
+The current post-2021 ADEME open-data row may not expose the diagnostician identity. Missing identity is therefore preserved as a valid state rather than inferred.
+
+```text
+CERTIFICATE_VALIDITY != DPE_TECHNICAL_CORRECTNESS
+DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION
+SAME_COMPANY != SAME_AUTHOR
+MADI_MATCH != PROOF_OF_DPE_AUTHORSHIP
 ```
