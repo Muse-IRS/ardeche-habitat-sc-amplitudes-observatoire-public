@@ -197,11 +197,11 @@
     <h3>Inspecter localement le DPE complet</h3>
     <p>Un XML/JSON complet peut contenir une fiche technique avec <code>valeur</code>, <code>detail_origine_donnee</code> et <code>enum_origine_donnee_id</code>, ainsi qu’une collection séparée de justificatifs déclarés. Le fichier reste dans le navigateur.</p>
     <div class="field">
-      <label for="dpe-justification-file">Fichier DPE complet XML ou JSON</label>
+      <label for="dpe-justification-file">Fichier DPE complet ADEME XML ou JSON</label>
       <input id="dpe-justification-file" type="file" accept=".xml,.json,text/xml,application/xml,application/json">
     </div>
     <div class="actions">
-      <button id="dpe-justification-inspect" type="button" class="button secondary">Inspecter origine et justificatifs</button>
+      <button id="dpe-justification-inspect" type="button" class="button secondary">Relire le fichier ADEME</button>
       <button id="dpe-justification-export" type="button" class="button secondary" hidden>Exporter l’audit (.json)</button>
     </div>
     <p id="dpe-justification-status" class="status" role="status" aria-live="polite"></p>
@@ -225,7 +225,7 @@
   <section id="dpe-diagnostician-panel" class="panel" hidden aria-labelledby="diagnostician-title">
     <p class="eyebrow">Auteur du DPE · certification professionnelle</p>
     <h2 id="diagnostician-title">Vérifier le certificat du diagnostiqueur</h2>
-    <p>Lorsque la source interrogée expose le nom ou le numéro de certification, le module peut les réutiliser pour interroger l’API tabulaire data.gouv.fr. Pour les lignes open data actuelles qui n’exposent pas cette identité, le contrôle doit être complété à partir du DPE complet ou d’une autre pièce qui identifie son auteur.</p>
+    <p>La page reprend automatiquement l’identité professionnelle exposée par ADEME. Lorsque la vue open data simplifiée ne contient pas ces champs, le même XML/JSON DPE complet sélectionné dans la section précédente enrichit automatiquement le diagnostiqueur, la société, le numéro de certificat et l’organisme certificateur. <strong>Aucune ressaisie manuelle n’est nécessaire.</strong></p>
     <dl id="dpe-diagnostician-summary" class="summary-grid"></dl>
     <p id="dpe-diagnostician-status" class="status" role="status" aria-live="polite"></p>
     <div class="actions">
