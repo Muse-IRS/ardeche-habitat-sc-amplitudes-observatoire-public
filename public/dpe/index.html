@@ -41,7 +41,7 @@
     #dpe-fields-container,#dpe-fields-container>*{min-width:0;max-width:100%}
     .summary-grid dd,.muted,.help,details,code,.mono,.platform-formula strong,.platform-formula span{overflow-wrap:anywhere;word-break:break-word}
     .field input{min-width:0;max-width:100%}
-    .dpe-comparison-table input{width:100%;min-width:9rem;max-width:18rem;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}
+    .dpe-comparison-table input,.dpe-comparison-table textarea,.dpe-comparison-table select{width:100%;min-width:9rem;max-width:24rem;padding:8px 9px;border:1px solid var(--line);border-radius:8px;font:inherit;background:#fff}.dpe-comparison-table textarea{resize:vertical}
     .table-scroll{width:100%;max-width:100%;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
     .dpe-building-table,.dpe-comparison-table{width:100%;border-collapse:collapse;background:#fff}
     .dpe-building-table th,.dpe-building-table td,.dpe-comparison-table th,.dpe-comparison-table td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}
@@ -127,6 +127,22 @@
     </div>
     <div class="callout">
       <p><code>DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION</code><br><code>SAME_COMPANY != SAME_AUTHOR</code><br><code>MADI_MATCH != PROOF_OF_DPE_AUTHORSHIP</code></p>
+    </div>
+
+    <h3>Dépendance documentaire</h3>
+    <p>Pour chaque DPE, renseigner les références de documents, plans, factures, données de copropriété, notices ou autres sources effectivement identifiées comme ayant alimenté le diagnostic. Séparer les références par un point-virgule ou un retour à la ligne. L’inventaire reste local au navigateur.</p>
+    <div id="building-dependency-inputs"></div>
+    <div class="actions">
+      <button id="building-dependency-analyze" type="button" class="button secondary" hidden>Analyser les dépendances documentaires</button>
+      <button id="building-dependency-export" type="button" class="button secondary" hidden>Exporter le graphe (.json)</button>
+    </div>
+    <p id="building-dependency-status" class="status" role="status" aria-live="polite"></p>
+    <div id="building-dependency-results"></div>
+    <div class="callout">
+      <p><strong>Une même source commune affaiblit l’idée de corroboration indépendante.</strong> À l’inverse, ne pas identifier de source commune ne prouve pas l’indépendance, sauf à disposer d’inventaires réellement complets — et même dans ce cas, cela ne prouve pas que les observations matérielles étaient indépendantes.</p>
+    </div>
+    <div class="callout">
+      <p><code>REPLICATION_DOCUMENTAIRE != CORROBORATION_INDEPENDANTE</code><br><code>NO_SHARED_SOURCE_IDENTIFIED != PROOF_OF_INDEPENDENCE</code><br><code>SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF</code></p>
     </div>
   </section>
 
