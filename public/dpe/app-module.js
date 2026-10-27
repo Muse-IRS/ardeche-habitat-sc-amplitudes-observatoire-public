@@ -560,6 +560,10 @@ function render(found, number) {
 
   xlsxLink.href = buildDpeUrl(dataset.id, number, 'xlsx')
   xlsxLink.hidden = false
+  if (identityLink) {
+    identityLink.href = '../identite-logement/?dpe=' + encodeURIComponent(number)
+    identityLink.hidden = false
+  }
   result.hidden = false
   renderDiagnostician(row)
   renderHistorical(row, dataset)
@@ -572,6 +576,7 @@ form.addEventListener('submit', async event => {
   input.value = number
   result.hidden = true
   xlsxLink.hidden = true
+  if (identityLink) identityLink.hidden = true
   addressDetails.hidden = true
   resetExtendedViews()
 
