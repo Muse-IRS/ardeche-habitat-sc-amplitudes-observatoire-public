@@ -73,20 +73,22 @@
     "local_report_export": "explicit-user-action"
   },
   "dpe_building_author_verification": {
-    "trigger": "explicit user action",
-    "source": "MADI / tabular-api.data.gouv.fr",
-    "input": "certificate number and/or professional name; diagnostic date for temporal validity",
+    "trigger": "ADEME building search and/or explicit local full-DPE file selection",
+    "source": "ADEME source data + MADI / tabular-api.data.gouv.fr",
+    "input": "professional identity extracted automatically from ADEME; no manual re-entry",
     "dpe_address_sent_to_directory": false,
+    "full_dpe_file_processing": "browser-local-only",
     "persistent_application_storage": false,
     "purpose": "professional certification verification and cross-DPE author comparison"
   },
   "dpe_document_dependency_graph": {
-    "trigger": "explicit local user input",
-    "input": "documentary source references and inventory completeness per DPE",
-    "network_request": false,
+    "trigger": "ADEME building comparison and/or explicit local full-DPE file selection",
+    "input": "ADEME declared justifications and origin metadata extracted automatically",
+    "manual_document_reference_entry": false,
+    "network_request_for_graph": false,
     "persistent_application_storage": false,
     "export": "local JSON on explicit user action",
-    "purpose": "make shared documentary dependencies visible without inferring independence"
+    "purpose": "make declared documentary dependencies visible without inferring same document or independence"
   },
   "dpe_data_justification_inspector": {
     "trigger": "explicit local file selection and inspection",
