@@ -1,4 +1,6 @@
 import {
+  SYSTEM_PRESETS,
+  analyzeSystemTopology,
   applyScenario,
   buildProjectionReport,
   compareCalculated,
@@ -22,6 +24,12 @@ const projectionPanel = document.querySelector('#projection-panel')
 const projectionResults = document.querySelector('#projection-results')
 const changesBody = document.querySelector('#changes-body')
 const exportButton = document.querySelector('#export-report')
+const systemPreset = document.querySelector('#system-preset')
+const systemTopologyStatus = document.querySelector('#system-topology-status')
+const ecsVolumeField = document.querySelector('#ecs-volume-field')
+const ecsPositionField = document.querySelector('#ecs-position-field')
+const ecsVolume = document.querySelector('#ecs-volume')
+const ecsPosition = document.querySelector('#ecs-position')
 
 const fields = {
   wallU: document.querySelector('#wall-u'),
@@ -35,6 +43,45 @@ let baselineInput = null
 let baselineCalculated = null
 let engineVersion = null
 let currentReport = null
+let currentTopology = null
+
+function issueMessage(issue) {
+  const messages = {
+    PRESET_UNKNOWN: 'Preset système inconnu.',
+    PRESET_REQUIRES_SINGLE_INDIVIDUAL_HEATING_GENERATOR: 'Ce preset exige une installation individuelle simple avec un seul générateur de chauffage principal.',
+    PRESET_REQUIRES_SINGLE_INDIVIDUAL_ECS_GENERATOR: 'Ce preset exige une installation ECS individuelle simple avec un seul générateur ECS indépendant.',
+    PRESET_REQUIRES_MATCHED_SINGLE_MIXED_HEATING_ECS_GENERATOR: 'Ce preset exige un unique générateur mixte chauffage/ECS, apparié par la même référence dans les deux collections.',
+    CET_REQUIRES_POSITIVE_STORAGE_VOLUME: 'Le chauffe-eau thermodynamique nécessite un volume de stockage positif. Renseigner le volume après travaux.',
+    CET_REQUIRES_STORAGE_POSITION: 'Le chauffe-eau thermodynamique nécessite de connaître si le stockage est dans le volume chauffé.',
+    PRESET_TOPOLOGY_UNSUPPORTED: 'Topologie système non prise en charge par ce preset.',
+  }
+  return messages[issue] || issue
+}
+
+function updatePresetAvailability() {
+  if (!currentTopology) return
+  for (const option of systemPreset.options) {
+    if (!option.value) {
+      option.disabled = false
+      continue
+    }
+    option.disabled = !currentTopology.supportedPresets[option.value]
+  }
+  const supported = Object.entries(currentTopology.supportedPresets)
+    .filter(([, ok]) => ok)
+    .map(([id]) => SYSTEM_PRESETS[id]?.label || id)
+  systemTopologyStatus.textContent = supported.length
+    ? 'Topologie détectée : ' + supported.length + ' scénario(s) système compatible(s) — ' + supported.join(' ; ')
+    : 'Topologie détectée : aucun preset système V0.2 n’est applicable sans simplification.'
+}
+
+function updateSystemFields() {
+  const isCet = systemPreset.value === 'OUTDOOR_AIR_CET'
+  ecsVolumeField.hidden = !isCet
+  ecsPositionField.hidden = !isCet
+}
+
+systemPreset.addEventListener('change', updateSystemFields)
 
 function numberFromInput(input) {
   const raw = String(input.value || '').trim().replace(',', '.')
@@ -110,6 +157,10 @@ baselineButton.addEventListener('click', async () => {
     engineVersion = baseline.engineVersion
     baselineCalculated = baseline.calculated
     baselineInput = baseline.input
+    currentTopology = analyzeSystemTopology(baselineCalculated)
+    systemPreset.value = ''
+    updateSystemFields()
+    updatePresetAvailability()
 
     const comparison = compareCalculated(baselineCalculated, baselineCalculated)
     renderOutput(baselineResults, comparison.before)
@@ -132,23 +183,32 @@ scenarioButton.addEventListener('click', async () => {
     return
   }
 
+  const positionValue = ecsPosition.value === 'yes' ? true : ecsPosition.value === 'no' ? false : null
   const scenario = {
     wallU: numberFromInput(fields.wallU),
     roofU: numberFromInput(fields.roofU),
     floorU: numberFromInput(fields.floorU),
     windowUw: numberFromInput(fields.windowUw),
+    systemPreset: systemPreset.value || null,
+    ecsVolume: numberFromInput(ecsVolume),
+    ecsInsideHeatedVolume: positionValue,
   }
 
-  if (Object.values(scenario).every(value => value === null)) {
-    scenarioStatus.textContent = 'Saisir au moins une valeur après travaux.'
+  const hasEnvelopeChange = [scenario.wallU, scenario.roofU, scenario.floorU, scenario.windowUw].some(value => value !== null)
+  if (!hasEnvelopeChange && !scenario.systemPreset) {
+    scenarioStatus.textContent = 'Saisir au moins une valeur d’enveloppe ou choisir un scénario chauffage/ECS.'
     return
   }
 
   scenarioButton.disabled = true
   scenarioStatus.textContent = 'Application des hypothèses et recalcul 3CL…'
   try {
-    const baselineObject = typeof baselineInput === 'string' ? baselineCalculated : baselineInput
-    const scenarioResult = applyScenario(baselineObject, scenario)
+    const scenarioResult = applyScenario(baselineCalculated, scenario)
+
+    if (scenarioResult.issues.length) {
+      scenarioStatus.textContent = scenarioResult.issues.map(issueMessage).join(' ')
+      return
+    }
 
     if (!scenarioResult.changes.length) {
       scenarioStatus.textContent = 'Aucun composant compatible avec les hypothèses saisies n’a été trouvé dans ce DPE.'
@@ -192,6 +252,10 @@ scenarioButton.addEventListener('click', async () => {
 
 resetButton.addEventListener('click', () => {
   for (const input of Object.values(fields)) input.value = ''
+  systemPreset.value = ''
+  ecsVolume.value = ''
+  ecsPosition.value = ''
+  updateSystemFields()
   projectionPanel.hidden = true
   currentReport = null
   scenarioStatus.textContent = 'Scénario réinitialisé ; la référence reste chargée.'
