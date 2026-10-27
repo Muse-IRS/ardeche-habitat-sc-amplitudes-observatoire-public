@@ -178,6 +178,44 @@
     </details>
   </section>
 
+  <section id="dpe-justification-panel" class="panel" hidden aria-labelledby="justification-title">
+    <p class="eyebrow">Provenance · valeur enregistrée ≠ valeur justifiée</p>
+    <h2 id="justification-title">Qu’est-ce qui justifie réellement une donnée du DPE ?</h2>
+    <p>La ligne open data permet d’établir qu’une valeur a été enregistrée et publiée. Elle ne contient pas, à elle seule, la facture, la notice, la photo, le rapport d’entretien ou l’autre pièce source qui permettrait de vérifier matériellement cette valeur.</p>
+    <dl id="dpe-justification-open-data-summary" class="summary-grid"></dl>
+
+    <div class="callout">
+      <p><strong>Exemple chaudière.</strong> Une base peut contenir « chaudière gaz », une référence produit ou une année. Cela établit la présence de cette information dans le DPE ; cela n’établit pas encore la facture d’installation, l’entreprise, la marque, le modèle, le numéro de série ni leur correspondance avec l’équipement réellement présent.</p>
+    </div>
+
+    <h3>Inspecter localement le DPE complet</h3>
+    <p>Un XML/JSON complet peut contenir une fiche technique avec <code>valeur</code>, <code>detail_origine_donnee</code> et <code>enum_origine_donnee_id</code>, ainsi qu’une collection séparée de justificatifs déclarés. Le fichier reste dans le navigateur.</p>
+    <div class="field">
+      <label for="dpe-justification-file">Fichier DPE complet XML ou JSON</label>
+      <input id="dpe-justification-file" type="file" accept=".xml,.json,text/xml,application/xml,application/json">
+    </div>
+    <div class="actions">
+      <button id="dpe-justification-inspect" type="button" class="button secondary">Inspecter origine et justificatifs</button>
+      <button id="dpe-justification-export" type="button" class="button secondary" hidden>Exporter l’audit (.json)</button>
+    </div>
+    <p id="dpe-justification-status" class="status" role="status" aria-live="polite"></p>
+    <dl id="dpe-justification-audit-summary" class="summary-grid"></dl>
+
+    <details>
+      <summary>Justificatifs déclarés dans le DPE complet</summary>
+      <div id="dpe-justification-list" class="content-stack"></div>
+    </details>
+
+    <details>
+      <summary>Données techniques et origine déclarée</summary>
+      <div id="dpe-justification-technical-items" class="content-stack"></div>
+    </details>
+
+    <div class="callout">
+      <p><code>VALUE_IN_DATABASE != JUSTIFICATION</code><br><code>DECLARED_ORIGIN != SOURCE_DOCUMENT</code><br><code>DECLARED_JUSTIFICATION != DOCUMENT_PAYLOAD</code><br><code>JUSTIFICATION_INVENTORY != FIELD_LEVEL_SUPPORT_RELATION</code></p>
+    </div>
+  </section>
+
   <section id="dpe-diagnostician-panel" class="panel" hidden aria-labelledby="diagnostician-title">
     <p class="eyebrow">Auteur du DPE · certification professionnelle</p>
     <h2 id="diagnostician-title">Vérifier le certificat du diagnostiqueur</h2>
