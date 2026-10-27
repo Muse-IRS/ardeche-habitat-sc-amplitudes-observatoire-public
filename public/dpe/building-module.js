@@ -15,6 +15,9 @@ import {
 import {
   findDiagnosticianCertifications,
 } from '../assets/diagnostician-cert/tabular-client.js'
+import {
+  buildDependencyGraph,
+} from '../assets/dpe-document-dependency/core.js'
 
 const addressForm = document.querySelector('#dpe-address-form')
 const addressInput = document.querySelector('#dpe-address')
@@ -32,11 +35,157 @@ const authorStatus = document.querySelector('#building-author-status')
 const authorVerifyButton = document.querySelector('#building-author-verify')
 const authorResults = document.querySelector('#building-author-results')
 const authorComparison = document.querySelector('#building-author-comparison')
+const dependencyInputs = document.querySelector('#building-dependency-inputs')
+const dependencyAnalyzeButton = document.querySelector('#building-dependency-analyze')
+const dependencyStatus = document.querySelector('#building-dependency-status')
+const dependencyResults = document.querySelector('#building-dependency-results')
+const dependencyExportButton = document.querySelector('#building-dependency-export')
 
 const referenceDate = new Date().toISOString().slice(0, 10)
 let currentRows = []
 let currentAuthorVerification = []
+let currentDependencyGraph = null
 
+
+
+function renderDependencyInputs(rows) {
+  if (!dependencyInputs) return
+  dependencyInputs.innerHTML = ''
+  dependencyResults.innerHTML = ''
+  currentDependencyGraph = null
+
+  const wrapper = document.createElement('div')
+  wrapper.className = 'table-scroll'
+  const table = document.createElement('table')
+  table.className = 'dpe-comparison-table'
+
+  const thead = document.createElement('thead')
+  const hr = document.createElement('tr')
+  for (const label of ['DPE', 'Références documentaires connues', 'Complétude de l’inventaire']) appendCell(hr, 'th', label)
+  thead.append(hr)
+  table.append(thead)
+
+  const tbody = document.createElement('tbody')
+  rows.forEach((row, index) => {
+    const tr = document.createElement('tr')
+    appendCell(tr, 'td', normalizeDpeNumber(row.numero_dpe), 'mono')
+
+    const sourceCell = document.createElement('td')
+    const textarea = document.createElement('textarea')
+    textarea.rows = 3
+    textarea.placeholder = 'Ex. PLAN-IMMEUBLE-2023 ; DOC-SYNDIC-01 ; FACTURE-CHAUDIERE-2024'
+    textarea.dataset.dependencySourcesIndex = String(index)
+    textarea.setAttribute('aria-label', 'Références documentaires pour ' + normalizeDpeNumber(row.numero_dpe))
+    sourceCell.append(textarea)
+    tr.append(sourceCell)
+
+    const completenessCell = document.createElement('td')
+    const select = document.createElement('select')
+    select.dataset.dependencyCompletenessIndex = String(index)
+    select.setAttribute('aria-label', 'Complétude des sources pour ' + normalizeDpeNumber(row.numero_dpe))
+    for (const [value, label] of [
+      ['UNKNOWN', 'Inconnue'],
+      ['PARTIAL', 'Partielle'],
+      ['COMPLETE', 'Complète'],
+    ]) {
+      const option = document.createElement('option')
+      option.value = value
+      option.textContent = label
+      select.append(option)
+    }
+    completenessCell.append(select)
+    tr.append(completenessCell)
+
+    tbody.append(tr)
+  })
+
+  table.append(tbody)
+  wrapper.append(table)
+  dependencyInputs.append(wrapper)
+}
+
+function dependencyStateLabel(state) {
+  const labels = {
+    SHARED_SOURCE_REFERENCE_ESTABLISHED: 'SOURCE PARTAGÉE ÉTABLIE',
+    NO_SHARED_SOURCE_IDENTIFIED: 'AUCUNE SOURCE PARTAGÉE IDENTIFIÉE',
+    INDETERMINATE: 'INDÉTERMINÉ',
+  }
+  return labels[state] || state
+}
+
+function analyzeDocumentDependencies() {
+  if (!currentRows.length) return
+
+  const inventories = currentRows.map((row, index) => ({
+    dpeNumber: normalizeDpeNumber(row.numero_dpe),
+    sourceRefs: document.querySelector('[data-dependency-sources-index="' + index + '"]')?.value || '',
+    completeness: document.querySelector('[data-dependency-completeness-index="' + index + '"]')?.value || 'UNKNOWN',
+  }))
+
+  currentDependencyGraph = buildDependencyGraph(inventories)
+  dependencyResults.innerHTML = ''
+
+  if (!currentDependencyGraph.pairs.length) {
+    dependencyStatus.textContent = 'Un seul DPE : aucune relation documentaire pair-à-pair à calculer.'
+    dependencyExportButton.hidden = false
+    return
+  }
+
+  const wrapper = document.createElement('div')
+  wrapper.className = 'table-scroll'
+  const table = document.createElement('table')
+  table.className = 'dpe-comparison-table'
+
+  const thead = document.createElement('thead')
+  const hr = document.createElement('tr')
+  for (const label of ['DPE A', 'DPE B', 'État', 'Sources partagées', 'Part connue partagée']) appendCell(hr, 'th', label)
+  thead.append(hr)
+  table.append(thead)
+
+  const tbody = document.createElement('tbody')
+  for (const pair of currentDependencyGraph.pairs) {
+    const tr = document.createElement('tr')
+    appendCell(tr, 'td', pair.dpeA, 'mono')
+    appendCell(tr, 'td', pair.dpeB, 'mono')
+    appendCell(tr, 'td', dependencyStateLabel(pair.state))
+    appendCell(tr, 'td', pair.sharedRefs.length ? pair.sharedRefs.join(' ; ') : '—', 'mono')
+    appendCell(
+      tr,
+      'td',
+      pair.knownSharedRatio === null ? '—' : pair.knownSharedRatio.toLocaleString('fr-FR') + ' %'
+    )
+    tbody.append(tr)
+  }
+
+  table.append(tbody)
+  wrapper.append(table)
+  dependencyResults.append(wrapper)
+
+  const sharedPairs = currentDependencyGraph.pairs.filter(pair => pair.sharedCount > 0).length
+  const indeterminatePairs = currentDependencyGraph.pairs.filter(pair => pair.state === 'INDETERMINATE').length
+  dependencyStatus.textContent =
+    sharedPairs + ' paire(s) avec au moins une référence documentaire commune ; ' +
+    indeterminatePairs + ' paire(s) indéterminée(s). ' +
+    'La part connue partagée décrit uniquement les références renseignées : ce n’est pas une probabilité d’indépendance.'
+
+  dependencyExportButton.hidden = false
+}
+
+function exportDependencyGraph() {
+  if (!currentDependencyGraph) return
+  const blob = new Blob(
+    [JSON.stringify(currentDependencyGraph, null, 2)],
+    { type: 'application/json;charset=utf-8' }
+  )
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'graphe-dependance-documentaire-dpe.json'
+  document.body.append(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
 
 function normalizeBooleanLabel(value) {
   if (value === true) return 'OUI'
@@ -348,6 +497,11 @@ function renderBuildingResult(result, sourceLabel) {
     if (authorInputs) authorInputs.innerHTML = ''
     if (authorResults) authorResults.innerHTML = ''
     if (authorComparison) authorComparison.innerHTML = ''
+    if (dependencyAnalyzeButton) dependencyAnalyzeButton.hidden = true
+    if (dependencyExportButton) dependencyExportButton.hidden = true
+    if (dependencyInputs) dependencyInputs.innerHTML = ''
+    if (dependencyResults) dependencyResults.innerHTML = ''
+    currentDependencyGraph = null
     return
   }
 
@@ -362,7 +516,9 @@ function renderBuildingResult(result, sourceLabel) {
   renderResultTable(currentRows)
   renderComparison(currentRows)
   renderAuthorInputs(currentRows)
+  renderDependencyInputs(currentRows)
   if (authorVerifyButton) authorVerifyButton.hidden = false
+  if (dependencyAnalyzeButton) dependencyAnalyzeButton.hidden = false
   if (authorStatus) authorStatus.textContent = 'Identité professionnelle : utiliser les champs préremplis lorsqu’ils existent ; sinon reporter le nom ou le numéro de certificat visible sur le DPE complet.'
 }
 
@@ -419,8 +575,11 @@ sameAddressButton?.addEventListener('click', async () => {
 
 exportButton?.addEventListener('click', exportCsv)
 authorVerifyButton?.addEventListener('click', verifyBuildingAuthors)
+dependencyAnalyzeButton?.addEventListener('click', analyzeDocumentDependencies)
+dependencyExportButton?.addEventListener('click', exportDependencyGraph)
 
 window.addEventListener('beforeunload', () => {
   currentRows = []
   currentAuthorVerification = []
+  currentDependencyGraph = null
 })
