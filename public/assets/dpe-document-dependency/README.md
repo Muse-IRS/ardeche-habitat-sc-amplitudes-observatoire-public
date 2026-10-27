@@ -5,7 +5,7 @@ Reusable local-only graph for comparing the documentary dependencies of several 
 Contract:
 
 ```text
-DPE_DOCUMENT_DEPENDENCY_CORE_V1 v0.1.0
+DPE_DOCUMENT_DEPENDENCY_CORE_V1 v0.2.0
 ```
 
 Pipeline:
@@ -30,6 +30,7 @@ Inventory completeness is explicit:
 Pair states:
 
 - `SHARED_SOURCE_REFERENCE_ESTABLISHED`
+- `SHARED_DECLARED_DESCRIPTOR`
 - `NO_SHARED_SOURCE_IDENTIFIED`
 - `INDETERMINATE`
 
@@ -49,3 +50,18 @@ SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF
 ```
 
 No network request and no persistent storage are required.
+
+
+## V0.2 ADEME automatic inventory
+
+The public page no longer asks the user to type documentary references. A full ADEME DPE XML/JSON is parsed automatically from:
+
+- `justificatif_collection`;
+- `fiche_technique_collection / detail_origine_donnee`.
+
+These values are treated as **declared descriptors** unless a specific document reference is actually available.
+
+```text
+SAME_DECLARED_DESCRIPTOR != SAME_DOCUMENT
+SHARED_DECLARED_DESCRIPTOR != INDEPENDENT_CORROBORATION
+```
