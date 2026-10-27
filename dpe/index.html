@@ -113,12 +113,18 @@
     </div>
     <div class="callout"><p><strong>Traitement des récupérations ADEME.</strong> Les lignes sont dédupliquées par numéro DPE, triées dans le temps puis comparées champ par champ. <code>CONVERGENCE</code> signifie seulement que les valeurs publiées sont identiques ; <code>DIVERGENCE</code> qu’elles diffèrent ; <code>INDÉTERMINÉ</code> qu’une valeur manque.</p></div>
 
-    <h3>Auteurs, sociétés et certifications</h3>
-    <p>La ligne open data actuelle peut ne pas exposer l’identité du diagnostiqueur. Lorsqu’elle manque, reporter localement le <strong>numéro de certificat</strong> ou le <strong>nom/prénom</strong> visible sur le DPE complet. Le navigateur interroge ensuite l’annuaire public MADI pour contrôler le domaine DPE et la période de validité à la date du diagnostic.</p>
-    <div id="building-author-inputs"></div>
-    <div class="actions">
-      <button id="building-author-verify" type="button" class="button secondary" hidden>Vérifier les auteurs et certifications</button>
+    <h3>Données ADEME complètes — enrichissement automatique</h3>
+    <p>La vue open data agrégée <code>dpe03existant</code> ne publie pas tous les champs du DPE complet. Si nécessaire, sélectionner ici les fichiers XML/JSON téléchargés depuis l’Observatoire DPE-Audit ADEME : la page extrait automatiquement l’auteur, la société, le certificat, l’organisme certificateur, les origines de données et les justificatifs déclarés. <strong>Aucune ressaisie manuelle n’est demandée.</strong></p>
+    <div class="field">
+      <label for="building-full-dpe-files">Fichiers DPE complets ADEME</label>
+      <input id="building-full-dpe-files" type="file" multiple accept=".xml,.json,text/xml,application/xml,application/json">
     </div>
+    <p id="building-full-dpe-files-status" class="status" role="status" aria-live="polite"></p>
+
+    <h3>Auteurs, sociétés et certifications — données ADEME</h3>
+    <p>Les informations sont affichées automatiquement depuis la source ADEME disponible. Dès qu’un numéro de certificat ou un nom est exposé, le contrôle MADI est lancé automatiquement. L’utilisateur n’a plus à saisir ces informations : il vérifie seulement leur concordance avec son DPE ou ses autres documents.</p>
+    <div id="building-author-inputs"></div>
+    <button id="building-author-verify" type="button" hidden aria-hidden="true">Vérifier</button>
     <p id="building-author-status" class="status" role="status" aria-live="polite"></p>
     <div id="building-author-results"></div>
     <div id="building-author-comparison"></div>
@@ -126,14 +132,14 @@
       <p><strong>Certification valide ≠ DPE techniquement correct.</strong> Un diagnostiqueur différent n’établit pas non plus une observation indépendante : plusieurs professionnels peuvent travailler à partir des mêmes documents, conventions ou informations de bâtiment.</p>
     </div>
     <div class="callout">
-      <p><code>DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION</code><br><code>SAME_COMPANY != SAME_AUTHOR</code><br><code>MADI_MATCH != PROOF_OF_DPE_AUTHORSHIP</code></p>
+      <p><code>ADEME_IDENTITY != MATERIAL_AUTHORSHIP_PROOF</code><br><code>DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION</code><br><code>MADI_MATCH != DPE_TECHNICAL_CORRECTNESS</code></p>
     </div>
 
-    <h3>Dépendance documentaire</h3>
-    <p>Pour chaque DPE, renseigner les références de documents, plans, factures, données de copropriété, notices ou autres sources effectivement identifiées comme ayant alimenté le diagnostic. Séparer les références par un point-virgule ou un retour à la ligne. L’inventaire reste local au navigateur.</p>
+    <h3>Dépendance documentaire — justificatifs déclarés ADEME</h3>
+    <p>Le graphe est construit automatiquement à partir des <strong>justificatifs et origines déclarés dans les DPE complets ADEME</strong>. Aucun plan, facture ou référence n’est saisi manuellement. Lorsque seule la vue open data agrégée est disponible, l’état reste <code>INDÉTERMINÉ</code>.</p>
     <div id="building-dependency-inputs"></div>
     <div class="actions">
-      <button id="building-dependency-analyze" type="button" class="button secondary" hidden>Analyser les dépendances documentaires</button>
+      <button id="building-dependency-analyze" type="button" hidden aria-hidden="true">Analyser</button>
       <button id="building-dependency-export" type="button" class="button secondary" hidden>Exporter le graphe (.json)</button>
     </div>
     <p id="building-dependency-status" class="status" role="status" aria-live="polite"></p>
@@ -142,7 +148,7 @@
       <p><strong>Une même source commune affaiblit l’idée de corroboration indépendante.</strong> À l’inverse, ne pas identifier de source commune ne prouve pas l’indépendance, sauf à disposer d’inventaires réellement complets — et même dans ce cas, cela ne prouve pas que les observations matérielles étaient indépendantes.</p>
     </div>
     <div class="callout">
-      <p><code>REPLICATION_DOCUMENTAIRE != CORROBORATION_INDEPENDANTE</code><br><code>NO_SHARED_SOURCE_IDENTIFIED != PROOF_OF_INDEPENDENCE</code><br><code>SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF</code></p>
+      <p><code>REPLICATION_DOCUMENTAIRE != CORROBORATION_INDEPENDANTE</code><br><code>SHARED_DECLARED_DESCRIPTOR != SAME_DOCUMENT</code><br><code>NO_SHARED_SOURCE_IDENTIFIED != PROOF_OF_INDEPENDENCE</code></p>
     </div>
   </section>
 
@@ -191,11 +197,11 @@
     <h3>Inspecter localement le DPE complet</h3>
     <p>Un XML/JSON complet peut contenir une fiche technique avec <code>valeur</code>, <code>detail_origine_donnee</code> et <code>enum_origine_donnee_id</code>, ainsi qu’une collection séparée de justificatifs déclarés. Le fichier reste dans le navigateur.</p>
     <div class="field">
-      <label for="dpe-justification-file">Fichier DPE complet XML ou JSON</label>
+      <label for="dpe-justification-file">Fichier DPE complet ADEME XML ou JSON</label>
       <input id="dpe-justification-file" type="file" accept=".xml,.json,text/xml,application/xml,application/json">
     </div>
     <div class="actions">
-      <button id="dpe-justification-inspect" type="button" class="button secondary">Inspecter origine et justificatifs</button>
+      <button id="dpe-justification-inspect" type="button" class="button secondary">Relire le fichier ADEME</button>
       <button id="dpe-justification-export" type="button" class="button secondary" hidden>Exporter l’audit (.json)</button>
     </div>
     <p id="dpe-justification-status" class="status" role="status" aria-live="polite"></p>
@@ -219,7 +225,7 @@
   <section id="dpe-diagnostician-panel" class="panel" hidden aria-labelledby="diagnostician-title">
     <p class="eyebrow">Auteur du DPE · certification professionnelle</p>
     <h2 id="diagnostician-title">Vérifier le certificat du diagnostiqueur</h2>
-    <p>Lorsque la source interrogée expose le nom ou le numéro de certification, le module peut les réutiliser pour interroger l’API tabulaire data.gouv.fr. Pour les lignes open data actuelles qui n’exposent pas cette identité, le contrôle doit être complété à partir du DPE complet ou d’une autre pièce qui identifie son auteur.</p>
+    <p>La page reprend automatiquement l’identité professionnelle exposée par ADEME. Lorsque la vue open data simplifiée ne contient pas ces champs, le même XML/JSON DPE complet sélectionné dans la section précédente enrichit automatiquement le diagnostiqueur, la société, le numéro de certificat et l’organisme certificateur. <strong>Aucune ressaisie manuelle n’est nécessaire.</strong></p>
     <dl id="dpe-diagnostician-summary" class="summary-grid"></dl>
     <p id="dpe-diagnostician-status" class="status" role="status" aria-live="polite"></p>
     <div class="actions">

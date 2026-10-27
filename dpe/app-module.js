@@ -188,6 +188,9 @@ async function inspectFullDpeJustification() {
     const fileNumber = normalizeDpeNumber(audit.dpeNumber || '')
     const mismatch = Boolean(selectedNumber && fileNumber && selectedNumber !== fileNumber)
     renderJustificationAudit(audit, file.name, mismatch)
+    if (!mismatch && currentDpeContext?.row) {
+      await renderDiagnostician(currentDpeContext.row, parsed)
+    }
   } catch (error) {
     console.error(error)
     justificationStatus.textContent = 'Impossible d’inspecter ce fichier. Utiliser un XML ou JSON DPE complet compatible.'
@@ -471,15 +474,38 @@ function renderCalculation(row, dataset) {
   calculationPanel.hidden = false
 }
 
-async function renderDiagnostician(row) {
+async function renderDiagnostician(row, fullDpe = null) {
   if (!diagnosticianPanel || !diagnosticianSummary || !diagnosticianStatus) return
 
   const lookupSequence = ++diagnosticianLookupSequence
-  const context = extractDiagnosticianContext(row)
+  const openContext = extractDiagnosticianContext(row)
+  const full = fullDpe?.diagnostician || null
+  const fullName = full?.fullName || [full?.firstName, full?.lastName].filter(Boolean).join(' ').trim()
+  const fullAvailable = Boolean(fullName || full?.certificateNumber || full?.company || full?.certificationBody)
+  const context = fullAvailable
+    ? {
+        fullName: fullName || null,
+        certificateNumber: full?.certificateNumber || null,
+        diagnosticDate: fullDpe?.diagnosticDate || openContext.diagnosticDate || null,
+        ademeDiagnosticianId: openContext.ademeDiagnosticianId || null,
+        company: full?.company || null,
+        certificationBody: full?.certificationBody || null,
+        sourceLabel: 'DPE complet ADEME',
+      }
+    : {
+        ...openContext,
+        company: null,
+        certificationBody: null,
+        sourceLabel: 'Vue open data ADEME',
+      }
+
   diagnosticianSummary.innerHTML = ''
 
-  addDefinition(diagnosticianSummary, 'Diagnostiqueur publié dans la ligne ADEME', context.fullName)
+  addDefinition(diagnosticianSummary, 'Source ADEME', context.sourceLabel)
+  addDefinition(diagnosticianSummary, 'Diagnostiqueur publié par ADEME', context.fullName)
+  addDefinition(diagnosticianSummary, 'Société publiée par ADEME', context.company)
   addDefinition(diagnosticianSummary, 'Numéro de certification publié', context.certificateNumber)
+  addDefinition(diagnosticianSummary, 'Organisme certificateur publié par ADEME', context.certificationBody)
   addDefinition(
     diagnosticianSummary,
     'Date du DPE contrôlée',
@@ -500,7 +526,7 @@ async function renderDiagnostician(row) {
 
   if (!context.certificateNumber && !context.fullName) {
     diagnosticianStatus.textContent =
-      'La ligne ADEME ne contient pas assez d’information pour lancer automatiquement la recherche du certificat. Le contrôle manuel reste disponible en source secondaire.'
+      'La vue open data ADEME actuellement interrogée n’expose pas l’identité nécessaire au contrôle automatique. Charger le DPE complet ADEME dans la section « justification » enrichit automatiquement cette section sans ressaisie.'
     return
   }
 
@@ -768,4 +794,5 @@ form.addEventListener('submit', async event => {
 
 
 justificationInspectButton?.addEventListener('click', inspectFullDpeJustification)
+justificationFileInput?.addEventListener('change', inspectFullDpeJustification)
 justificationExportButton?.addEventListener('click', exportJustificationAudit)

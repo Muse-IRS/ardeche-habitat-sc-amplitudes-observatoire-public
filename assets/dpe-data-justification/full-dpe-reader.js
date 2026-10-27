@@ -16,6 +16,22 @@ function xmlItems(document, selector) {
   return [...document.querySelectorAll(selector)]
 }
 
+function normalizeDiagnostician(raw = {}) {
+  const firstName = clean(raw.firstName ?? raw.prenom_diagnostiqueur)
+  const lastName = clean(raw.lastName ?? raw.nom_diagnostiqueur)
+  const fullName = clean(raw.fullName) || [firstName, lastName].filter(Boolean).join(' ')
+  return Object.freeze({
+    firstName: firstName || null,
+    lastName: lastName || null,
+    fullName: fullName || null,
+    company: clean(raw.company ?? raw.entreprise_diagnostiqueur) || null,
+    certificateNumber: clean(raw.certificateNumber ?? raw.numero_certification_diagnostiqueur) || null,
+    certificationBody: clean(raw.certificationBody ?? raw.organisme_certificateur) || null,
+    softwareId: clean(raw.softwareId ?? raw.usr_logiciel_id) || null,
+    softwareVersion: clean(raw.softwareVersion ?? raw.version_logiciel) || null,
+  })
+}
+
 function parseXml(text) {
   const parser = new DOMParser()
   const doc = parser.parseFromString(text, 'application/xml')
@@ -23,6 +39,22 @@ function parseXml(text) {
 
   const dpeNumber = childText(doc.documentElement, 'numero_dpe') ||
     clean(doc.querySelector('numero_dpe')?.textContent)
+
+  const administratif = doc.querySelector('administratif')
+  const diagnostiqueurNode = administratif?.querySelector(':scope > diagnostiqueur') || administratif?.querySelector('diagnostiqueur')
+  const diagnosticDate =
+    childText(administratif, 'date_visite_diagnostiqueur') ||
+    childText(administratif, 'date_etablissement_dpe') ||
+    null
+  const diagnostician = normalizeDiagnostician({
+    nom_diagnostiqueur: childText(diagnostiqueurNode, 'nom_diagnostiqueur'),
+    prenom_diagnostiqueur: childText(diagnostiqueurNode, 'prenom_diagnostiqueur'),
+    entreprise_diagnostiqueur: childText(diagnostiqueurNode, 'entreprise_diagnostiqueur'),
+    numero_certification_diagnostiqueur: childText(diagnostiqueurNode, 'numero_certification_diagnostiqueur'),
+    organisme_certificateur: childText(diagnostiqueurNode, 'organisme_certificateur'),
+    usr_logiciel_id: childText(diagnostiqueurNode, 'usr_logiciel_id'),
+    version_logiciel: childText(diagnostiqueurNode, 'version_logiciel'),
+  })
 
   const justifications = xmlItems(doc, 'justificatif_collection > justificatif, justificatif_collection justificatif')
     .map(node => ({
@@ -48,6 +80,8 @@ function parseXml(text) {
   return Object.freeze({
     sourceKind: 'XML_DPE_COMPLET',
     dpeNumber: dpeNumber || null,
+    diagnosticDate,
+    diagnostician,
     technicalItems: Object.freeze(technicalItems),
     justifications: Object.freeze(justifications),
   })
@@ -55,6 +89,11 @@ function parseXml(text) {
 
 function parseJson(text) {
   const data = JSON.parse(text)
+  const diagnostician = normalizeDiagnostician(data?.administratif?.diagnostiqueur || {})
+  const diagnosticDate =
+    clean(data?.administratif?.date_visite_diagnostiqueur) ||
+    clean(data?.administratif?.date_etablissement_dpe) ||
+    null
   const ficheCollection = asArray(data?.fiche_technique_collection?.fiche_technique)
   const technicalItems = []
 
@@ -80,6 +119,8 @@ function parseJson(text) {
   return Object.freeze({
     sourceKind: 'JSON_DPE_COMPLET',
     dpeNumber: clean(data?.numero_dpe) || null,
+    diagnosticDate,
+    diagnostician,
     technicalItems: Object.freeze(technicalItems),
     justifications: Object.freeze(justifications),
   })

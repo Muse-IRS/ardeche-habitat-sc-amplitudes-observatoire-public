@@ -1,7 +1,7 @@
 import { normalizeCertificateNumber } from '../diagnostician-cert/core.js'
 
 export const DPE_AUTHOR_VERIFICATION_CONTRACT = 'DPE_AUTHOR_VERIFICATION_CORE_V1'
-export const DPE_AUTHOR_VERIFICATION_VERSION = '0.1.0'
+export const DPE_AUTHOR_VERIFICATION_VERSION = '0.2.0'
 
 const FIELDS = Object.freeze({
   fullName: ['nom_prenom_diagnostiqueur','diagnostiqueur','nom_prenom_operateur'],
@@ -32,6 +32,30 @@ export function extractAuthorSource(row={}){
   })
 }
 
+export function extractAuthorFromFullDpe(parsed = {}) {
+  const d = parsed?.diagnostician || {}
+  const fullName = hasValue(d.fullName)
+    ? String(d.fullName).trim()
+    : [d.firstName, d.lastName].filter(hasValue).join(' ').trim()
+
+  const present = [fullName, d.certificateNumber, d.company, d.certificationBody].filter(hasValue).length
+  return Object.freeze({
+    fullName: fullName || null,
+    certificateNumber: normalizeCertificateNumber(d.certificateNumber) || null,
+    company: hasValue(d.company) ? String(d.company).trim() : null,
+    certificationBody: hasValue(d.certificationBody) ? String(d.certificationBody).trim() : null,
+    ademeDiagnosticianId: null,
+    diagnosticDate: parsed?.diagnosticDate || null,
+    sourceState: present ? 'ADEME_FULL_DPE' : 'IDENTITY_NOT_AVAILABLE_IN_FULL_DPE',
+  })
+}
+
+export function resolveAuthorSource(row = {}, parsed = null) {
+  const full = parsed ? extractAuthorFromFullDpe(parsed) : null
+  if (full && full.sourceState === 'ADEME_FULL_DPE') return full
+  return extractAuthorSource(row)
+}
+
 export function comparisonState(items, key){
   const vals=items.map(x=>x?.[key]).filter(hasValue).map(norm)
   if(!vals.length || vals.length !== items.length) return 'INDETERMINE'
@@ -39,13 +63,14 @@ export function comparisonState(items, key){
 }
 
 export function compareAuthorRecords(items=[]){
+  const source=items.map(x=>x?.sourceRecord || null)
   const verified=items.map(x=>x?.verifiedRecord || null)
   return Object.freeze([
-    Object.freeze({key:'fullName',label:'Diagnostiqueur',status:comparisonState(verified,'fullName'),values:verified.map(x=>x?.fullName||null)}),
-    Object.freeze({key:'company',label:'Société',status:comparisonState(verified,'company'),values:verified.map(x=>x?.company||null)}),
-    Object.freeze({key:'certificateNumber',label:'N° certificat',status:comparisonState(verified,'certificateNumber'),values:verified.map(x=>x?.certificateNumber||null)}),
-    Object.freeze({key:'certificationBody',label:'Organisme certificateur',status:comparisonState(verified,'certificationBody'),values:verified.map(x=>x?.certificationBody||null)}),
-    Object.freeze({key:'validOnDiagnosticDate',label:'Certification valide à la date du DPE',status:comparisonState(verified,'validOnDiagnosticDate'),values:verified.map(x=>x?.validOnDiagnosticDate ?? null)}),
+    Object.freeze({key:'fullName',label:'Diagnostiqueur ADEME',status:comparisonState(source,'fullName'),values:source.map(x=>x?.fullName||null)}),
+    Object.freeze({key:'company',label:'Société ADEME',status:comparisonState(source,'company'),values:source.map(x=>x?.company||null)}),
+    Object.freeze({key:'certificateNumber',label:'N° certificat ADEME',status:comparisonState(source,'certificateNumber'),values:source.map(x=>x?.certificateNumber||null)}),
+    Object.freeze({key:'certificationBody',label:'Organisme certificateur ADEME',status:comparisonState(source,'certificationBody'),values:source.map(x=>x?.certificationBody||null)}),
+    Object.freeze({key:'validOnDiagnosticDate',label:'Certification MADI valide à la date du DPE',status:comparisonState(verified,'validOnDiagnosticDate'),values:verified.map(x=>x?.validOnDiagnosticDate ?? null)}),
   ])
 }
 
@@ -59,6 +84,7 @@ export function describeAuthorVerificationCore(){
       'SAME_COMPANY_IS_NOT_SAME_AUTHOR',
       'MADI_MATCH_IS_NOT_PROOF_OF_DPE_AUTHORSHIP',
       'MISSING_OPEN_DATA_IDENTITY_IS_NOT_AUTHOR_ABSENCE',
+      'FULL_DPE_IDENTITY_IS_ADEME_DECLARATION_NOT_MATERIAL_AUTHORSHIP_PROOF',
     ])
   })
 }

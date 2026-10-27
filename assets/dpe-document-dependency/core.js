@@ -1,5 +1,5 @@
 export const DPE_DOCUMENT_DEPENDENCY_CONTRACT = 'DPE_DOCUMENT_DEPENDENCY_CORE_V1'
-export const DPE_DOCUMENT_DEPENDENCY_VERSION = '0.1.0'
+export const DPE_DOCUMENT_DEPENDENCY_VERSION = '0.2.0'
 
 export const INVENTORY_COMPLETENESS = Object.freeze([
   'COMPLETE',
@@ -25,19 +25,63 @@ export function parseSourceRefs(value) {
   return Object.freeze([...new Set(refs)])
 }
 
+export function inventoryFromFullDpe(parsed = {}) {
+  const descriptors = []
+  for (const item of parsed?.justifications || []) {
+    const type = clean(item?.enum_type_justificatif_id || item?.typeId)
+    const description = clean(item?.description)
+    if (type || description) {
+      descriptors.push({
+        kind: 'DECLARED_DESCRIPTOR',
+        label: ['JUSTIFICATIF', type ? 'TYPE ' + type : null, description || null].filter(Boolean).join(' · '),
+      })
+    }
+  }
+  for (const item of parsed?.technicalItems || []) {
+    const detail = clean(item?.detail_origine_donnee || item?.originDetail)
+    if (detail) {
+      descriptors.push({
+        kind: 'DECLARED_DESCRIPTOR',
+        label: 'ORIGINE · ' + detail,
+      })
+    }
+  }
+  return Object.freeze({
+    dpeNumber: clean(parsed?.dpeNumber).toUpperCase() || null,
+    sourceRefs: Object.freeze(descriptors.map(item => item.label)),
+    sourceItems: Object.freeze(descriptors),
+    completeness: 'COMPLETE',
+    scope: 'ADEME_FULL_DPE_DECLARED_METADATA',
+  })
+}
+
 export function normalizeInventory({
   dpeNumber,
   sourceRefs,
+  sourceItems,
   completeness = 'UNKNOWN',
+  scope = null,
 } = {}) {
   const normalizedCompleteness = INVENTORY_COMPLETENESS.includes(completeness)
     ? completeness
     : 'UNKNOWN'
 
+  const normalizedRefs = parseSourceRefs(sourceRefs)
+  const normalizedItems = Array.isArray(sourceItems)
+    ? sourceItems
+        .map(item => Object.freeze({
+          kind: clean(item?.kind).toUpperCase() || 'SPECIFIC_REFERENCE',
+          label: normalizeSourceRef(item?.label),
+        }))
+        .filter(item => item.label)
+    : normalizedRefs.map(label => Object.freeze({kind:'SPECIFIC_REFERENCE',label}))
+
   return Object.freeze({
     dpeNumber: clean(dpeNumber).toUpperCase() || null,
-    sourceRefs: parseSourceRefs(sourceRefs),
+    sourceRefs: Object.freeze(normalizedItems.map(item => item.label)),
+    sourceItems: Object.freeze(normalizedItems),
     completeness: normalizedCompleteness,
+    scope: clean(scope) || null,
   })
 }
 
@@ -55,10 +99,18 @@ export function compareDependency(aInput, bInput) {
   const b = normalizeInventory(bInput)
   const sharedRefs = intersection(a.sourceRefs, b.sourceRefs)
   const knownUnion = union(a.sourceRefs, b.sourceRefs)
+  const itemA = new Map(a.sourceItems.map(item => [item.label, item.kind]))
+  const itemB = new Map(b.sourceItems.map(item => [item.label, item.kind]))
+  const sharedSpecific = sharedRefs.filter(ref =>
+    itemA.get(ref) === 'SPECIFIC_REFERENCE' && itemB.get(ref) === 'SPECIFIC_REFERENCE'
+  )
+  const sharedDescriptors = sharedRefs.filter(ref => !sharedSpecific.includes(ref))
 
   let state = 'INDETERMINATE'
-  if (sharedRefs.length) {
+  if (sharedSpecific.length) {
     state = 'SHARED_SOURCE_REFERENCE_ESTABLISHED'
+  } else if (sharedDescriptors.length) {
+    state = 'SHARED_DECLARED_DESCRIPTOR'
   } else if (a.completeness === 'COMPLETE' && b.completeness === 'COMPLETE') {
     state = 'NO_SHARED_SOURCE_IDENTIFIED'
   }
@@ -72,6 +124,8 @@ export function compareDependency(aInput, bInput) {
     dpeB: b.dpeNumber,
     state,
     sharedRefs: Object.freeze(sharedRefs),
+    sharedSpecificRefs: Object.freeze(sharedSpecific),
+    sharedDeclaredDescriptors: Object.freeze(sharedDescriptors),
     sharedCount: sharedRefs.length,
     knownUnionCount: knownUnion.length,
     knownSharedRatio,
@@ -83,6 +137,7 @@ export function compareDependency(aInput, bInput) {
       'IDENTICAL_VALUE_IS_NOT_PROOF_OF_SHARED_SOURCE',
       'DIFFERENT_VALUE_IS_NOT_PROOF_OF_INDEPENDENT_SOURCE',
       'USER_DECLARED_SOURCE_REF_IS_NOT_DOCUMENT_AUTHENTICITY_PROOF',
+      'SHARED_DECLARED_DESCRIPTOR_IS_NOT_SAME_DOCUMENT',
     ]),
   })
 }
@@ -144,6 +199,7 @@ export function describeDocumentDependencyCore() {
       'IDENTICAL_VALUE_IS_NOT_PROOF_OF_SHARED_SOURCE',
       'DIFFERENT_VALUE_IS_NOT_PROOF_OF_INDEPENDENT_SOURCE',
       'SOURCE_REFERENCE_IS_NOT_SOURCE_AUTHENTICITY_PROOF',
+      'SHARED_DECLARED_DESCRIPTOR_IS_NOT_SAME_DOCUMENT',
     ]),
   })
 }
