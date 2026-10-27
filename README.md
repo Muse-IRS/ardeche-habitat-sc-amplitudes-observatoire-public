@@ -111,3 +111,29 @@ TRACE != FACT
 ```
 
 The core performs no network request and no persistence. Domain repositories should import it through a thin adapter instead of duplicating or redefining the epistemic rules.
+
+
+## Simulation 3CL après travaux
+
+Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.1.0`.
+
+- scenario core: `public/assets/dpe-3cl-simulator/core.js`;
+- Open3CL provider: `public/assets/dpe-3cl-simulator/open3cl-provider.js`;
+- documentation: `public/assets/dpe-3cl-simulator/README.md`;
+- public application: `public/dpe/simulation-3cl/`.
+
+Current engine provider is pinned to `@open3cl/engine 1.9.1` (MIT) and loads lazily from jsDelivr after explicit user action.
+
+V0.1 supports envelope scenarios by direct U-values for walls, upper floor / roof, lower floor and windows. Heating, ECS, ventilation and generator replacement are intentionally deferred until their mappings are verified.
+
+```text
+BASELINE XML/JSON
+ -> OPEN3CL
+ -> EXPLICIT SCENARIO PATCHES
+ -> OPEN3CL RECALCULATION
+ -> BEFORE / AFTER
+ -> LOCAL JSON REPORT
+
+PROJECTION != REGULATORY_DPE
+SIMULATED_INPUT != OBSERVED_STATE
+```

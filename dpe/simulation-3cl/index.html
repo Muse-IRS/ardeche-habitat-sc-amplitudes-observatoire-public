@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="index,follow">
+  <meta name="referrer" content="no-referrer">
+  <title>Simulation 3CL après travaux — Observatoire public</title>
+  <meta name="description" content="Calcul local 3CL-DPE et projection informative après travaux à partir d'un XML ou JSON ADEME, sans compte et sans upload du fichier.">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/dpe/simulation-3cl/">
+  <link rel="stylesheet" href="../../assets/styles.css">
+  <style>
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+    body{overflow-x:hidden}
+    .sim-stack{display:grid;gap:22px;padding-top:34px;padding-bottom:64px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);min-width:0}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .field{display:grid;gap:7px;min-width:0}.field label{font-weight:700}
+    .field input{width:100%;min-width:0;max-width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.button,button{display:inline-block;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer}.button.secondary{background:#fff;color:var(--accent)}
+    .status{color:var(--muted)}
+    .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+    .metric{border:1px solid var(--line);border-radius:12px;padding:16px;background:#fff;min-width:0}.metric strong{display:block;font-size:1.45rem;color:var(--green);overflow-wrap:anywhere}.metric span{color:var(--muted)}
+    .table-scroll{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.audit-table{width:100%;border-collapse:collapse;background:#fff}.audit-table th,.audit-table td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}.audit-table th{background:#eef5f1}
+    .mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;overflow-wrap:anywhere}
+    .callout{background:#eef3f8;border-left:4px solid var(--accent);padding:12px 16px;border-radius:0 10px 10px 0}
+    .lock{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}
+    @media(max-width:800px){.form-grid,.result-grid{grid-template-columns:1fr}.panel{padding:16px}}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">3CL-DPE 2021 · projection informative</p>
+  <h1>Simulation après travaux</h1>
+  <p class="lead">Charger localement un DPE XML ou JSON, recalculer sa situation de référence, modifier des paramètres d’enveloppe puis comparer le résultat avant/après — sans compte, sans paiement et sans envoi du fichier à Muse-IRS.</p>
+  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Calcul local</span><span>Open3CL 1.9.1</span></div>
+</div></header>
+
+<main class="wrap sim-stack">
+  <section class="panel">
+    <h2>1 — Charger le DPE complet</h2>
+    <p>Utiliser un fichier XML ADEME ou un JSON conforme à la structure DPE. Le fichier est lu par le navigateur. Au premier calcul, le moteur Open3CL 1.9.1 est chargé depuis jsDelivr ; le fichier DPE n’est pas envoyé à ce CDN par cette application.</p>
+    <div class="field">
+      <label for="source-file">Fichier DPE XML ou JSON</label>
+      <input id="source-file" type="file" accept=".xml,.json,text/xml,application/xml,application/json">
+    </div>
+    <div class="actions"><button id="calculate-baseline" type="button">Calculer la référence 3CL</button><a class="button secondary" href="../">Retour au module DPE</a></div>
+    <p id="source-status" class="status" role="status" aria-live="polite">Aucun fichier chargé.</p>
+  </section>
+
+  <section id="baseline-panel" class="panel" hidden>
+    <p class="eyebrow">Référence recalculée</p>
+    <h2>2 — Situation avant travaux</h2>
+    <div id="baseline-results" class="result-grid"></div>
+    <p id="engine-status" class="status"></p>
+  </section>
+
+  <section id="scenario-panel" class="panel" hidden>
+    <p class="eyebrow">Hypothèses locales</p>
+    <h2>3 — Définir le scénario après travaux</h2>
+    <p>Les valeurs laissées vides conservent l’entrée d’origine. Les valeurs saisies remplacent toutes les parois de la catégorie correspondante dans le scénario.</p>
+    <div class="form-grid">
+      <div class="field"><label for="wall-u">Murs — U après travaux (W/m².K)</label><input id="wall-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,25"></div>
+      <div class="field"><label for="roof-u">Toiture / plancher haut — U (W/m².K)</label><input id="roof-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,18"></div>
+      <div class="field"><label for="floor-u">Plancher bas — U (W/m².K)</label><input id="floor-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,30"></div>
+      <div class="field"><label for="window-uw">Fenêtres / portes-fenêtres — Uw (W/m².K)</label><input id="window-uw" type="number" min="0.3" max="8" step="0.01" inputmode="decimal" placeholder="ex. 1,30"></div>
+    </div>
+    <div class="actions"><button id="run-scenario" type="button">Recalculer après travaux</button><button id="reset-scenario" type="button" class="button secondary">Réinitialiser</button></div>
+    <p id="scenario-status" class="status" role="status" aria-live="polite"></p>
+  </section>
+
+  <section id="projection-panel" class="panel" hidden>
+    <p class="eyebrow">Comparaison avant / après</p>
+    <h2>4 — Projection 3CL</h2>
+    <div id="projection-results" class="result-grid"></div>
+    <h3>Modifications appliquées au scénario</h3>
+    <div class="table-scroll"><table class="audit-table"><thead><tr><th>Champ</th><th>Avant</th><th>Après</th><th>Statut</th></tr></thead><tbody id="changes-body"></tbody></table></div>
+    <div class="actions"><button id="export-report" type="button" class="button secondary">Exporter le rapport (.json)</button></div>
+  </section>
+
+  <section class="panel">
+    <h2>Frontière réglementaire</h2>
+    <div class="callout">
+      <p><strong>Cette projection n’est pas un DPE réglementaire.</strong> Elle utilise un moteur open source implémentant 3CL-DPE 2021 pour recalculer des hypothèses. Les logiciels qui établissent officiellement des DPE relèvent d’une procédure de validation spécifique.</p>
+    </div>
+    <p class="lock">PROJECTION ≠ DPE RÉGLEMENTAIRE<br>HYPOTHÈSE SIMULÉE ≠ ÉTAT OBSERVÉ<br>CALCUL ≠ VISITE PHYSIQUE</p>
+    <p>V0.1 : enveloppe uniquement. Chauffage, ECS, ventilation, générateurs multiples et remplacement d’équipements seront ajoutés après vérification de leurs mappings réglementaires.</p>
+  </section>
+</main>
+
+<footer><div class="wrap">Muse-IRS · Observatoire public · Simulation 3CL · 2026</div></footer>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
