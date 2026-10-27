@@ -92,3 +92,22 @@ Projet documentaire indépendant, sans affiliation avec Ardèche Habitat, SC Amp
 ## Traitement ADEME portable
 
 Le module public DPE repose sur le contrat `DPE_ADEME_CORE_V1 v1.1.0` : recherche par numéro, recherche par adresse + code postal, regroupement par identité BAN/adresse, déduplication par numéro DPE, tri temporel, comparaison `CONVERGENCE | DIVERGENCE | INDETERMINE` et export CSV local. Le navigateur interroge directement l'open data ADEME ; aucun secret d'API protégée n'est exposé.
+
+
+## Asset Identity Core
+
+Portable public contract: `ASSET_IDENTITY_CORE_V1 v1.0.0`.
+
+- generic core: `public/assets/asset-identity/core.js`;
+- housing adapter: `public/assets/asset-identity/housing-adapter.js`;
+- reuse notes: `public/assets/asset-identity/README.md`;
+- public application: `public/identite-logement/`.
+
+Central lock:
+
+```text
+DOCUMENT_ASSERTS_EVENT != EVENT_OCCURRED
+TRACE != FACT
+```
+
+The core performs no network request and no persistence. Domain repositories should import it through a thin adapter instead of duplicating or redefining the epistemic rules.
