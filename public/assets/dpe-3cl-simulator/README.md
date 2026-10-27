@@ -4,7 +4,7 @@ Public reusable layer for local 3CL calculation and after-works projections.
 
 ## Contracts
 
-- `DPE_3CL_SCENARIO_CORE_V1 v0.2.0`
+- `DPE_3CL_SCENARIO_CORE_V1 v0.3.0`
 - Open3CL provider pinned to `@open3cl/engine 1.9.1`
 
 ## Boundary
@@ -23,7 +23,7 @@ No account, no payment and no XML upload to Muse-IRS.
 
 The current provider lazily loads the MIT-licensed Open3CL engine from jsDelivr only after an explicit calculation action. This downloads executable code from a third-party CDN; the local DPE file itself is not transmitted by this module.
 
-## V0.2 scenario scope
+## V0.3 scenario scope
 
 Supported deterministic envelope scenarios:
 
@@ -53,7 +53,18 @@ Unsupported topologies are refused explicitly. This includes multi-generator hea
 TOPOLOGY_REFUSAL = VALID_RESULT
 ```
 
-Ventilation, photovoltaic systems and complex collective/multi-generator replacements remain intentionally outside v0.2.
+Supported guarded ventilation presets require exactly one ventilation object:
+
+| Preset | Open3CL mapping |
+|---|---|
+| VMC simple flux autoréglable après 2012 | type `6`, `ventilation_post_2012 = 1` |
+| VMC simple flux Hygro A après 2012 | type `9`, `ventilation_post_2012 = 1` |
+| VMC simple flux Hygro B après 2012 | type `15`, `ventilation_post_2012 = 1` |
+| VMC double flux individuelle avec échangeur à partir de 2013 | type `20`, `ventilation_post_2012 = 1` |
+
+The scenario clears the ventilation debit table reference and product reference before recalculation, while retaining envelope permeability fields such as q4pa.
+
+Collective systems, cascades, multi-generator systems, multiple ventilation objects, photovoltaic systems and other complex replacements remain detected but are not simplified automatically in v0.3.
 
 ## Epistemic locks
 
@@ -79,3 +90,21 @@ Synthetic contract checks cover:
 - a two-generator heating topology is refused.
 
 These checks validate the scenario transformation contract. They do not replace an end-to-end regulatory validation of Open3CL itself.
+
+
+## V0.3 topology inspection
+
+The core reports:
+
+- heating installation count;
+- heating generator count;
+- ECS installation count;
+- ECS generator count;
+- ventilation object count;
+- simple-heating / simple-ECS / simple-mixed / simple-ventilation eligibility.
+
+```text
+COMPLEX_TOPOLOGY_DETECTED
+!=
+SAFE_TO_SIMPLIFY
+```
