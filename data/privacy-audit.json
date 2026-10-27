@@ -79,5 +79,13 @@
     "dpe_address_sent_to_directory": false,
     "persistent_application_storage": false,
     "purpose": "professional certification verification and cross-DPE author comparison"
+  },
+  "dpe_document_dependency_graph": {
+    "trigger": "explicit local user input",
+    "input": "documentary source references and inventory completeness per DPE",
+    "network_request": false,
+    "persistent_application_storage": false,
+    "export": "local JSON on explicit user action",
+    "purpose": "make shared documentary dependencies visible without inferring independence"
   }
 }
