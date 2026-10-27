@@ -30,8 +30,33 @@
     .status{color:var(--muted);margin-top:12px}
     details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}details summary{cursor:pointer;font-weight:700}
     .dpe-nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.dpe-nav a{color:var(--accent);font-weight:700;text-decoration:none}
-    .table-scroll{overflow-x:auto;margin:14px 0}.dpe-building-table,.dpe-comparison-table{width:100%;border-collapse:collapse;background:#fff}.dpe-building-table th,.dpe-building-table td,.dpe-comparison-table th,.dpe-comparison-table td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}.dpe-building-table th,.dpe-comparison-table th{background:#eef5f1;color:var(--green)}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.dpe-label{font-weight:800}.comparison-state{font-size:.78rem;font-weight:800;white-space:nowrap}.state-convergence{color:#16633f}.state-divergence{color:#8a4d13}.state-indetermine{color:#5b6470}
-    @media(max-width:800px){.summary-grid,.principle-grid{grid-template-columns:1fr}.platform-formula{align-items:flex-start}}
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%;max-width:100%;overflow-x:hidden}
+    body{max-width:100%;overflow-x:hidden}
+    .dpe-stack,.dpe-stack>*,
+    .panel,.result-panel,
+    .summary-grid,.summary-grid>div,
+    .principle-grid,.principle-grid>article,
+    .content-stack,details,details>*,
+    .platform-formula,.platform-formula>*,
+    #dpe-fields-container,#dpe-fields-container>*{min-width:0;max-width:100%}
+    .summary-grid dd,.muted,.help,details,code,.mono,.platform-formula strong,.platform-formula span{overflow-wrap:anywhere;word-break:break-word}
+    .field input{min-width:0;max-width:100%}
+    .table-scroll{width:100%;max-width:100%;min-width:0;overflow-x:auto;-webkit-overflow-scrolling:touch;margin:14px 0}
+    .dpe-building-table,.dpe-comparison-table{width:100%;border-collapse:collapse;background:#fff}
+    .dpe-building-table th,.dpe-building-table td,.dpe-comparison-table th,.dpe-comparison-table td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}
+    .dpe-building-table th,.dpe-comparison-table th{background:#eef5f1;color:var(--green)}
+    .mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+    .dpe-label{font-weight:800}
+    .comparison-state{font-size:.78rem;font-weight:800;white-space:nowrap}
+    .state-convergence{color:#16633f}.state-divergence{color:#8a4d13}.state-indetermine{color:#5b6470}
+    @media(max-width:800px){
+      .summary-grid,.principle-grid{grid-template-columns:1fr}
+      .panel,.result-panel{padding:16px}
+      .platform-formula{align-items:flex-start;font-size:.92rem}
+      .platform-formula strong,.platform-formula span{max-width:100%;overflow-wrap:anywhere;word-break:break-word}
+      .actions>*{max-width:100%}
+      .dpe-building-table,.dpe-comparison-table{font-size:.88rem}
+    }
   </style>
 </head>
 <body>
@@ -111,7 +136,8 @@
     <dl id="dpe-summary" class="summary-grid"></dl>
     <div class="actions">
       <a id="xlsx-link" class="button secondary" href="#" target="_blank" rel="noopener noreferrer" hidden>Télécharger la ligne ADEME (.xlsx)</a>
-      <button id="same-address-button" type="button" class="button secondary">Voir les DPE de la même adresse</button>\n      <a id="identity-link" class="button secondary" href="../identite-logement/" hidden>Ouvrir la carte d’identité technique</a>
+      <button id="same-address-button" type="button" class="button secondary">Voir les DPE de la même adresse</button>
+      <a id="identity-link" class="button secondary" href="../identite-logement/" hidden>Ouvrir la carte d’identité technique</a>
     </div>
     <details id="address-details" hidden>
       <summary>Afficher l’adresse complète renvoyée par la source publique</summary>
