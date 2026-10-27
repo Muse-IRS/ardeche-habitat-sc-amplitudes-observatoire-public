@@ -1,6 +1,6 @@
 {
   "schema_version": "1.0",
-  "observed_at": "2026-09-20",
+  "observed_at": "2026-10-27",
   "scope": "public application code served by Muse-IRS/ardeche-habitat-sc-amplitudes-observatoire-public",
   "status": "PUBLIC_SELF_AUDIT",
   "analytics": {
@@ -61,5 +61,15 @@
       "values_read_by_demo": false,
       "cross_origin_storage_access": false
     }
+  },
+  "dpe_3cl_simulator": {
+    "route": "/dpe/simulation-3cl/",
+    "source_file_processing": "browser-local-only",
+    "raw_dpe_upload_to_muse_irs": false,
+    "engine": "Open3CL 1.9.1",
+    "engine_code_request": "https://cdn.jsdelivr.net/npm/@open3cl/engine@1.9.1/+esm",
+    "trigger": "explicit user calculation action",
+    "persistent_application_storage": false,
+    "local_report_export": "explicit-user-action"
   }
 }
