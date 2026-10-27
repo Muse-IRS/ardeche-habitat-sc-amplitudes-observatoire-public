@@ -1,4 +1,4 @@
-export const DPE_ADEME_CORE_VERSION = '1.1.0';
+export const DPE_ADEME_CORE_VERSION = '1.1.1';
 export const DPE_ADEME_CONTRACT = 'DPE_ADEME_CORE_V1';
 
 export const DPE_PATTERN = /^[0-9A-Z]{13}$/;
@@ -113,7 +113,7 @@ export function buildingIdentity(row = {}) {
 export function rowMatchesStreetNumber(row = {}, streetNumber) {
   if (!streetNumber) return false;
   const value = normalizeAddressQuery(row.adresse_ban || row.adresse_brut || '').toLowerCase();
-  const escaped = String(streetNumber).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\export function isHistoricalDataset(dataset) {');
+  const escaped = String(streetNumber).replace(/[.*+?^$\{\}()|[\]\\]/g, '\\  const escaped = String(streetNumber).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\export function isHistoricalDataset(dataset) {');');
   return new RegExp('^' + escaped + '(?:\\s|,|-|/|$)', 'i').test(value);
 }
 
