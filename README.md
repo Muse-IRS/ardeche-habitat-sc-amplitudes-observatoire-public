@@ -53,6 +53,7 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 - **Schéma public équipement / événements** : `public/data/ardeche-habitat-vie-reelle-equipement-schema.csv`
 - **Traçabilité publique du bâti — cas pilotes 2000–2015 + Résidence Peyrouse + couche parcellaire/DVF** : `public/patrimoine-tracabilite-batiments.html`
 - **Manifeste public de cette page** : `public/data/patrimoine-tracabilite-batiments.yml`
+- **Recherche DPE par adresse / immeuble — comparaison open data ADEME** : `public/dpe/`
 - **Offres Ardèche Habitat — DPE, GES et qualité des données** : `public/ardeche-habitat-offres-logements-dpe.html`
 - **Manifeste public des offres / DPE** : `public/data/ardeche-habitat-offres-logements-dpe.yml`
 - **Contester sans perdre la preuve — méthode documentaire publique** : `public/information/contester-sans-perdre-la-preuve.html`
@@ -86,3 +87,8 @@ Projet documentaire indépendant, sans affiliation avec Ardèche Habitat, SC Amp
 - Code et composants techniques : MIT.
 - Rédactions et données originales produites par le projet : CC BY 4.0.
 - Les documents et contenus tiers restent soumis à leurs droits propres.
+
+
+## Traitement ADEME portable
+
+Le module public DPE repose sur le contrat `DPE_ADEME_CORE_V1 v1.1.0` : recherche par numéro, recherche par adresse + code postal, regroupement par identité BAN/adresse, déduplication par numéro DPE, tri temporel, comparaison `CONVERGENCE | DIVERGENCE | INDETERMINE` et export CSV local. Le navigateur interroge directement l'open data ADEME ; aucun secret d'API protégée n'est exposé.

@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Comprendre mon DPE — Observatoire public</title>
-  <meta name="description" content="Retrouver et comprendre un DPE public ADEME, y compris les méthodes historiques antérieures à juillet 2021, puis relier les DPE actuels à la méthode 3CL-DPE 2021.">
+  <meta name="description" content="Retrouver un DPE public ADEME par numéro ou adresse, comparer gratuitement les DPE d’un même immeuble, comprendre les données et leur méthode de calcul.">
   <meta name="robots" content="index,follow,max-image-preview:large">
   <meta name="referrer" content="no-referrer">
   <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/dpe/">
@@ -30,6 +30,7 @@
     .status{color:var(--muted);margin-top:12px}
     details{margin-top:16px;border-top:1px solid var(--line);padding-top:12px}details summary{cursor:pointer;font-weight:700}
     .dpe-nav{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}.dpe-nav a{color:var(--accent);font-weight:700;text-decoration:none}
+    .table-scroll{overflow-x:auto;margin:14px 0}.dpe-building-table,.dpe-comparison-table{width:100%;border-collapse:collapse;background:#fff}.dpe-building-table th,.dpe-building-table td,.dpe-comparison-table th,.dpe-comparison-table td{border:1px solid var(--line);padding:10px;vertical-align:top;text-align:left}.dpe-building-table th,.dpe-comparison-table th{background:#eef5f1;color:var(--green)}.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.dpe-label{font-weight:800}.comparison-state{font-size:.78rem;font-weight:800;white-space:nowrap}.state-convergence{color:#16633f}.state-divergence{color:#8a4d13}.state-indetermine{color:#5b6470}
     @media(max-width:800px){.summary-grid,.principle-grid{grid-template-columns:1fr}.platform-formula{align-items:flex-start}}
   </style>
 </head>
@@ -37,8 +38,8 @@
 <header class="hero"><div class="wrap">
     <p class="eyebrow">Outil public · ADEME · diagnostic énergétique</p>
     <h1>Comprendre mon DPE</h1>
-    <p class="lead">Retrouver un DPE dans les jeux publics ADEME, identifier sa génération méthodologique, comprendre les colonnes disponibles et relier ses valeurs au référentiel qui les a effectivement produites.</p>
-    <div class="badges"><span>DPE actuels</span><span>DPE historiques</span><span>3CL-DPE</span><span>Données ADEME</span></div>
+    <p class="lead">Retrouver un DPE dans les jeux publics ADEME, rechercher les DPE d’une même adresse, les comparer sans intermédiaire payant, puis relier les valeurs affichées au référentiel qui les a effectivement produites.</p>
+    <div class="badges"><span>DPE actuels</span><span>Recherche par adresse</span><span>Comparaison immeuble</span><span>3CL-DPE</span><span>Open data ADEME</span></div>
     <nav class="dpe-nav" aria-label="Navigation du module DPE"><a href="../">← Observatoire public</a><a href="../ardeche-habitat-dpe-renovation-2020-2026.html">DPE & rénovation Ardèche Habitat</a><a href="../information/etat-des-lieux-dpe-commissaire-justice.html">État des lieux · DPE · preuve</a></nav>
   </div></header>
 
@@ -47,13 +48,45 @@
     <p class="eyebrow">RGPD local · ce module</p>
     <h2 id="dpe-rgpd-title">Où vont les données dans le module DPE ?</h2>
     <div class="principle-grid rgpd-module-grid">
-      <article><strong>Donnée saisie</strong><span>Numéro de DPE, utilisé pour rechercher une ligne dans les sources publiques ADEME actuelles puis historiques.</span></article>
-      <article><strong>Sources externes</strong><span>Après action sur « Récupérer les données », le navigateur interroge data.ademe.fr pour le DPE puis, lorsque l’auteur est identifiable, tabular-api.data.gouv.fr pour sa certification. Aucun serveur applicatif intermédiaire n’est ajouté par l’observatoire.</span></article>
+      <article><strong>Donnée saisie</strong><span>Numéro de DPE ou adresse avec code postal. L’adresse est utilisée uniquement après action explicite pour rechercher les DPE publiés à cette adresse.</span></article>
+      <article><strong>Sources externes</strong><span>Après action explicite, le navigateur interroge directement data.ademe.fr. Pour un DPE individuel, la certification peut ensuite être contrôlée via tabular-api.data.gouv.fr. Aucun serveur applicatif intermédiaire n’est ajouté.</span></article>
       <article><strong>Affichage</strong><span>Résumé minimisé. Adresse complète seulement après action explicite ; adresse précise et coordonnées masquées dans le dictionnaire détaillé.</span></article>
       <article><strong>Limite</strong><span>Lecture documentaire et pédagogique. Aucun nouveau DPE réglementaire n’est produit et aucune mesure d’audience applicative n’est actuellement chargée par l’observatoire.</span></article>
     </div>
   </section>
 
+
+  <section class="panel" aria-labelledby="address-lookup-title">
+    <p class="eyebrow">Open data ADEME · recherche gratuite par adresse</p>
+    <h2 id="address-lookup-title">Voir les DPE d’un même immeuble</h2>
+    <p>Saisir l’adresse avec son code postal. Le navigateur interroge directement le jeu public ADEME <code>dpe03existant</code>, regroupe les DPE rattachés à la même identité BAN lorsqu’elle existe, puis compare localement leurs caractéristiques.</p>
+    <form id="dpe-address-form">
+      <div class="field full">
+        <label for="dpe-address">Adresse + code postal</label>
+        <input id="dpe-address" name="dpe-address" type="text" autocomplete="street-address" placeholder="15 route … 07370 Commune" aria-describedby="dpe-address-help dpe-address-status">
+        <span id="dpe-address-help" class="help">Le code postal est obligatoire afin de limiter les faux rapprochements entre rues homonymes. Aucune adresse n’est enregistrée par l’observatoire.</span>
+      </div>
+      <div class="actions">
+        <button type="submit">Rechercher les DPE de cette adresse</button>
+        <a class="button secondary" href="https://data.ademe.fr/datasets/dpe03existant" target="_blank" rel="noopener noreferrer">Source open data ADEME</a>
+      </div>
+    </form>
+    <p id="dpe-address-status" class="status" role="status" aria-live="polite">Aucune recherche par adresse effectuée.</p>
+    <div class="callout"><p><strong>Même adresse ≠ même logement.</strong> La comparaison permet d’observer convergences et divergences entre DPE d’un immeuble ; elle ne transforme jamais le DPE voisin en preuve de l’état du logement recherché.</p></div>
+  </section>
+
+  <section id="building-results-panel" class="result-panel" hidden aria-labelledby="building-results-heading">
+    <p class="eyebrow">Comparaison intra-immeuble · traitement local</p>
+    <h2 id="building-results-heading">DPE de la même adresse</h2>
+    <p id="building-results-summary" class="muted"></p>
+    <div id="building-results-table"></div>
+    <h3>Comparaison des données ouvertes</h3>
+    <div id="building-comparison-table"></div>
+    <div class="actions">
+      <button id="building-export-csv" type="button" class="button secondary" hidden>Exporter la comparaison (.csv)</button>
+    </div>
+    <div class="callout"><p><strong>Traitement des récupérations ADEME.</strong> Les lignes sont dédupliquées par numéro DPE, triées dans le temps puis comparées champ par champ. <code>CONVERGENCE</code> signifie seulement que les valeurs publiées sont identiques ; <code>DIVERGENCE</code> qu’elles diffèrent ; <code>INDÉTERMINÉ</code> qu’une valeur manque.</p></div>
+  </section>
 
   <section class="panel" aria-labelledby="lookup-title">
     <p class="eyebrow">Source publique ADEME</p>
@@ -78,6 +111,7 @@
     <dl id="dpe-summary" class="summary-grid"></dl>
     <div class="actions">
       <a id="xlsx-link" class="button secondary" href="#" target="_blank" rel="noopener noreferrer" hidden>Télécharger la ligne ADEME (.xlsx)</a>
+      <button id="same-address-button" type="button" class="button secondary">Voir les DPE de la même adresse</button>
     </div>
     <details id="address-details" hidden>
       <summary>Afficher l’adresse complète renvoyée par la source publique</summary>
@@ -172,7 +206,7 @@
     <h2 id="calculator-status-title">Pourquoi le recalcul complet est-il séparé de la ligne Open Data ?</h2>
     <p>La ligne ADEME accessible ici est une vue synthétique. Pour un DPE depuis juillet 2021, elle suffit pour expliquer les résultats publiés et de nombreuses variables, mais pas nécessairement pour rejouer toutes les équations 3CL composant par composant. Pour un DPE historique, le module ouvre maintenant le référentiel identifié par son nom et sa version avant de déterminer ce qui peut réellement être recomposé.</p>
     <div class="principle-grid">
-      <article><strong>API Open Data ADEME</strong><span>Active ici : recherche actuelle et historique, ligne JSON, schéma des colonnes et export XLSX.</span></article>
+      <article><strong>API Open Data ADEME</strong><span>Active ici : recherche par numéro, recherche par adresse, comparaison intra-immeuble, ligne JSON, schéma des colonnes, export XLSX et export CSV local.</span></article>
       <article><strong>DPE depuis juillet 2021</strong><span>Le XML détaillé est l’entrée adaptée à un rejeu 3CL complet. Il ne doit pas conduire à exposer une clé ou un secret dans une page statique.</span></article>
       <article><strong>DPE avant juillet 2021</strong><span>Le couple méthode/version sélectionne une explication historique ; les valeurs finales permettent de recomposer les classes, mais pas nécessairement tout le moteur qui les a produites.</span></article>
       <article><strong>Comparaison</strong><span>Pour un DPE rejouable, la cible reste : valeur ADEME ↔ valeur recalculée ↔ écart ↔ explication, sans transformer automatiquement un écart en verdict.</span></article>
