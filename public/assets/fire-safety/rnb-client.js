@@ -10,8 +10,7 @@ export function isValidRnbId(value){
 }
 
 function canonical(value){
-  const raw=normalizeRnbId(value).replace(/-/g,'')
-  return raw.length===12 ? raw.slice(0,4)+'-'+raw.slice(4,8)+'-'+raw.slice(8,12) : normalizeRnbId(value)
+  return normalizeRnbId(value).replace(/-/g,'')
 }
 
 export async function fetchRnbBuilding(rnbId){
