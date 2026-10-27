@@ -142,7 +142,7 @@ SIMULATED_INPUT != OBSERVED_STATE
 
 ## DPE author and certification comparison
 
-Reusable contract: `DPE_AUTHOR_VERIFICATION_CORE_V1 v0.1.0`.
+Reusable contract: `DPE_AUTHOR_VERIFICATION_CORE_V1 v0.2.0`.
 
 The building comparison now keeps a separate professional-author axis:
 
@@ -155,7 +155,7 @@ DPE
  -> AUTHOR / COMPANY / CERTIFICATION-BODY COMPARISON
 ```
 
-The current post-2021 ADEME open-data row may not expose the diagnostician identity. Missing identity is therefore preserved as a valid state rather than inferred.
+The current post-2021 ADEME aggregated open-data row may not expose the diagnostician identity. When the full ADEME DPE XML/JSON is supplied locally, the page extracts the diagnostician, company, certificate number and certification body automatically and launches MADI verification without manual re-entry.
 
 ```text
 CERTIFICATE_VALIDITY != DPE_TECHNICAL_CORRECTNESS
@@ -167,9 +167,9 @@ MADI_MATCH != PROOF_OF_DPE_AUTHORSHIP
 
 ## DPE documentary dependency graph
 
-Reusable contract: `DPE_DOCUMENT_DEPENDENCY_CORE_V1 v0.1.0`.
+Reusable contract: `DPE_DOCUMENT_DEPENDENCY_CORE_V1 v0.2.0`.
 
-The intra-building comparison can now build a local graph between DPEs and the documentary references identified as inputs:
+The intra-building comparison now builds the documentary layer automatically from full ADEME DPE payloads when available, using declared justifications and origin metadata:
 
 ```text
 DPE_A -> SOURCE_1
@@ -194,6 +194,7 @@ REPLICATION_DOCUMENTAIRE != CORROBORATION_INDEPENDANTE
 NO_SHARED_SOURCE_IDENTIFIED != PROOF_OF_INDEPENDENCE
 DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION
 SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF
+SHARED_DECLARED_DESCRIPTOR != SAME_DOCUMENT
 ```
 
 The graph is built in memory and can be exported locally as JSON.
