@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>Carte d’identité technique du logement — Observatoire public</title>
+  <meta name="description" content="Carte d’identité technique et documentaire du logement : objet persistant, composants, événements, documents, provenance et relations de preuve.">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/identite-logement/">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .identity-stack{display:grid;gap:22px;padding-top:34px;padding-bottom:64px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow)}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin:0}
+    .summary-grid>div{border-bottom:1px solid var(--line);padding:10px 0}
+    .summary-grid dt{font-weight:700}.summary-grid dd{margin:4px 0 0;color:var(--muted);overflow-wrap:anywhere}
+    .component-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .component-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px}
+    .component-card dl{margin:0}.component-card dt{font-weight:700;margin-top:8px}.component-card dd{margin:2px 0;color:var(--muted)}
+    .table-scroll{overflow-x:auto}.audit-table{width:100%;border-collapse:collapse;background:#fff}.audit-table th,.audit-table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.audit-table th{background:#eef3f8}
+    .field{display:grid;gap:7px}.field input{width:100%;max-width:620px;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button,.button{display:inline-block;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer}.button.secondary{background:#fff;color:var(--accent)}
+    .status{color:var(--muted)}.invariant{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}.formula{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px;border:1px solid var(--line);border-radius:12px;background:#fff}.formula strong{color:var(--accent)}
+    @media(max-width:800px){.summary-grid,.component-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Objet persistant · composants · événements · provenance</p>
+  <h1>Carte d’identité technique du logement</h1>
+  <p class="lead">Le logement devient l’objet central. Le DPE, une intervention, une facture ou un état des lieux deviennent des observations ou des traces datées de cet objet — jamais des substituts automatiques à sa réalité matérielle.</p>
+  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Traitement local</span><span>ASSET_IDENTITY_CORE_V1</span></div>
+</div></header>
+
+<main class="wrap identity-stack">
+  <section class="panel">
+    <h2>Principe</h2>
+    <div class="formula"><strong>LOGEMENT</strong><span>→</span><span>COMPOSANTS</span><span>→</span><span>ÉVÉNEMENTS</span><span>→</span><span>DOCUMENTS</span><span>→</span><span>RELATIONS QUALIFIÉES</span></div>
+    <p>Une voiture ou un avion disposent d’une identité technique persistante alors que leurs composants changent dans le temps. Le même principe est appliqué ici au logement : chaudière, ventilation, fenêtres, isolation, réseaux, diagnostics et interventions sont rattachés à un objet durable et à une temporalité.</p>
+    <p class="invariant">CARTE_D_IDENTITÉ ≠ DOSSIER_DE_DOCUMENTS<br>DOCUMENT_AFFIRME_ÉVÉNEMENT ≠ ÉVÉNEMENT_A_EU_LIEU</p>
+  </section>
+
+  <section class="panel" aria-labelledby="load-title">
+    <p class="eyebrow">Projection DPE · open data ADEME</p>
+    <h2 id="load-title">Construire une première carte depuis un DPE</h2>
+    <form id="identity-form">
+      <div class="field">
+        <label for="identity-dpe">Numéro DPE</label>
+        <input id="identity-dpe" maxlength="13" autocomplete="off" placeholder="1234A1234567B" aria-describedby="identity-status">
+      </div>
+      <div class="actions">
+        <button type="submit">Construire la carte</button>
+        <a class="button secondary" href="../dpe/">Revenir au module DPE</a>
+      </div>
+    </form>
+    <p id="identity-status" class="status" role="status" aria-live="polite">Aucune carte chargée.</p>
+  </section>
+
+  <section id="identity-result" class="panel" hidden>
+    <p class="eyebrow">Identité provisoire · portée DPE</p>
+    <h2>Objet principal</h2>
+    <dl id="identity-summary" class="summary-grid"></dl>
+    <div class="actions"><button id="identity-export" type="button" class="button secondary">Exporter la carte (.json)</button></div>
+  </section>
+
+  <section id="components-panel" class="panel" hidden>
+    <h2>Composants décrits</h2>
+    <p>Ces composants sont <strong>décrits par le DPE</strong>. Ils ne sont pas automatiquement considérés comme observés physiquement par l’observatoire.</p>
+    <div id="components-grid" class="component-grid"></div>
+  </section>
+
+  <section id="relations-panel" class="panel" hidden>
+    <h2>Événements, documents et relations</h2>
+    <div class="table-scroll"><table class="audit-table">
+      <thead><tr><th>De</th><th>Relation</th><th>Vers</th><th>État</th><th>Base</th></tr></thead>
+      <tbody id="relations-body"></tbody>
+    </table></div>
+  </section>
+
+  <section class="panel">
+    <p class="eyebrow">Maïeutique locale · expérience de pensée</p>
+    <h2>Un document affirme qu’un événement a eu lieu</h2>
+    <p>Le test ci-dessous ne stocke rien. Il sépare l’existence de l’affirmation documentaire de l’occurrence matérielle de l’événement.</p>
+    <form id="maieutic-form">
+      <div class="field"><label for="document-label">Document</label><input id="document-label" value="Attestation / bon / rapport"></div>
+      <div class="field"><label for="event-label">Événement affirmé</label><input id="event-label" value="Intervention réalisée"></div>
+      <div class="actions"><button type="submit">Qualifier</button></div>
+    </form>
+    <div id="maieutic-result" class="notice" hidden>
+      <p class="invariant">D AFFIRME E = ÉTABLI<br>E A EU LIEU = INDÉTERMINÉ</p>
+      <p id="maieutic-text"></p>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Pourquoi ce modèle est réutilisable</h2>
+    <div class="grid three">
+      <article class="card"><h3>Cœur générique</h3><p><code>assets/asset-identity/core.js</code> ne contient aucune règle propre au logement. Il gère objets, composants, événements, documents, assertions, observations, provenance et relations.</p></article>
+      <article class="card"><h3>Adaptateur logement</h3><p><code>housing-adapter.js</code> traduit une ligne DPE vers le cœur générique sans modifier les verrous épistémiques.</p></article>
+      <article class="card"><h3>Autres domaines</h3><p>Le même contrat peut être repris pour un véhicule, un avion, une chaudière, un terrain ou tout actif dont l’identité et les événements doivent être traçables.</p></article>
+    </div>
+  </section>
+
+  <section class="notice">
+    <h2>Frontière</h2>
+    <p>La carte générée depuis un DPE est une <strong>identité provisoire au périmètre de la source</strong>. Elle ne remplace ni inspection physique, ni carnet réglementaire, ni expertise. Une trace peut établir qu’une information a été déclarée sans établir que l’événement ou l’état matériel correspondant a existé exactement comme décrit.</p>
+    <p><a href="../information/le-nomisma-de-diogene.html">Voir Le Nomisma de Diogène →</a></p>
+  </section>
+</main>
+
+<footer><div class="wrap">Muse-IRS · Observatoire public · Carte d’identité technique · 2026</div><div class="wrap privacy-links"><a href="../information/">Information</a><a href="../rgpd/">RGPD</a><a href="../privacy.html">Confidentialité</a><a href="../charte-editoriale.html">Charte éditoriale</a></div></footer>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
