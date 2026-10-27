@@ -9,7 +9,7 @@ import {
   searchExistingDpesForRow,
 } from '../assets/dpe-ademe/ademe-client.js'
 import {
-  extractAuthorSource,
+  resolveAuthorSource,
   compareAuthorRecords,
 } from '../assets/dpe-author-verification/core.js'
 import {
@@ -17,7 +17,11 @@ import {
 } from '../assets/diagnostician-cert/tabular-client.js'
 import {
   buildDependencyGraph,
+  inventoryFromFullDpe,
 } from '../assets/dpe-document-dependency/core.js'
+import {
+  parseDpeFullFileText,
+} from '../assets/dpe-data-justification/full-dpe-reader.js'
 
 const addressForm = document.querySelector('#dpe-address-form')
 const addressInput = document.querySelector('#dpe-address')
@@ -40,11 +44,14 @@ const dependencyAnalyzeButton = document.querySelector('#building-dependency-ana
 const dependencyStatus = document.querySelector('#building-dependency-status')
 const dependencyResults = document.querySelector('#building-dependency-results')
 const dependencyExportButton = document.querySelector('#building-dependency-export')
+const fullDpeFilesInput = document.querySelector('#building-full-dpe-files')
+const fullDpeFilesStatus = document.querySelector('#building-full-dpe-files-status')
 
 const referenceDate = new Date().toISOString().slice(0, 10)
 let currentRows = []
 let currentAuthorVerification = []
 let currentDependencyGraph = null
+let currentFullDpeByNumber = new Map()
 
 
 
@@ -61,41 +68,33 @@ function renderDependencyInputs(rows) {
 
   const thead = document.createElement('thead')
   const hr = document.createElement('tr')
-  for (const label of ['DPE', 'Références documentaires connues', 'Complétude de l’inventaire']) appendCell(hr, 'th', label)
+  for (const label of ['DPE', 'Source ADEME', 'Justificatifs déclarés', 'Origines déclarées']) appendCell(hr, 'th', label)
   thead.append(hr)
   table.append(thead)
 
   const tbody = document.createElement('tbody')
-  rows.forEach((row, index) => {
+  rows.forEach(row => {
+    const dpeNumber = normalizeDpeNumber(row.numero_dpe)
+    const parsed = currentFullDpeByNumber.get(dpeNumber) || null
     const tr = document.createElement('tr')
-    appendCell(tr, 'td', normalizeDpeNumber(row.numero_dpe), 'mono')
+    appendCell(tr, 'td', dpeNumber, 'mono')
 
-    const sourceCell = document.createElement('td')
-    const textarea = document.createElement('textarea')
-    textarea.rows = 3
-    textarea.placeholder = 'Ex. PLAN-IMMEUBLE-2023 ; DOC-SYNDIC-01 ; FACTURE-CHAUDIERE-2024'
-    textarea.dataset.dependencySourcesIndex = String(index)
-    textarea.setAttribute('aria-label', 'Références documentaires pour ' + normalizeDpeNumber(row.numero_dpe))
-    sourceCell.append(textarea)
-    tr.append(sourceCell)
+    if (!parsed) {
+      appendCell(tr, 'td', 'Vue open data agrégée')
+      appendCell(tr, 'td', 'Non exposés dans cette vue')
+      appendCell(tr, 'td', 'Non exposées dans cette vue')
+    } else {
+      const justifications = (parsed.justifications || [])
+        .map(item => [item.enum_type_justificatif_id ? 'type ' + item.enum_type_justificatif_id : null, item.description || null].filter(Boolean).join(' · '))
+        .filter(Boolean)
+      const origins = [...new Set((parsed.technicalItems || [])
+        .map(item => String(item.detail_origine_donnee || '').trim())
+        .filter(Boolean))]
 
-    const completenessCell = document.createElement('td')
-    const select = document.createElement('select')
-    select.dataset.dependencyCompletenessIndex = String(index)
-    select.setAttribute('aria-label', 'Complétude des sources pour ' + normalizeDpeNumber(row.numero_dpe))
-    for (const [value, label] of [
-      ['UNKNOWN', 'Inconnue'],
-      ['PARTIAL', 'Partielle'],
-      ['COMPLETE', 'Complète'],
-    ]) {
-      const option = document.createElement('option')
-      option.value = value
-      option.textContent = label
-      select.append(option)
+      appendCell(tr, 'td', parsed.sourceKind || 'DPE complet ADEME')
+      appendCell(tr, 'td', justifications.length ? justifications.join(' ; ') : 'Aucun justificatif déclaré dans le fichier')
+      appendCell(tr, 'td', origins.length ? origins.join(' ; ') : 'Aucun détail d’origine renseigné')
     }
-    completenessCell.append(select)
-    tr.append(completenessCell)
-
     tbody.append(tr)
   })
 
@@ -103,10 +102,10 @@ function renderDependencyInputs(rows) {
   wrapper.append(table)
   dependencyInputs.append(wrapper)
 }
-
 function dependencyStateLabel(state) {
   const labels = {
     SHARED_SOURCE_REFERENCE_ESTABLISHED: 'SOURCE PARTAGÉE ÉTABLIE',
+    SHARED_DECLARED_DESCRIPTOR: 'MÊME DESCRIPTEUR ADEME',
     NO_SHARED_SOURCE_IDENTIFIED: 'AUCUNE SOURCE PARTAGÉE IDENTIFIÉE',
     INDETERMINATE: 'INDÉTERMINÉ',
   }
@@ -116,11 +115,19 @@ function dependencyStateLabel(state) {
 function analyzeDocumentDependencies() {
   if (!currentRows.length) return
 
-  const inventories = currentRows.map((row, index) => ({
-    dpeNumber: normalizeDpeNumber(row.numero_dpe),
-    sourceRefs: document.querySelector('[data-dependency-sources-index="' + index + '"]')?.value || '',
-    completeness: document.querySelector('[data-dependency-completeness-index="' + index + '"]')?.value || 'UNKNOWN',
-  }))
+  const inventories = currentRows.map(row => {
+    const dpeNumber = normalizeDpeNumber(row.numero_dpe)
+    const parsed = currentFullDpeByNumber.get(dpeNumber) || null
+    return parsed
+      ? inventoryFromFullDpe(parsed)
+      : {
+          dpeNumber,
+          sourceRefs: [],
+          sourceItems: [],
+          completeness: 'UNKNOWN',
+          scope: 'ADEME_OPEN_DATA_AGGREGATED',
+        }
+  })
 
   currentDependencyGraph = buildDependencyGraph(inventories)
   dependencyResults.innerHTML = ''
@@ -138,7 +145,7 @@ function analyzeDocumentDependencies() {
 
   const thead = document.createElement('thead')
   const hr = document.createElement('tr')
-  for (const label of ['DPE A', 'DPE B', 'État', 'Sources partagées', 'Part connue partagée']) appendCell(hr, 'th', label)
+  for (const label of ['DPE A', 'DPE B', 'État', 'Descripteurs ADEME communs', 'Part connue partagée']) appendCell(hr, 'th', label)
   thead.append(hr)
   table.append(thead)
 
@@ -161,16 +168,17 @@ function analyzeDocumentDependencies() {
   wrapper.append(table)
   dependencyResults.append(wrapper)
 
-  const sharedPairs = currentDependencyGraph.pairs.filter(pair => pair.sharedCount > 0).length
+  const sharedSpecific = currentDependencyGraph.pairs.filter(pair => pair.sharedSpecificRefs?.length).length
+  const sharedDescriptors = currentDependencyGraph.pairs.filter(pair => pair.sharedDeclaredDescriptors?.length).length
   const indeterminatePairs = currentDependencyGraph.pairs.filter(pair => pair.state === 'INDETERMINATE').length
-  dependencyStatus.textContent =
-    sharedPairs + ' paire(s) avec au moins une référence documentaire commune ; ' +
-    indeterminatePairs + ' paire(s) indéterminée(s). ' +
-    'La part connue partagée décrit uniquement les références renseignées : ce n’est pas une probabilité d’indépendance.'
 
+  dependencyStatus.textContent =
+    sharedSpecific + ' paire(s) avec référence spécifique commune ; ' +
+    sharedDescriptors + ' paire(s) avec descripteur ADEME commun ; ' +
+    indeterminatePairs + ' paire(s) indéterminée(s). ' +
+    'Un même libellé de justificatif (ex. « facture chaudière ») ne démontre pas qu’il s’agit du même document.'
   dependencyExportButton.hidden = false
 }
-
 function exportDependencyGraph() {
   if (!currentDependencyGraph) return
   const blob = new Blob(
@@ -206,51 +214,39 @@ function renderAuthorInputs(rows) {
   table.className = 'dpe-comparison-table'
   const thead = document.createElement('thead')
   const hr = document.createElement('tr')
-  for (const label of ['DPE', 'Date', 'Identité source', 'N° certificat', 'Nom / prénom']) appendCell(hr, 'th', label)
+  for (const label of ['DPE', 'Date', 'Source ADEME', 'Diagnostiqueur', 'Société', 'N° certificat', 'Organisme certificateur']) appendCell(hr, 'th', label)
   thead.append(hr)
   table.append(thead)
 
   const tbody = document.createElement('tbody')
-  rows.forEach((row, index) => {
-    const source = extractAuthorSource(row)
+  rows.forEach(row => {
+    const dpeNumber = normalizeDpeNumber(row.numero_dpe)
+    const parsed = currentFullDpeByNumber.get(dpeNumber) || null
+    const source = resolveAuthorSource(row, parsed)
     const tr = document.createElement('tr')
-    appendCell(tr, 'td', normalizeDpeNumber(row.numero_dpe), 'mono')
-    appendCell(tr, 'td', formatDate(row.date_visite_diagnostiqueur || row.date_etablissement_dpe))
+
+    appendCell(tr, 'td', dpeNumber, 'mono')
+    appendCell(tr, 'td', formatDate(source.diagnosticDate || row.date_visite_diagnostiqueur || row.date_etablissement_dpe))
     appendCell(
       tr,
       'td',
-      source.sourceState === 'IDENTITY_NOT_AVAILABLE_IN_OPEN_DATA_ROW'
-        ? 'Non exposée dans cette ligne open data'
-        : 'Disponible / partielle dans la source'
+      source.sourceState === 'ADEME_FULL_DPE'
+        ? 'DPE complet ADEME'
+        : source.sourceState === 'PARTIAL_OR_AVAILABLE'
+          ? 'Vue open data ADEME'
+          : 'Non exposé dans la source disponible'
     )
-
-    const certCell = document.createElement('td')
-    const certInput = document.createElement('input')
-    certInput.type = 'text'
-    certInput.value = source.certificateNumber || ''
-    certInput.placeholder = 'N° certificat'
-    certInput.dataset.authorCertIndex = String(index)
-    certInput.autocomplete = 'off'
-    certCell.append(certInput)
-    tr.append(certCell)
-
-    const nameCell = document.createElement('td')
-    const nameInput = document.createElement('input')
-    nameInput.type = 'text'
-    nameInput.value = source.fullName || ''
-    nameInput.placeholder = 'Nom Prénom'
-    nameInput.dataset.authorNameIndex = String(index)
-    nameInput.autocomplete = 'off'
-    nameCell.append(nameInput)
-    tr.append(nameCell)
-
+    appendCell(tr, 'td', source.fullName || '—')
+    appendCell(tr, 'td', source.company || '—')
+    appendCell(tr, 'td', source.certificateNumber || '—', 'mono')
+    appendCell(tr, 'td', source.certificationBody || '—')
     tbody.append(tr)
   })
+
   table.append(tbody)
   wrapper.append(table)
   authorInputs.append(wrapper)
 }
-
 function renderAuthorVerification(items) {
   authorResults.innerHTML = ''
   authorComparison.innerHTML = ''
@@ -261,7 +257,7 @@ function renderAuthorVerification(items) {
   table.className = 'dpe-comparison-table'
   const thead = document.createElement('thead')
   const hr = document.createElement('tr')
-  for (const label of ['DPE', 'Diagnostiqueur', 'Société', 'Certificat', 'Organisme', 'Validité', 'À la date du DPE']) appendCell(hr, 'th', label)
+  for (const label of ['DPE', 'Identité ADEME', 'Certificat ADEME', 'Résultat MADI', 'Organisme MADI', 'Validité MADI', 'À la date du DPE']) appendCell(hr, 'th', label)
   thead.append(hr)
   table.append(thead)
 
@@ -269,13 +265,14 @@ function renderAuthorVerification(items) {
   for (const item of items) {
     const tr = document.createElement('tr')
     const record = item.verifiedRecord
+    const source = item.sourceRecord
     appendCell(tr, 'td', item.dpeNumber, 'mono')
-    appendCell(tr, 'td', record?.fullName || '—')
-    appendCell(tr, 'td', record?.company || '—')
-    appendCell(tr, 'td', record?.certificateNumber || '—', 'mono')
+    appendCell(tr, 'td', source?.fullName || source?.company || '—')
+    appendCell(tr, 'td', source?.certificateNumber || '—', 'mono')
+    appendCell(tr, 'td', record?.fullName || item.state || '—')
     appendCell(tr, 'td', record?.certificationBody || '—')
     appendCell(tr, 'td', record ? [formatDate(record.validFrom), formatDate(record.validUntil)].join(' → ') : '—')
-    appendCell(tr, 'td', record ? normalizeBooleanLabel(record.validOnDiagnosticDate) : item.state)
+    appendCell(tr, 'td', record ? normalizeBooleanLabel(record.validOnDiagnosticDate) : 'INDÉTERMINÉ')
     tbody.append(tr)
   }
   table.append(tbody)
@@ -310,20 +307,25 @@ function renderAuthorVerification(items) {
 
 async function verifyBuildingAuthors() {
   if (!currentRows.length) return
-  authorVerifyButton.disabled = true
-  authorStatus.textContent = 'Vérification séquentielle dans l’annuaire public MADI…'
+  if (authorVerifyButton) authorVerifyButton.disabled = true
+  authorStatus.textContent = 'Vérification automatique dans l’annuaire public MADI à partir des identités ADEME disponibles…'
   const items = []
 
-  for (let index = 0; index < currentRows.length; index += 1) {
-    const row = currentRows[index]
-    const source = extractAuthorSource(row)
-    const cert = document.querySelector('[data-author-cert-index="' + index + '"]')?.value?.trim() || source.certificateNumber || ''
-    const name = document.querySelector('[data-author-name-index="' + index + '"]')?.value?.trim() || source.fullName || ''
+  for (const row of currentRows) {
     const dpeNumber = normalizeDpeNumber(row.numero_dpe)
-    const diagnosticDate = String(row.date_visite_diagnostiqueur || row.date_etablissement_dpe || '').slice(0, 10)
+    const parsed = currentFullDpeByNumber.get(dpeNumber) || null
+    const source = resolveAuthorSource(row, parsed)
+    const cert = source.certificateNumber || ''
+    const name = source.fullName || ''
+    const diagnosticDate = String(source.diagnosticDate || row.date_visite_diagnostiqueur || row.date_etablissement_dpe || '').slice(0, 10)
 
     if (!cert && !name) {
-      items.push({ dpeNumber, state: 'IDENTITÉ À RENSEIGNER', verifiedRecord: null })
+      items.push({
+        dpeNumber,
+        state: 'NON EXPOSÉ DANS LA SOURCE ADEME DISPONIBLE',
+        sourceRecord: source,
+        verifiedRecord: null,
+      })
       continue
     }
 
@@ -339,21 +341,66 @@ async function verifyBuildingAuthors() {
         dpeNumber,
         state: record ? 'MADI_MATCH' : 'MADI_NO_MATCH',
         matchMode: found.matchMode,
+        sourceRecord: source,
         verifiedRecord: record,
       })
     } catch (error) {
       console.error(error)
-      items.push({ dpeNumber, state: 'MADI_UNAVAILABLE', verifiedRecord: null })
+      items.push({
+        dpeNumber,
+        state: 'MADI_UNAVAILABLE',
+        sourceRecord: source,
+        verifiedRecord: null,
+      })
     }
   }
 
   currentAuthorVerification = items
   renderAuthorVerification(items)
+  const sourceResolved = items.filter(item => item.sourceRecord?.fullName || item.sourceRecord?.certificateNumber || item.sourceRecord?.company).length
   const matched = items.filter(item => item.verifiedRecord).length
   authorStatus.textContent =
-    matched + ' vérification(s) MADI résolue(s) sur ' + items.length +
-    '. Une correspondance d’annuaire confirme une certification publiée ; elle ne prouve ni l’auteur matériel du DPE ni son exactitude technique.'
-  authorVerifyButton.disabled = false
+    sourceResolved + ' identité(s) professionnelle(s) exposée(s) par les sources ADEME disponibles ; ' +
+    matched + ' contrôle(s) MADI résolu(s). ' +
+    'L’utilisateur n’a aucune identité à saisir : il compare seulement ces données avec ses documents.'
+  if (authorVerifyButton) authorVerifyButton.disabled = false
+}
+async function ingestFullDpeFiles() {
+  const files = [...(fullDpeFilesInput?.files || [])]
+  if (!files.length) {
+    if (fullDpeFilesStatus) fullDpeFilesStatus.textContent = 'Aucun fichier DPE complet sélectionné.'
+    return
+  }
+
+  let parsedCount = 0
+  let matchedCount = 0
+  const errors = []
+
+  for (const file of files) {
+    try {
+      const parsed = parseDpeFullFileText({ name: file.name, text: await file.text() })
+      const dpeNumber = normalizeDpeNumber(parsed.dpeNumber || '')
+      if (!dpeNumber) throw new Error('DPE_NUMBER_MISSING')
+      currentFullDpeByNumber.set(dpeNumber, parsed)
+      parsedCount += 1
+      if (currentRows.some(row => normalizeDpeNumber(row.numero_dpe) === dpeNumber)) matchedCount += 1
+    } catch (error) {
+      console.error(error)
+      errors.push(file.name)
+    }
+  }
+
+  renderAuthorInputs(currentRows)
+  renderDependencyInputs(currentRows)
+  await verifyBuildingAuthors()
+  analyzeDocumentDependencies()
+
+  if (fullDpeFilesStatus) {
+    fullDpeFilesStatus.textContent =
+      parsedCount + ' fichier(s) ADEME complet(s) lu(s) localement ; ' +
+      matchedCount + ' rattaché(s) aux DPE affichés.' +
+      (errors.length ? ' Fichiers non lus : ' + errors.join(', ') + '.' : '')
+  }
 }
 
 function text(value) {
@@ -485,6 +532,9 @@ function exportCsv() {
 
 function renderBuildingResult(result, sourceLabel) {
   currentRows = result.rows || []
+  currentFullDpeByNumber = new Map()
+  if (fullDpeFilesInput) fullDpeFilesInput.value = ''
+  if (fullDpeFilesStatus) fullDpeFilesStatus.textContent = ''
   panel.hidden = false
   tableContainer.innerHTML = ''
   comparisonContainer.innerHTML = ''
@@ -502,6 +552,7 @@ function renderBuildingResult(result, sourceLabel) {
     if (dependencyInputs) dependencyInputs.innerHTML = ''
     if (dependencyResults) dependencyResults.innerHTML = ''
     currentDependencyGraph = null
+    currentFullDpeByNumber = new Map()
     return
   }
 
@@ -517,9 +568,10 @@ function renderBuildingResult(result, sourceLabel) {
   renderComparison(currentRows)
   renderAuthorInputs(currentRows)
   renderDependencyInputs(currentRows)
-  if (authorVerifyButton) authorVerifyButton.hidden = false
-  if (dependencyAnalyzeButton) dependencyAnalyzeButton.hidden = false
-  if (authorStatus) authorStatus.textContent = 'Identité professionnelle : utiliser les champs préremplis lorsqu’ils existent ; sinon reporter le nom ou le numéro de certificat visible sur le DPE complet.'
+  if (authorVerifyButton) authorVerifyButton.hidden = true
+  if (dependencyAnalyzeButton) dependencyAnalyzeButton.hidden = true
+  verifyBuildingAuthors()
+  analyzeDocumentDependencies()
 }
 
 async function runAddressLookup(address) {
@@ -577,9 +629,11 @@ exportButton?.addEventListener('click', exportCsv)
 authorVerifyButton?.addEventListener('click', verifyBuildingAuthors)
 dependencyAnalyzeButton?.addEventListener('click', analyzeDocumentDependencies)
 dependencyExportButton?.addEventListener('click', exportDependencyGraph)
+fullDpeFilesInput?.addEventListener('change', ingestFullDpeFiles)
 
 window.addEventListener('beforeunload', () => {
   currentRows = []
   currentAuthorVerification = []
   currentDependencyGraph = null
+  currentFullDpeByNumber = new Map()
 })
