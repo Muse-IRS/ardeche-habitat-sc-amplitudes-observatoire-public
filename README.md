@@ -162,3 +162,37 @@ DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION
 SAME_COMPANY != SAME_AUTHOR
 MADI_MATCH != PROOF_OF_DPE_AUTHORSHIP
 ```
+
+
+## DPE documentary dependency graph
+
+Reusable contract: `DPE_DOCUMENT_DEPENDENCY_CORE_V1 v0.1.0`.
+
+The intra-building comparison can now build a local graph between DPEs and the documentary references identified as inputs:
+
+```text
+DPE_A -> SOURCE_1
+DPE_A -> SOURCE_2
+DPE_B -> SOURCE_2
+        ↓
+SHARED_SOURCE_REFERENCE_ESTABLISHED
+```
+
+Inventory completeness is explicit: `COMPLETE | PARTIAL | UNKNOWN`.
+
+Pair states:
+
+- `SHARED_SOURCE_REFERENCE_ESTABLISHED`;
+- `NO_SHARED_SOURCE_IDENTIFIED`;
+- `INDETERMINATE`.
+
+The optional known-shared ratio only describes the proportion of known references shared across the known union. It is not a probability of independence.
+
+```text
+REPLICATION_DOCUMENTAIRE != CORROBORATION_INDEPENDANTE
+NO_SHARED_SOURCE_IDENTIFIED != PROOF_OF_INDEPENDENCE
+DIFFERENT_DIAGNOSTICIAN != INDEPENDENT_OBSERVATION
+SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF
+```
+
+The graph is built in memory and can be exported locally as JSON.
