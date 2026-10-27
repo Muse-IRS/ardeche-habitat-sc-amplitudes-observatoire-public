@@ -24,6 +24,7 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 ## Couches publiques transversales
 
 - **Comprendre l’information** : `public/information/`
+- **Le Nomisma de Diogène — application documentaire au logement** : `public/information/le-nomisma-de-diogene.html`
 - **Auto-audit RGPD de l’observatoire** : `public/rgpd/`
 - **Notice de confidentialité** : `public/privacy.html`
 - **État machine-readable de confidentialité** : `public/data/privacy-audit.json`

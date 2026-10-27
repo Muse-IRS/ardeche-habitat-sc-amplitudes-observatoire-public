@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+<title id="title">Le Nomisma de Diogène — application documentaire au logement</title>
+<desc id="desc">Un état réel X au temps t est relié à quatre documents de fonctions différentes : état des lieux, DPE, intervention et facture. Le document d'intervention est répliqué en trois copies dépendantes. Une source indépendante distincte illustre la corroboration.</desc>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#315f55"/></marker>
+  <style>
+    .bg{fill:#f7faf8}.panel{fill:#fff;stroke:#d6e2dc;stroke-width:2}.reality{fill:#e5efe9;stroke:#173e30;stroke-width:3}.doc{fill:#fff;stroke:#267453;stroke-width:2.5}.dep{fill:#eef5f1;stroke:#4c756b;stroke-width:2.5;stroke-dasharray:9 7}.ind{fill:#f3f1f8;stroke:#675b82;stroke-width:2.5;stroke-dasharray:8 7}.edge{fill:none;stroke:#315f55;stroke-width:2.5;stroke-dasharray:7 5;marker-end:url(#arrow)}.solid{stroke-dasharray:none}.title{font:700 30px ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;fill:#152924}.sub{font:500 16px ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;fill:#4b5c55}.label{font:700 19px ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;fill:#152924}.small{font:500 14px ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;fill:#4b5c55}.mono{font:600 14px ui-monospace,SFMono-Regular,Consolas,monospace;fill:#294d43}
+  </style>
+</defs>
+<rect class="bg" width="1200" height="760" rx="24"/>
+<text class="title" x="60" y="54">Le Nomisma de Diogène — logement : document ≠ réalité</text>
+<text class="sub" x="60" y="84">Fonction documentaire · provenance · temporalité · dépendance informationnelle</text>
+
+<rect class="reality" x="450" y="295" width="300" height="128" rx="24"/>
+<text class="label" x="600" y="340" text-anchor="middle">État réel X(t)</text>
+<text class="small" x="600" y="370" text-anchor="middle">logement · équipement · événement</text>
+<text class="mono" x="600" y="400" text-anchor="middle">réalité matérielle à qualifier</text>
+
+<rect class="doc" x="70" y="145" width="220" height="100" rx="16"/>
+<text class="label" x="180" y="183" text-anchor="middle">D₁ · État des lieux</text>
+<text class="small" x="180" y="211" text-anchor="middle">état matériel daté</text>
+
+<rect class="doc" x="345" y="125" width="220" height="100" rx="16"/>
+<text class="label" x="455" y="163" text-anchor="middle">D₂ · DPE</text>
+<text class="small" x="455" y="191" text-anchor="middle">performance conventionnelle</text>
+
+<rect class="doc" x="635" y="125" width="220" height="100" rx="16"/>
+<text class="label" x="745" y="163" text-anchor="middle">D₃ · Intervention</text>
+<text class="small" x="745" y="191" text-anchor="middle">action au périmètre de la pièce</text>
+
+<rect class="doc" x="910" y="145" width="220" height="100" rx="16"/>
+<text class="label" x="1020" y="183" text-anchor="middle">D₄ · Facture</text>
+<text class="small" x="1020" y="211" text-anchor="middle">flux / prestation facturée</text>
+
+<path class="edge" d="M250 245 C330 285 385 320 450 340"/>
+<path class="edge" d="M475 225 C500 260 530 280 555 295"/>
+<path class="edge" d="M725 225 C700 260 670 280 645 295"/>
+<path class="edge" d="M950 245 C870 285 815 320 750 340"/>
+<text class="small" x="335" y="286">relation à qualifier</text>
+<text class="small" x="818" y="286">relation à qualifier</text>
+
+<rect class="dep" x="325" y="500" width="550" height="170" rx="24"/>
+<text class="label" x="355" y="535">Classe de dépendance [D₃]</text>
+<text class="mono" x="355" y="560">[D₃] = {D₃, D₃A, D₃B, D₃C}</text>
+<rect class="panel" x="355" y="585" width="135" height="58" rx="12"/><text class="label" x="422" y="620" text-anchor="middle">D₃A</text>
+<rect class="panel" x="530" y="585" width="135" height="58" rx="12"/><text class="label" x="597" y="620" text-anchor="middle">D₃B</text>
+<rect class="panel" x="705" y="585" width="135" height="58" rx="12"/><text class="label" x="772" y="620" text-anchor="middle">D₃C</text>
+<path class="edge solid" d="M745 225 C745 360 650 440 600 500"/>
+<text class="small" x="690" y="450">transmission / copie / renommage</text>
+
+<rect class="ind" x="925" y="500" width="205" height="170" rx="20"/>
+<text class="label" x="1028" y="535" text-anchor="middle">Source S₂</text>
+<text class="small" x="1028" y="565" text-anchor="middle">voie indépendante</text>
+<text class="mono" x="1028" y="600" text-anchor="middle">π(S₂) ≠ π(D₃)</text>
+<text class="mono" x="1028" y="627" text-anchor="middle">S₂ !~ D₃</text>
+<path class="edge solid" d="M925 520 C835 490 790 440 735 400"/>
+
+<rect class="panel" x="70" y="695" width="1060" height="42" rx="12"/>
+<text class="mono" x="600" y="721" text-anchor="middle">MÊME OBJET ≠ MÊME FONCTION DOCUMENTAIRE · N(COPIES) ≠ N(SOURCES INDÉPENDANTES)</text>
+</svg>
