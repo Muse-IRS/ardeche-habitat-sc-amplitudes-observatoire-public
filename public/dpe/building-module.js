@@ -8,6 +8,13 @@ import {
   searchExistingDpesByAddress,
   searchExistingDpesForRow,
 } from '../assets/dpe-ademe/ademe-client.js'
+import {
+  extractAuthorSource,
+  compareAuthorRecords,
+} from '../assets/dpe-author-verification/core.js'
+import {
+  findDiagnosticianCertifications,
+} from '../assets/diagnostician-cert/tabular-client.js'
 
 const addressForm = document.querySelector('#dpe-address-form')
 const addressInput = document.querySelector('#dpe-address')
@@ -20,8 +27,185 @@ const summary = document.querySelector('#building-results-summary')
 const tableContainer = document.querySelector('#building-results-table')
 const comparisonContainer = document.querySelector('#building-comparison-table')
 const exportButton = document.querySelector('#building-export-csv')
+const authorInputs = document.querySelector('#building-author-inputs')
+const authorStatus = document.querySelector('#building-author-status')
+const authorVerifyButton = document.querySelector('#building-author-verify')
+const authorResults = document.querySelector('#building-author-results')
+const authorComparison = document.querySelector('#building-author-comparison')
 
+const referenceDate = new Date().toISOString().slice(0, 10)
 let currentRows = []
+let currentAuthorVerification = []
+
+
+function normalizeBooleanLabel(value) {
+  if (value === true) return 'OUI'
+  if (value === false) return 'NON'
+  return 'INDÉTERMINÉ'
+}
+
+function renderAuthorInputs(rows) {
+  if (!authorInputs) return
+  authorInputs.innerHTML = ''
+  authorResults.innerHTML = ''
+  authorComparison.innerHTML = ''
+  currentAuthorVerification = []
+
+  const wrapper = document.createElement('div')
+  wrapper.className = 'table-scroll'
+  const table = document.createElement('table')
+  table.className = 'dpe-comparison-table'
+  const thead = document.createElement('thead')
+  const hr = document.createElement('tr')
+  for (const label of ['DPE', 'Date', 'Identité source', 'N° certificat', 'Nom / prénom']) appendCell(hr, 'th', label)
+  thead.append(hr)
+  table.append(thead)
+
+  const tbody = document.createElement('tbody')
+  rows.forEach((row, index) => {
+    const source = extractAuthorSource(row)
+    const tr = document.createElement('tr')
+    appendCell(tr, 'td', normalizeDpeNumber(row.numero_dpe), 'mono')
+    appendCell(tr, 'td', formatDate(row.date_visite_diagnostiqueur || row.date_etablissement_dpe))
+    appendCell(
+      tr,
+      'td',
+      source.sourceState === 'IDENTITY_NOT_AVAILABLE_IN_OPEN_DATA_ROW'
+        ? 'Non exposée dans cette ligne open data'
+        : 'Disponible / partielle dans la source'
+    )
+
+    const certCell = document.createElement('td')
+    const certInput = document.createElement('input')
+    certInput.type = 'text'
+    certInput.value = source.certificateNumber || ''
+    certInput.placeholder = 'N° certificat'
+    certInput.dataset.authorCertIndex = String(index)
+    certInput.autocomplete = 'off'
+    certCell.append(certInput)
+    tr.append(certCell)
+
+    const nameCell = document.createElement('td')
+    const nameInput = document.createElement('input')
+    nameInput.type = 'text'
+    nameInput.value = source.fullName || ''
+    nameInput.placeholder = 'Nom Prénom'
+    nameInput.dataset.authorNameIndex = String(index)
+    nameInput.autocomplete = 'off'
+    nameCell.append(nameInput)
+    tr.append(nameCell)
+
+    tbody.append(tr)
+  })
+  table.append(tbody)
+  wrapper.append(table)
+  authorInputs.append(wrapper)
+}
+
+function renderAuthorVerification(items) {
+  authorResults.innerHTML = ''
+  authorComparison.innerHTML = ''
+
+  const wrapper = document.createElement('div')
+  wrapper.className = 'table-scroll'
+  const table = document.createElement('table')
+  table.className = 'dpe-comparison-table'
+  const thead = document.createElement('thead')
+  const hr = document.createElement('tr')
+  for (const label of ['DPE', 'Diagnostiqueur', 'Société', 'Certificat', 'Organisme', 'Validité', 'À la date du DPE']) appendCell(hr, 'th', label)
+  thead.append(hr)
+  table.append(thead)
+
+  const tbody = document.createElement('tbody')
+  for (const item of items) {
+    const tr = document.createElement('tr')
+    const record = item.verifiedRecord
+    appendCell(tr, 'td', item.dpeNumber, 'mono')
+    appendCell(tr, 'td', record?.fullName || '—')
+    appendCell(tr, 'td', record?.company || '—')
+    appendCell(tr, 'td', record?.certificateNumber || '—', 'mono')
+    appendCell(tr, 'td', record?.certificationBody || '—')
+    appendCell(tr, 'td', record ? [formatDate(record.validFrom), formatDate(record.validUntil)].join(' → ') : '—')
+    appendCell(tr, 'td', record ? normalizeBooleanLabel(record.validOnDiagnosticDate) : item.state)
+    tbody.append(tr)
+  }
+  table.append(tbody)
+  wrapper.append(table)
+  authorResults.append(wrapper)
+
+  if (items.length < 2) return
+  const compared = compareAuthorRecords(items)
+  const cmpWrap = document.createElement('div')
+  cmpWrap.className = 'table-scroll'
+  const cmp = document.createElement('table')
+  cmp.className = 'dpe-comparison-table'
+  const cmpHead = document.createElement('thead')
+  const cmpHr = document.createElement('tr')
+  appendCell(cmpHr, 'th', 'Dimension auteur')
+  appendCell(cmpHr, 'th', 'État')
+  for (const item of items) appendCell(cmpHr, 'th', item.dpeNumber)
+  cmpHead.append(cmpHr)
+  cmp.append(cmpHead)
+  const cmpBody = document.createElement('tbody')
+  for (const row of compared) {
+    const tr = document.createElement('tr')
+    appendCell(tr, 'th', row.label)
+    appendCell(tr, 'td', row.status, 'comparison-state state-' + row.status.toLowerCase())
+    row.values.forEach(value => appendCell(tr, 'td', value === true ? 'OUI' : value === false ? 'NON' : text(value)))
+    cmpBody.append(tr)
+  }
+  cmp.append(cmpBody)
+  cmpWrap.append(cmp)
+  authorComparison.append(cmpWrap)
+}
+
+async function verifyBuildingAuthors() {
+  if (!currentRows.length) return
+  authorVerifyButton.disabled = true
+  authorStatus.textContent = 'Vérification séquentielle dans l’annuaire public MADI…'
+  const items = []
+
+  for (let index = 0; index < currentRows.length; index += 1) {
+    const row = currentRows[index]
+    const source = extractAuthorSource(row)
+    const cert = document.querySelector('[data-author-cert-index="' + index + '"]')?.value?.trim() || source.certificateNumber || ''
+    const name = document.querySelector('[data-author-name-index="' + index + '"]')?.value?.trim() || source.fullName || ''
+    const dpeNumber = normalizeDpeNumber(row.numero_dpe)
+    const diagnosticDate = String(row.date_visite_diagnostiqueur || row.date_etablissement_dpe || '').slice(0, 10)
+
+    if (!cert && !name) {
+      items.push({ dpeNumber, state: 'IDENTITÉ À RENSEIGNER', verifiedRecord: null })
+      continue
+    }
+
+    try {
+      const found = await findDiagnosticianCertifications({
+        certificateNumber: cert || null,
+        fullName: name || null,
+        diagnosticDate,
+        referenceDate,
+      })
+      const record = found.records?.[0] || null
+      items.push({
+        dpeNumber,
+        state: record ? 'MADI_MATCH' : 'MADI_NO_MATCH',
+        matchMode: found.matchMode,
+        verifiedRecord: record,
+      })
+    } catch (error) {
+      console.error(error)
+      items.push({ dpeNumber, state: 'MADI_UNAVAILABLE', verifiedRecord: null })
+    }
+  }
+
+  currentAuthorVerification = items
+  renderAuthorVerification(items)
+  const matched = items.filter(item => item.verifiedRecord).length
+  authorStatus.textContent =
+    matched + ' vérification(s) MADI résolue(s) sur ' + items.length +
+    '. Une correspondance d’annuaire confirme une certification publiée ; elle ne prouve ni l’auteur matériel du DPE ni son exactitude technique.'
+  authorVerifyButton.disabled = false
+}
 
 function text(value) {
   return hasValue(value) ? String(value) : '—'
@@ -160,6 +344,10 @@ function renderBuildingResult(result, sourceLabel) {
     heading.textContent = 'Aucun DPE retrouvé pour cette adresse'
     summary.textContent = 'La recherche ADEME n’a renvoyé aucun DPE suffisamment concordant avec cette adresse. Cela ne démontre pas qu’aucun DPE n’existe.'
     exportButton.hidden = true
+    if (authorVerifyButton) authorVerifyButton.hidden = true
+    if (authorInputs) authorInputs.innerHTML = ''
+    if (authorResults) authorResults.innerHTML = ''
+    if (authorComparison) authorComparison.innerHTML = ''
     return
   }
 
@@ -173,6 +361,9 @@ function renderBuildingResult(result, sourceLabel) {
 
   renderResultTable(currentRows)
   renderComparison(currentRows)
+  renderAuthorInputs(currentRows)
+  if (authorVerifyButton) authorVerifyButton.hidden = false
+  if (authorStatus) authorStatus.textContent = 'Identité professionnelle : utiliser les champs préremplis lorsqu’ils existent ; sinon reporter le nom ou le numéro de certificat visible sur le DPE complet.'
 }
 
 async function runAddressLookup(address) {
@@ -227,7 +418,9 @@ sameAddressButton?.addEventListener('click', async () => {
 })
 
 exportButton?.addEventListener('click', exportCsv)
+authorVerifyButton?.addEventListener('click', verifyBuildingAuthors)
 
 window.addEventListener('beforeunload', () => {
   currentRows = []
+  currentAuthorVerification = []
 })
