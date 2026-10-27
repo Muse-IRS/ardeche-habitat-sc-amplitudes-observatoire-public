@@ -15,6 +15,7 @@ export const BUILDING_RESULT_LIMIT = 100;
 export const BUILDING_SELECT_FIELDS = Object.freeze([
   'numero_dpe',
   'date_etablissement_dpe',
+  'date_visite_diagnostiqueur',
   'date_fin_validite_dpe',
   'etiquette_dpe',
   'etiquette_ges',
