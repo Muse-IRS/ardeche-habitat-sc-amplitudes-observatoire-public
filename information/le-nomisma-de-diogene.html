@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index,follow">
+  <title>Le Nomisma de Diogène — application documentaire au logement</title>
+  <meta name="description" content="Application du Nomisma de Diogène à l'observation documentaire du logement : distinguer état réel, document, circulation, provenance, fonction probatoire et corroboration indépendante.">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/information/le-nomisma-de-diogene.html">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    .scientific-figure{margin:24px 0;background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:var(--shadow)}
+    .scientific-figure img{display:block;width:100%;height:auto}
+    .scientific-figure figcaption{padding:12px 8px 4px;color:var(--muted);font-size:.94rem}
+    .invariant{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700}
+    .scope-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .scope-grid .card{min-height:190px}
+    @media(max-width:900px){.scope-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:620px){.scope-grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Méthode transversale · Information · Provenance</p>
+  <h1>Le Nomisma de Diogène</h1>
+  <p class="lead">Appliqué au logement, le Nomisma distingue ce qui circule dans les dossiers de ce qui est effectivement établi sur un logement, un équipement, une intervention ou un événement.</p>
+  <div class="badges"><span>Trace</span><span>Valeur</span><span>Convention</span><span>Réalité</span><span>Provenance</span></div>
+</div></header>
+<main class="wrap">
+<section class="notice">
+  <h2>Le principe</h2>
+  <p>Un document peut être authentique, correctement nommé, transmis à plusieurs acteurs et accepté par plusieurs systèmes sans démontrer, à lui seul, toute la réalité à laquelle il est rattaché. L'enjeu n'est pas de soupçonner le document : il est de qualifier précisément <strong>ce qu'il établit</strong>, <strong>à quelle date</strong>, <strong>dans quel périmètre</strong> et <strong>par quelle relation</strong>.</p>
+  <p class="invariant">VALEUR DE CIRCULATION ≠ VALEUR PROBATOIRE<br>ACCEPTÉ PAR UN SYSTÈME ≠ ÉTABLI DANS LE RÉEL</p>
+</section>
+
+<section>
+  <h2>Un même logement, plusieurs fonctions documentaires</h2>
+  <div class="scope-grid">
+    <article class="card"><h3>État des lieux</h3><p>Décrit un état matériel dans un cadre, une date et un contradictoire déterminés. Il ne remplit pas la même fonction qu'un diagnostic énergétique.</p></article>
+    <article class="card"><h3>DPE</h3><p>Décrit une performance énergétique conventionnelle à partir d'une méthode et de données propres au diagnostic. Il ne devient pas un état des lieux matériel.</p></article>
+    <article class="card"><h3>Intervention / entretien</h3><p>Une attestation, un bon ou un compte rendu peut documenter une action réalisée au périmètre de la pièce. Il ne prouve pas automatiquement l'état futur de l'équipement.</p></article>
+    <article class="card"><h3>Facture / paiement</h3><p>Documente un flux économique ou une prestation facturée. Le paiement d'une ligne ne suffit pas, à lui seul, à établir toutes les caractéristiques techniques de l'intervention.</p></article>
+  </div>
+</section>
+
+<section>
+  <h2>Graphe : réalité, documents et dépendance informationnelle</h2>
+  <figure class="scientific-figure">
+    <img src="../assets/nomisma-logement-document-realite.svg" width="1200" height="760" loading="lazy" decoding="async" alt="Graphe du Nomisma appliqué au logement : un état réel X(t) est relié à plusieurs documents de fonctions différentes. Un même document D peut être répliqué en D_A, D_B et D_C sans créer plusieurs sources indépendantes.">
+    <figcaption><strong>Figure — Application documentaire au logement.</strong> Plusieurs documents peuvent viser un même objet sans avoir la même fonction. Plusieurs copies d'un même document peuvent circuler dans plusieurs systèmes sans constituer plusieurs observations indépendantes.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Trois tests avant de conclure</h2>
+  <div class="grid three">
+    <article class="card observed"><h3>1 · Fonction</h3><p>Que permet réellement d'établir cette pièce ? Une identité, une date, un état, une performance conventionnelle, une intervention, un montant, une réception ?</p></article>
+    <article class="card observed"><h3>2 · Provenance</h3><p>Les documents sont-ils indépendants ou dérivent-ils d'une même source ? Une pièce renommée ou transmise à trois organismes reste une seule chaîne informationnelle si son origine est commune.</p></article>
+    <article class="card observed"><h3>3 · Temporalité</h3><p>Une pièce exacte à <em>t₁</em> ne décrit pas automatiquement l'état à <em>t₂</em>. Un remplacement, une panne, une réparation ou une nouvelle mesure peuvent modifier l'objet réel.</p></article>
+  </div>
+</section>
+
+<section class="note">
+  <h2>Invariants de l'observatoire</h2>
+  <p class="invariant">DOCUMENT ≠ RÉALITÉ<br>MÊME OBJET ≠ MÊME FONCTION DOCUMENTAIRE<br>RÉPLICATION DOCUMENTAIRE ≠ CORROBORATION INDÉPENDANTE<br>N(FICHIERS) ≠ N(SOURCES) ≠ N(OBSERVATIONS INDÉPENDANTES)<br>UNKNOWN = RÉSULTAT VALIDE</p>
+</section>
+
+<section>
+  <h2>Application à la chaîne probatoire</h2>
+  <pre>objet / événement réel
+        ↕ relation à qualifier
+document-source
+        ↓ provenance
+copies / reprises / systèmes
+        ↓
+statut : ÉTABLI · DIVERGENT · INDÉTERMINÉ · NON RECHERCHÉ</pre>
+  <p>Le nombre de documents augmente la <strong>traçabilité documentaire</strong> seulement si leur provenance et leur fonction sont connues. Il n'augmente pas mécaniquement le niveau de preuve.</p>
+</section>
+
+<section class="grid two">
+  <article class="card"><h2>Concept général Muze-X</h2><p>Cette page constitue une application sectorielle. La présentation générale du concept, son origine métaphorique et le graphe de dépendance sont publiés dans Muze-X · Émotions & ressources ouvertes.</p><p><a href="https://muse-irs.github.io/muze-x-emotions-open-resources/le-nomisma-de-diogene.html" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer"><strong>Ouvrir le concept général →</strong></a></p></article>
+  <article class="card"><h2>Repère historique</h2><p>Le nom renvoie à une tradition antique associée à Diogène de Sinope et à l'altération de la monnaie. Les récits concernant l'oracle de Delphes existent sous plusieurs versions et leur historicité précise reste incertaine.</p><p><a href="https://iep.utm.edu/diogsino/" target="_blank" rel="noopener noreferrer" referrerpolicy="no-referrer">Internet Encyclopedia of Philosophy — Diogenes of Sinope ↗</a></p></article>
+</section>
+
+<section class="notice">
+  <h2>Ce que cette méthode ne fait pas</h2>
+  <p>Elle ne transforme pas une divergence en accusation, ne suppose pas qu'un document absent de notre corpus n'existe pas ailleurs et ne remplace ni expertise technique, ni procédure contradictoire, ni qualification juridique. Elle sert à empêcher qu'une convention documentaire soit confondue avec une réalité matérielle sans relation démontrée.</p>
+</section>
+
+<p><a href="./">← Retour à Comprendre l'information</a> · <a href="../">Retour à l'observatoire →</a></p>
+</main>
+<footer><div class="wrap">Muse-IRS · Observatoire public · Le Nomisma de Diogène · 2026</div><div class="wrap privacy-links"><a href="./">Information</a><a href="../rgpd/">RGPD</a><a href="../privacy.html">Confidentialité</a><a href="../charte-editoriale.html">Charte éditoriale</a></div></footer>
+</body>
+</html>
