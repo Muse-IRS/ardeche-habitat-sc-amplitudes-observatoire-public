@@ -54,6 +54,7 @@ Période principale : 1948–2026, avec focalisation 2000–2026.
 - **Traçabilité publique du bâti — cas pilotes 2000–2015 + Résidence Peyrouse + couche parcellaire/DVF** : `public/patrimoine-tracabilite-batiments.html`
 - **Manifeste public de cette page** : `public/data/patrimoine-tracabilite-batiments.yml`
 - **Recherche DPE par adresse / immeuble — comparaison open data ADEME** : `public/dpe/`
+- **Sécurité incendie du bâtiment — identité RNB, DECI/PEI, risques et preuves** : `public/securite-incendie/`
 - **Offres Ardèche Habitat — DPE, GES et qualité des données** : `public/ardeche-habitat-offres-logements-dpe.html`
 - **Manifeste public des offres / DPE** : `public/data/ardeche-habitat-offres-logements-dpe.yml`
 - **Contester sans perdre la preuve — méthode documentaire publique** : `public/information/contester-sans-perdre-la-preuve.html`
@@ -230,3 +231,39 @@ DATABASE_ACCEPTANCE != MATERIAL_VERIFICATION
 ```
 
 XML/JSON inspection is browser-local only and can be exported as a local JSON audit.
+
+
+## Fire Safety Building Core
+
+Reusable contract: `FIRE_SAFETY_BUILDING_CORE_V1 v0.1.0`.
+
+Public application: `public/securite-incendie/`.
+
+The building identity pivot is the public ID-RNB. The layer then keeps separate:
+
+```text
+BUILDING / ID-RNB
+├── REGULATORY CLASSIFICATION
+├── ERP / ADMINISTRATIVE
+├── EXTERNAL RISK
+├── DECI / PEI
+├── INTERNAL FIRE-SAFETY SYSTEMS
+├── PERIODIC CONTROLS
+├── COMMISSION DECISIONS
+└── DOCUMENTARY EVIDENCE
+```
+
+Current active API: public RNB building lookup. Other national/local sources are registered with explicit scope and limits; no automatic fire-safety compliance score is produced.
+
+```text
+RNB_ID != FIRE_SAFETY_STATUS
+ERP_CLASSIFICATION != FIRE_SAFETY_COMPLIANCE
+NEARBY_PEI != SUFFICIENT_DECI
+GEORISK != INTERNAL_FIRE_SAFETY
+DOCUMENT_ASSERTS_CONTROL != CONTROL_OCCURRED
+CONTROL_OCCURRED != CURRENT_COMPLIANCE
+NO_OPEN_DATA != NO_SAFETY_DEVICE
+FIRE_SAFETY_CONTEXT != FIRE_SAFETY_CONFORMITY
+```
+
+Local building evidence is stored only in memory and can be exported as JSON.
