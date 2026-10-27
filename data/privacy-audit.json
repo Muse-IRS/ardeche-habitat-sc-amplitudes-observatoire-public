@@ -71,5 +71,13 @@
     "trigger": "explicit user calculation action",
     "persistent_application_storage": false,
     "local_report_export": "explicit-user-action"
+  },
+  "dpe_building_author_verification": {
+    "trigger": "explicit user action",
+    "source": "MADI / tabular-api.data.gouv.fr",
+    "input": "certificate number and/or professional name; diagnostic date for temporal validity",
+    "dpe_address_sent_to_directory": false,
+    "persistent_application_storage": false,
+    "purpose": "professional certification verification and cross-DPE author comparison"
   }
 }
