@@ -113,10 +113,9 @@ export function buildingIdentity(row = {}) {
 export function rowMatchesStreetNumber(row = {}, streetNumber) {
   if (!streetNumber) return false;
   const value = normalizeAddressQuery(row.adresse_ban || row.adresse_brut || '').toLowerCase();
-  const escaped = String(streetNumber).replace(/[.*+?^$\{\}()|[\]\\]/g, '\\  const escaped = String(streetNumber).replace(/[-/\\^$*+?.()|[\]{}]/g, '\\export function isHistoricalDataset(dataset) {');');
+  const escaped = String(streetNumber).replace(/[.*+?^$\{\}()|[\]\\]/g, '\\$&');
   return new RegExp('^' + escaped + '(?:\\s|,|-|/|$)', 'i').test(value);
 }
-
 export function dedupeDpeRows(rows = []) {
   const seen = new Set();
   return rows.filter(row => {
