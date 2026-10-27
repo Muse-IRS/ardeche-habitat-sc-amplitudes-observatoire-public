@@ -1,4 +1,7 @@
-import('./app-module.js').catch(error => {
+Promise.all([
+  import('./app-module.js'),
+  import('./building-module.js'),
+]).catch(error => {
   console.error(error)
   const status = document.querySelector('#dpe-status')
   if (status) {
