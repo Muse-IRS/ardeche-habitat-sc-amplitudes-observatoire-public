@@ -36,6 +36,7 @@ const summary = document.querySelector('#dpe-summary')
 const xlsxLink = document.querySelector('#xlsx-link')
 const addressDetails = document.querySelector('#address-details')
 const fullAddress = document.querySelector('#full-address')
+const identityLink = document.querySelector('#identity-link')
 const historicalPanel = document.querySelector('#dpe-historical-panel')
 const historicalSummary = document.querySelector('#dpe-historical-summary')
 const historicalMethodExplanation = document.querySelector('#dpe-historical-method-explanation')
@@ -560,6 +561,10 @@ function render(found, number) {
 
   xlsxLink.href = buildDpeUrl(dataset.id, number, 'xlsx')
   xlsxLink.hidden = false
+  if (identityLink) {
+    identityLink.href = '../identite-logement/?dpe=' + encodeURIComponent(number)
+    identityLink.hidden = false
+  }
   result.hidden = false
   renderDiagnostician(row)
   renderHistorical(row, dataset)
@@ -572,6 +577,7 @@ form.addEventListener('submit', async event => {
   input.value = number
   result.hidden = true
   xlsxLink.hidden = true
+  if (identityLink) identityLink.hidden = true
   addressDetails.hidden = true
   resetExtendedViews()
 
