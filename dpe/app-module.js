@@ -27,6 +27,13 @@ import {
 import {
   findDiagnosticianCertifications,
 } from '../assets/diagnostician-cert/tabular-client.js'
+import {
+  buildJustificationAudit,
+  summarizeOpenDataRow,
+} from '../assets/dpe-data-justification/core.js'
+import {
+  parseDpeFullFileText,
+} from '../assets/dpe-data-justification/full-dpe-reader.js'
 
 const form = document.querySelector('#dpe-form')
 const input = document.querySelector('#dpe-number')
@@ -52,9 +59,158 @@ const diagnosticianStatus = document.querySelector('#dpe-diagnostician-status')
 const diagnosticianDirectoryLink = document.querySelector('#dpe-diagnostician-directory-link')
 const diagnosticianDatasetLink = document.querySelector('#dpe-diagnostician-dataset-link')
 
+const justificationPanel = document.querySelector('#dpe-justification-panel')
+const justificationOpenDataSummary = document.querySelector('#dpe-justification-open-data-summary')
+const justificationFileInput = document.querySelector('#dpe-justification-file')
+const justificationInspectButton = document.querySelector('#dpe-justification-inspect')
+const justificationStatus = document.querySelector('#dpe-justification-status')
+const justificationAuditSummary = document.querySelector('#dpe-justification-audit-summary')
+const justificationList = document.querySelector('#dpe-justification-list')
+const justificationTechnicalItems = document.querySelector('#dpe-justification-technical-items')
+const justificationExportButton = document.querySelector('#dpe-justification-export')
+
 const referenceDate = new Date().toISOString().slice(0, 10)
 const metadataClient = createMetadataClient()
 let diagnosticianLookupSequence = 0
+let currentDpeContext = null
+let currentJustificationAudit = null
+
+
+function renderOpenDataJustification(row, dataset) {
+  if (!justificationPanel || !justificationOpenDataSummary) return
+  const state = summarizeOpenDataRow(row, dataset?.id)
+  justificationOpenDataSummary.innerHTML = ''
+
+  addDefinition(justificationOpenDataSummary, 'Jeu de données', state.datasetId)
+  addDefinition(justificationOpenDataSummary, 'Numéro DPE', state.dpeNumber)
+  addDefinition(justificationOpenDataSummary, 'Champs non vides dans la ligne', state.nonEmptyFieldCount)
+  addDefinition(justificationOpenDataSummary, 'État de la valeur', state.valuePresence)
+  addDefinition(justificationOpenDataSummary, 'Origine de chaque donnée', state.originMetadataState)
+  addDefinition(justificationOpenDataSummary, 'Justificatif source', state.justificationMetadataState)
+  addDefinition(justificationOpenDataSummary, 'Document justificatif', state.sourceDocumentState)
+  addDefinition(justificationOpenDataSummary, 'Relation valeur ↔ preuve', state.supportRelation)
+
+  if (justificationStatus) {
+    justificationStatus.textContent =
+      'La ligne open data établit que des valeurs ont été enregistrées et publiées. Elle n’expose pas, à elle seule, les documents sources permettant de justifier matériellement chaque valeur.'
+  }
+
+  if (justificationAuditSummary) justificationAuditSummary.innerHTML = ''
+  if (justificationList) justificationList.innerHTML = ''
+  if (justificationTechnicalItems) justificationTechnicalItems.innerHTML = ''
+  if (justificationExportButton) justificationExportButton.hidden = true
+  currentJustificationAudit = null
+  justificationPanel.hidden = false
+}
+
+function renderJustificationAudit(audit, fileName, mismatch = false) {
+  currentJustificationAudit = audit
+  justificationAuditSummary.innerHTML = ''
+  justificationList.innerHTML = ''
+  justificationTechnicalItems.innerHTML = ''
+
+  addDefinition(justificationAuditSummary, 'Fichier inspecté', fileName)
+  addDefinition(justificationAuditSummary, 'Numéro DPE du fichier', audit.dpeNumber)
+  addDefinition(justificationAuditSummary, 'Type de source', audit.sourceKind)
+  addDefinition(justificationAuditSummary, 'Données techniques trouvées', audit.counts.technicalItems)
+  addDefinition(justificationAuditSummary, 'Valeurs techniques présentes', audit.counts.technicalValuesPresent)
+  addDefinition(justificationAuditSummary, 'Données avec origine déclarée', audit.counts.technicalItemsWithOriginMetadata)
+  addDefinition(justificationAuditSummary, 'Justificatifs déclarés', audit.counts.declaredJustifications)
+  addDefinition(justificationAuditSummary, 'Documents sources incorporés', audit.counts.embeddedSourceDocuments)
+  addDefinition(justificationAuditSummary, 'Liens directs donnée ↔ justificatif', audit.counts.explicitFieldToJustificationLinks)
+  addDefinition(justificationAuditSummary, 'Relation de support au niveau donnée', audit.relationAssessment.fieldLevelSupportRelation)
+
+  const conclusion = document.createElement('div')
+  conclusion.className = 'callout'
+  const p = document.createElement('p')
+  p.textContent = audit.relationAssessment.boundedConclusion
+  conclusion.append(p)
+  justificationAuditSummary.append(conclusion)
+
+  if (audit.justifications.length) {
+    const ul = document.createElement('ul')
+    for (const item of audit.justifications) {
+      const li = document.createElement('li')
+      li.textContent =
+        item.description +
+        (item.typeId ? ' · type ' + item.typeId : '') +
+        ' · document source : non incorporé · authenticité : non vérifiée'
+      ul.append(li)
+    }
+    justificationList.append(ul)
+  } else {
+    const p = document.createElement('p')
+    p.className = 'muted'
+    p.textContent = 'Aucun justificatif déclaré n’a été trouvé dans la collection inspectée.'
+    justificationList.append(p)
+  }
+
+  const grid = document.createElement('div')
+  grid.className = 'principle-grid'
+  for (const item of audit.technicalItems) {
+    const article = document.createElement('article')
+    const strong = document.createElement('strong')
+    const value = document.createElement('span')
+    strong.textContent = item.description
+    value.textContent = String(item.value ?? '—')
+    article.append(strong, value)
+
+    const origin = document.createElement('small')
+    origin.className = 'muted'
+    origin.textContent =
+      'Origine : ' +
+      (item.originDetail || item.originTypeId || 'non renseignée') +
+      ' · lien direct vers justificatif : non établi'
+    article.append(document.createElement('br'), origin)
+    grid.append(article)
+  }
+  justificationTechnicalItems.append(grid)
+
+  justificationStatus.textContent =
+    (mismatch ? 'Attention : le numéro DPE du fichier ne correspond pas au DPE actuellement sélectionné. ' : '') +
+    'Inspection locale terminée. Un justificatif déclaré reste une métadonnée : le document source lui-même n’est pas incorporé dans cette structure et la relation avec chaque valeur reste à établir.'
+  justificationExportButton.hidden = false
+}
+
+async function inspectFullDpeJustification() {
+  const file = justificationFileInput?.files?.[0]
+  if (!file) {
+    justificationStatus.textContent = 'Sélectionner un fichier DPE complet XML ou JSON.'
+    return
+  }
+
+  justificationInspectButton.disabled = true
+  justificationStatus.textContent = 'Lecture locale du fichier…'
+  try {
+    const parsed = parseDpeFullFileText({ name: file.name, text: await file.text() })
+    const audit = buildJustificationAudit(parsed)
+    const selectedNumber = normalizeDpeNumber(currentDpeContext?.row?.numero_dpe || '')
+    const fileNumber = normalizeDpeNumber(audit.dpeNumber || '')
+    const mismatch = Boolean(selectedNumber && fileNumber && selectedNumber !== fileNumber)
+    renderJustificationAudit(audit, file.name, mismatch)
+  } catch (error) {
+    console.error(error)
+    justificationStatus.textContent = 'Impossible d’inspecter ce fichier. Utiliser un XML ou JSON DPE complet compatible.'
+  } finally {
+    justificationInspectButton.disabled = false
+  }
+}
+
+function exportJustificationAudit() {
+  if (!currentJustificationAudit) return
+  const blob = new Blob(
+    [JSON.stringify(currentJustificationAudit, null, 2)],
+    { type: 'application/json;charset=utf-8' }
+  )
+  const url = URL.createObjectURL(blob)
+  const link = document.createElement('a')
+  link.href = url
+  link.download = 'audit-justification-donnees-dpe.json'
+  document.body.append(link)
+  link.click()
+  link.remove()
+  URL.revokeObjectURL(url)
+}
 
 function formatSurface(value) {
   if (!hasValue(value)) return null
@@ -525,6 +681,7 @@ function resetExtendedViews() {
 
 function render(found, number) {
   const { row, dataset } = found
+  currentDpeContext = found
   summary.innerHTML = ''
 
   const historical = isHistoricalDataset(dataset)
@@ -580,6 +737,10 @@ form.addEventListener('submit', async event => {
   if (identityLink) identityLink.hidden = true
   addressDetails.hidden = true
   resetExtendedViews()
+  currentDpeContext = null
+  currentJustificationAudit = null
+  if (justificationPanel) justificationPanel.hidden = true
+  if (justificationFileInput) justificationFileInput.value = ''
 
   if (!isValidDpeNumber(number)) {
     status.textContent = 'Numéro non reconnu. Vérifier les 13 caractères alphanumériques du DPE.'
@@ -604,3 +765,7 @@ form.addEventListener('submit', async event => {
     status.textContent = 'La source ADEME ne répond pas actuellement. Réessayer plus tard ou utiliser l’Observatoire ADEME.'
   }
 })
+
+
+justificationInspectButton?.addEventListener('click', inspectFullDpeJustification)
+justificationExportButton?.addEventListener('click', exportJustificationAudit)

@@ -196,3 +196,37 @@ SOURCE_REFERENCE != SOURCE_AUTHENTICITY_PROOF
 ```
 
 The graph is built in memory and can be exported locally as JSON.
+
+
+## DPE data justification provenance
+
+Reusable contract: `DPE_DATA_JUSTIFICATION_CORE_V1 v0.1.0`.
+
+The DPE module now distinguishes:
+
+```text
+VALUE
+ -> ORIGIN METADATA
+ -> DECLARED JUSTIFICATION
+ -> SOURCE DOCUMENT
+ -> SUPPORT RELATION
+```
+
+The open-data row establishes that a value is stored/published. It does not by itself expose the source invoice, notice, photograph, maintenance report or other document that materially supports that value.
+
+A local XML/JSON full-DPE inspector can read:
+
+- technical-sheet `description`, `valeur`, `detail_origine_donnee`, `enum_origine_donnee_id`;
+- DPE-level justification `description`, `enum_type_justificatif_id`.
+
+The inspected structure keeps the justification collection separate from each technical field. Therefore:
+
+```text
+VALUE_IN_DATABASE != JUSTIFICATION
+DECLARED_ORIGIN != SOURCE_DOCUMENT
+DECLARED_JUSTIFICATION != DOCUMENT_PAYLOAD
+JUSTIFICATION_INVENTORY != FIELD_LEVEL_SUPPORT_RELATION
+DATABASE_ACCEPTANCE != MATERIAL_VERIFICATION
+```
+
+XML/JSON inspection is browser-local only and can be exported as a local JSON audit.

@@ -87,5 +87,14 @@
     "persistent_application_storage": false,
     "export": "local JSON on explicit user action",
     "purpose": "make shared documentary dependencies visible without inferring independence"
+  },
+  "dpe_data_justification_inspector": {
+    "trigger": "explicit local file selection and inspection",
+    "input": "full DPE XML or JSON",
+    "network_request": false,
+    "raw_file_upload_to_muse_irs": false,
+    "persistent_application_storage": false,
+    "export": "local JSON on explicit user action",
+    "purpose": "separate stored values, declared origin metadata, declared justifications, source-document availability and support relation"
   }
 }
