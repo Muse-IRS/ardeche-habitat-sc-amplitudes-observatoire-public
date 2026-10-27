@@ -1,5 +1,5 @@
 export const SIMULATOR_CONTRACT = 'DPE_3CL_SCENARIO_CORE_V1'
-export const SIMULATOR_VERSION = '0.2.0'
+export const SIMULATOR_VERSION = '0.3.0'
 
 export const SYSTEM_PRESETS = Object.freeze({
   GAS_CONDENSING_HEATING: Object.freeze({
@@ -25,6 +25,33 @@ export const SYSTEM_PRESETS = Object.freeze({
     label: 'Chauffe-eau thermodynamique sur air extérieur après 2014',
     topology: 'SIMPLE_ECS',
     mapping: Object.freeze({ecsTypeId: '6', energyId: '1', thermoPeriodId: '3'}),
+  }),
+})
+
+export const VENTILATION_PRESETS = Object.freeze({
+  VMC_SF_AUTO_AFTER_2012: Object.freeze({
+    id: 'VMC_SF_AUTO_AFTER_2012',
+    label: 'VMC simple flux autoréglable après 2012',
+    typeId: '6',
+    post2012: 1,
+  }),
+  VMC_SF_HYGRO_A_AFTER_2012: Object.freeze({
+    id: 'VMC_SF_HYGRO_A_AFTER_2012',
+    label: 'VMC simple flux Hygro A après 2012',
+    typeId: '9',
+    post2012: 1,
+  }),
+  VMC_SF_HYGRO_B_AFTER_2012: Object.freeze({
+    id: 'VMC_SF_HYGRO_B_AFTER_2012',
+    label: 'VMC simple flux Hygro B après 2012',
+    typeId: '15',
+    post2012: 1,
+  }),
+  VMC_DF_INDIVIDUAL_AFTER_2013: Object.freeze({
+    id: 'VMC_DF_INDIVIDUAL_AFTER_2013',
+    label: 'VMC double flux individuelle avec échangeur à partir de 2013',
+    typeId: '20',
+    post2012: 1,
   }),
 })
 
@@ -147,6 +174,10 @@ function ecsInstallations(dpe) {
   return asArray(dpe?.logement?.installation_ecs_collection?.installation_ecs)
 }
 
+function ventilationItems(dpe) {
+  return asArray(dpe?.logement?.ventilation_collection?.ventilation)
+}
+
 function heatingGenerators(installation) {
   return asArray(installation?.generateur_chauffage_collection?.generateur_chauffage)
 }
@@ -172,6 +203,7 @@ export function analyzeSystemTopology(dpe = {}) {
   const ecs = ecsInstallations(dpe)
   const heatingGen = heating.flatMap(heatingGenerators)
   const ecsGen = ecs.flatMap(ecsGenerators)
+  const ventilation = ventilationItems(dpe)
 
   const simpleHeating =
     heating.length === 1 &&
@@ -207,20 +239,27 @@ export function analyzeSystemTopology(dpe = {}) {
     hMixed.donnee_entree?.priorite_generateur_cascade == null
   )
 
+  const simpleVentilation = ventilation.length === 1 && Boolean(ventilation[0]?.donnee_entree)
+
   return Object.freeze({
     heatingInstallations: heating.length,
     heatingGenerators: heatingGen.length,
     ecsInstallations: ecs.length,
     ecsGenerators: ecsGen.length,
+    ventilationObjects: ventilation.length,
     simpleHeating,
     simpleEcs,
     simpleMixed,
+    simpleVentilation,
     supportedPresets: Object.freeze({
       GAS_CONDENSING_HEATING: simpleHeating,
       AIR_WATER_HP_HEATING: simpleHeating,
       GAS_CONDENSING_MIXED: simpleMixed,
       OUTDOOR_AIR_CET: simpleEcs,
     }),
+    supportedVentilationPresets: Object.freeze(
+      Object.fromEntries(Object.keys(VENTILATION_PRESETS).map(id => [id, simpleVentilation]))
+    ),
   })
 }
 
@@ -353,6 +392,31 @@ function applySystemPreset(dpe, scenario, changes, issues) {
   }
 }
 
+function applyVentilationPreset(dpe, scenario, changes, issues) {
+  const presetId = scenario.ventilationPreset || null
+  if (!presetId) return
+
+  const preset = VENTILATION_PRESETS[presetId]
+  if (!preset) {
+    issues.push('VENTILATION_PRESET_UNKNOWN')
+    return
+  }
+
+  const ventilation = ventilationItems(dpe)
+  if (ventilation.length !== 1 || !ventilation[0]?.donnee_entree) {
+    issues.push('VENTILATION_PRESET_REQUIRES_SINGLE_VENTILATION_OBJECT')
+    return
+  }
+
+  const entry = ventilation[0].donnee_entree
+  const path = 'logement.ventilation_collection.ventilation[0].donnee_entree'
+  deleteField(entry, path, 'tv_debits_ventilation_id', changes)
+  deleteField(entry, path, 'ref_produit_ventilation', changes)
+  setField(entry, path, 'enum_type_ventilation_id', preset.typeId, changes)
+  setField(entry, path, 'ventilation_post_2012', preset.post2012, changes)
+  setField(entry, path, 'description', 'Scénario — ' + preset.label, changes)
+}
+
 export function applyScenario(baseline, scenario = {}) {
   const dpe = clone(baseline)
   const changes = []
@@ -403,6 +467,7 @@ export function applyScenario(baseline, scenario = {}) {
   }
 
   applySystemPreset(dpe, scenario, changes, issues)
+  applyVentilationPreset(dpe, scenario, changes, issues)
 
   return Object.freeze({
     contract: SIMULATOR_CONTRACT,
@@ -415,6 +480,7 @@ export function applyScenario(baseline, scenario = {}) {
       systemPreset: scenario.systemPreset || null,
       ecsVolume: finite(scenario.ecsVolume),
       ecsInsideHeatedVolume: scenario.ecsInsideHeatedVolume ?? null,
+      ventilationPreset: scenario.ventilationPreset || null,
     }),
     topology: analyzeSystemTopology(baseline),
     issues: Object.freeze(issues),
