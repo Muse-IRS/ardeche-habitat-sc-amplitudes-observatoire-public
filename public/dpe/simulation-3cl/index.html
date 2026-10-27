@@ -33,7 +33,7 @@
   <p class="eyebrow">3CL-DPE 2021 · projection informative</p>
   <h1>Simulation après travaux</h1>
   <p class="lead">Charger localement un DPE XML ou JSON, recalculer sa situation de référence, modifier l’enveloppe ou certains systèmes chauffage/ECS compatibles, puis comparer le résultat avant/après — sans compte, sans paiement et sans envoi du fichier à Muse-IRS.</p>
-  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Calcul local</span><span>Open3CL 1.9.1</span><span>Simulateur v0.2</span></div>
+  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Calcul local</span><span>Open3CL 1.9.1</span><span>Simulateur v0.3</span></div>
 </div></header>
 
 <main class="wrap sim-stack">
@@ -92,7 +92,20 @@
         </select>
       </div>
     </div>
-    <div class="callout"><p><strong>Refus explicite = résultat valide.</strong> Les installations collectives, cascades, appoints ou systèmes multiples ne sont pas automatiquement simplifiés. Le simulateur refuse le preset si le remplacement ne peut pas être rattaché sans ambiguïté à la topologie source.</p></div>
+    <h3>Ventilation</h3>
+    <div class="form-grid">
+      <div class="field">
+        <label for="ventilation-preset">Scénario ventilation</label>
+        <select id="ventilation-preset">
+          <option value="">Conserver la ventilation d’origine</option>
+          <option value="VMC_SF_AUTO_AFTER_2012">VMC simple flux autoréglable après 2012</option>
+          <option value="VMC_SF_HYGRO_A_AFTER_2012">VMC simple flux Hygro A après 2012</option>
+          <option value="VMC_SF_HYGRO_B_AFTER_2012">VMC simple flux Hygro B après 2012</option>
+          <option value="VMC_DF_INDIVIDUAL_AFTER_2013">VMC double flux individuelle avec échangeur à partir de 2013</option>
+        </select>
+      </div>
+    </div>
+    <div class="callout"><p><strong>Refus explicite = résultat valide.</strong> Les installations collectives, cascades, appoints, systèmes multiples ou plusieurs objets ventilation ne sont pas automatiquement simplifiés. Le simulateur refuse le preset si le remplacement ne peut pas être rattaché sans ambiguïté à la topologie source.</p></div>
     <div class="actions"><button id="run-scenario" type="button">Recalculer après travaux</button><button id="reset-scenario" type="button" class="button secondary">Réinitialiser</button></div>
     <p id="scenario-status" class="status" role="status" aria-live="polite"></p>
   </section>
@@ -112,7 +125,7 @@
       <p><strong>Cette projection n’est pas un DPE réglementaire.</strong> Elle utilise un moteur open source implémentant 3CL-DPE 2021 pour recalculer des hypothèses. Les logiciels qui établissent officiellement des DPE relèvent d’une procédure de validation spécifique.</p>
     </div>
     <p class="lock">PROJECTION ≠ DPE RÉGLEMENTAIRE<br>HYPOTHÈSE SIMULÉE ≠ ÉTAT OBSERVÉ<br>CALCUL ≠ VISITE PHYSIQUE</p>
-    <p>V0.2 : enveloppe + quatre presets chauffage/ECS sur topologies simples. Les installations collectives, cascades, appoints multiples, ventilation, photovoltaïque et remplacements complexes restent hors périmètre tant que leur mapping n’est pas vérifié.</p>
+    <p>V0.3 : enveloppe + quatre presets chauffage/ECS + quatre presets ventilation sur topologies simples. Les systèmes collectifs, cascades, appoints multiples, plusieurs ventilations, photovoltaïque et remplacements complexes restent détectés mais non simplifiés automatiquement.</p>
   </section>
 </main>
 
