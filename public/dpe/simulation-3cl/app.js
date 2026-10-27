@@ -1,5 +1,6 @@
 import {
   SYSTEM_PRESETS,
+  VENTILATION_PRESETS,
   analyzeSystemTopology,
   applyScenario,
   buildProjectionReport,
@@ -30,6 +31,7 @@ const ecsVolumeField = document.querySelector('#ecs-volume-field')
 const ecsPositionField = document.querySelector('#ecs-position-field')
 const ecsVolume = document.querySelector('#ecs-volume')
 const ecsPosition = document.querySelector('#ecs-position')
+const ventilationPreset = document.querySelector('#ventilation-preset')
 
 const fields = {
   wallU: document.querySelector('#wall-u'),
@@ -54,6 +56,8 @@ function issueMessage(issue) {
     CET_REQUIRES_POSITIVE_STORAGE_VOLUME: 'Le chauffe-eau thermodynamique nécessite un volume de stockage positif. Renseigner le volume après travaux.',
     CET_REQUIRES_STORAGE_POSITION: 'Le chauffe-eau thermodynamique nécessite de connaître si le stockage est dans le volume chauffé.',
     PRESET_TOPOLOGY_UNSUPPORTED: 'Topologie système non prise en charge par ce preset.',
+    VENTILATION_PRESET_UNKNOWN: 'Preset ventilation inconnu.',
+    VENTILATION_PRESET_REQUIRES_SINGLE_VENTILATION_OBJECT: 'Ce preset ventilation exige un unique objet ventilation dans le DPE.',
   }
   return messages[issue] || issue
 }
@@ -70,9 +74,29 @@ function updatePresetAvailability() {
   const supported = Object.entries(currentTopology.supportedPresets)
     .filter(([, ok]) => ok)
     .map(([id]) => SYSTEM_PRESETS[id]?.label || id)
-  systemTopologyStatus.textContent = supported.length
-    ? 'Topologie détectée : ' + supported.length + ' scénario(s) système compatible(s) — ' + supported.join(' ; ')
-    : 'Topologie détectée : aucun preset système V0.2 n’est applicable sans simplification.'
+  const supportedVentilation = Object.entries(currentTopology.supportedVentilationPresets || {})
+    .filter(([, ok]) => ok)
+    .map(([id]) => VENTILATION_PRESETS[id]?.label || id)
+
+  for (const option of ventilationPreset.options) {
+    if (!option.value) {
+      option.disabled = false
+      continue
+    }
+    option.disabled = !currentTopology.supportedVentilationPresets?.[option.value]
+  }
+
+  const topologySummary =
+    'Chauffage : ' + currentTopology.heatingInstallations + ' installation(s), ' + currentTopology.heatingGenerators + ' générateur(s) · ' +
+    'ECS : ' + currentTopology.ecsInstallations + ' installation(s), ' + currentTopology.ecsGenerators + ' générateur(s) · ' +
+    'Ventilation : ' + currentTopology.ventilationObjects + ' objet(s). '
+
+  const compatible = [...supported, ...supportedVentilation]
+  systemTopologyStatus.textContent = topologySummary + (
+    compatible.length
+      ? compatible.length + ' scénario(s) compatible(s) — ' + compatible.join(' ; ')
+      : 'Aucun preset V0.3 n’est applicable sans simplification.'
+  )
 }
 
 function updateSystemFields() {
@@ -159,6 +183,7 @@ baselineButton.addEventListener('click', async () => {
     baselineInput = baseline.input
     currentTopology = analyzeSystemTopology(baselineCalculated)
     systemPreset.value = ''
+    ventilationPreset.value = ''
     updateSystemFields()
     updatePresetAvailability()
 
@@ -192,11 +217,12 @@ scenarioButton.addEventListener('click', async () => {
     systemPreset: systemPreset.value || null,
     ecsVolume: numberFromInput(ecsVolume),
     ecsInsideHeatedVolume: positionValue,
+    ventilationPreset: ventilationPreset.value || null,
   }
 
   const hasEnvelopeChange = [scenario.wallU, scenario.roofU, scenario.floorU, scenario.windowUw].some(value => value !== null)
-  if (!hasEnvelopeChange && !scenario.systemPreset) {
-    scenarioStatus.textContent = 'Saisir au moins une valeur d’enveloppe ou choisir un scénario chauffage/ECS.'
+  if (!hasEnvelopeChange && !scenario.systemPreset && !scenario.ventilationPreset) {
+    scenarioStatus.textContent = 'Saisir au moins une valeur d’enveloppe ou choisir un scénario chauffage/ECS/ventilation.'
     return
   }
 
@@ -253,6 +279,7 @@ scenarioButton.addEventListener('click', async () => {
 resetButton.addEventListener('click', () => {
   for (const input of Object.values(fields)) input.value = ''
   systemPreset.value = ''
+  ventilationPreset.value = ''
   ecsVolume.value = ''
   ecsPosition.value = ''
   updateSystemFields()
