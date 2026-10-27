@@ -96,5 +96,21 @@
     "persistent_application_storage": false,
     "export": "local JSON on explicit user action",
     "purpose": "separate stored values, declared origin metadata, declared justifications, source-document availability and support relation"
+  },
+  "fire_safety_building_layer": {
+    "route": "/securite-incendie/",
+    "rnb_api_request": "https://rnb-api.beta.gouv.fr/api/alpha/buildings/{rnb_id}/",
+    "trigger": "explicit user RNB lookup",
+    "local_evidence_input": true,
+    "local_evidence_network_request": false,
+    "persistent_application_storage": false,
+    "local_json_export": "explicit-user-action",
+    "external_sources_opened_on_navigation": [
+      "RNB",
+      "ADEME",
+      "Géorisques",
+      "schema PEI",
+      "data.gouv ERP/local"
+    ]
   }
 }
