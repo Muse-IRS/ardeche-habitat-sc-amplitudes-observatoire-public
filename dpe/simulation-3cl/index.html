@@ -16,7 +16,7 @@
     .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);min-width:0}
     .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
     .field{display:grid;gap:7px;min-width:0}.field label{font-weight:700}
-    .field input{width:100%;min-width:0;max-width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+    .field input,.field select{width:100%;min-width:0;max-width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
     .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}.button,button{display:inline-block;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer}.button.secondary{background:#fff;color:var(--accent)}
     .status{color:var(--muted)}
     .result-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
@@ -32,8 +32,8 @@
 <header class="hero"><div class="wrap">
   <p class="eyebrow">3CL-DPE 2021 · projection informative</p>
   <h1>Simulation après travaux</h1>
-  <p class="lead">Charger localement un DPE XML ou JSON, recalculer sa situation de référence, modifier des paramètres d’enveloppe puis comparer le résultat avant/après — sans compte, sans paiement et sans envoi du fichier à Muse-IRS.</p>
-  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Calcul local</span><span>Open3CL 1.9.1</span></div>
+  <p class="lead">Charger localement un DPE XML ou JSON, recalculer sa situation de référence, modifier l’enveloppe ou certains systèmes chauffage/ECS compatibles, puis comparer le résultat avant/après — sans compte, sans paiement et sans envoi du fichier à Muse-IRS.</p>
+  <div class="badges"><span>0 €</span><span>Aucun compte</span><span>Calcul local</span><span>Open3CL 1.9.1</span><span>Simulateur v0.2</span></div>
 </div></header>
 
 <main class="wrap sim-stack">
@@ -58,13 +58,41 @@
   <section id="scenario-panel" class="panel" hidden>
     <p class="eyebrow">Hypothèses locales</p>
     <h2>3 — Définir le scénario après travaux</h2>
-    <p>Les valeurs laissées vides conservent l’entrée d’origine. Les valeurs saisies remplacent toutes les parois de la catégorie correspondante dans le scénario.</p>
+    <p>Les valeurs laissées vides conservent l’entrée d’origine. Les valeurs d’enveloppe s’appliquent à toutes les parois de la catégorie correspondante. Les presets chauffage/ECS ne sont activés que si la topologie du DPE est suffisamment simple pour être remplacée sans ambiguïté.</p>
+    <h3>Enveloppe</h3>
     <div class="form-grid">
       <div class="field"><label for="wall-u">Murs — U après travaux (W/m².K)</label><input id="wall-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,25"></div>
       <div class="field"><label for="roof-u">Toiture / plancher haut — U (W/m².K)</label><input id="roof-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,18"></div>
       <div class="field"><label for="floor-u">Plancher bas — U (W/m².K)</label><input id="floor-u" type="number" min="0.05" max="5" step="0.01" inputmode="decimal" placeholder="ex. 0,30"></div>
       <div class="field"><label for="window-uw">Fenêtres / portes-fenêtres — Uw (W/m².K)</label><input id="window-uw" type="number" min="0.3" max="8" step="0.01" inputmode="decimal" placeholder="ex. 1,30"></div>
     </div>
+    <h3>Chauffage / ECS</h3>
+    <p id="system-topology-status" class="status">La compatibilité des systèmes sera analysée après calcul de la référence.</p>
+    <div class="form-grid">
+      <div class="field">
+        <label for="system-preset">Scénario système</label>
+        <select id="system-preset">
+          <option value="">Conserver les systèmes d’origine</option>
+          <option value="GAS_CONDENSING_HEATING">Chaudière gaz condensation après 2015 — chauffage seul</option>
+          <option value="AIR_WATER_HP_HEATING">PAC air/eau après 2017 — chauffage seul</option>
+          <option value="GAS_CONDENSING_MIXED">Chaudière gaz condensation après 2015 — chauffage + ECS</option>
+          <option value="OUTDOOR_AIR_CET">Chauffe-eau thermodynamique sur air extérieur après 2014</option>
+        </select>
+      </div>
+      <div class="field" id="ecs-volume-field" hidden>
+        <label for="ecs-volume">Volume du stockage ECS après travaux (L)</label>
+        <input id="ecs-volume" type="number" min="30" max="1000" step="1" inputmode="numeric" placeholder="ex. 200">
+      </div>
+      <div class="field" id="ecs-position-field" hidden>
+        <label for="ecs-position">Ballon dans le volume chauffé</label>
+        <select id="ecs-position">
+          <option value="">Conserver la donnée source</option>
+          <option value="yes">Oui</option>
+          <option value="no">Non</option>
+        </select>
+      </div>
+    </div>
+    <div class="callout"><p><strong>Refus explicite = résultat valide.</strong> Les installations collectives, cascades, appoints ou systèmes multiples ne sont pas automatiquement simplifiés. Le simulateur refuse le preset si le remplacement ne peut pas être rattaché sans ambiguïté à la topologie source.</p></div>
     <div class="actions"><button id="run-scenario" type="button">Recalculer après travaux</button><button id="reset-scenario" type="button" class="button secondary">Réinitialiser</button></div>
     <p id="scenario-status" class="status" role="status" aria-live="polite"></p>
   </section>
@@ -84,7 +112,7 @@
       <p><strong>Cette projection n’est pas un DPE réglementaire.</strong> Elle utilise un moteur open source implémentant 3CL-DPE 2021 pour recalculer des hypothèses. Les logiciels qui établissent officiellement des DPE relèvent d’une procédure de validation spécifique.</p>
     </div>
     <p class="lock">PROJECTION ≠ DPE RÉGLEMENTAIRE<br>HYPOTHÈSE SIMULÉE ≠ ÉTAT OBSERVÉ<br>CALCUL ≠ VISITE PHYSIQUE</p>
-    <p>V0.1 : enveloppe uniquement. Chauffage, ECS, ventilation, générateurs multiples et remplacement d’équipements seront ajoutés après vérification de leurs mappings réglementaires.</p>
+    <p>V0.2 : enveloppe + quatre presets chauffage/ECS sur topologies simples. Les installations collectives, cascades, appoints multiples, ventilation, photovoltaïque et remplacements complexes restent hors périmètre tant que leur mapping n’est pas vérifié.</p>
   </section>
 </main>
 
