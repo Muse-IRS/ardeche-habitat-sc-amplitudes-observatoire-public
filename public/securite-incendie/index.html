@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <title>Sécurité incendie du bâtiment — Observatoire public</title>
+  <meta name="description" content="Couche publique de sécurité incendie d’un bâtiment : identité RNB, sources open data, DECI/PEI, risques externes, ERP et preuves documentaires, sans inférer automatiquement la conformité.">
+  <link rel="canonical" href="https://muse-irs.github.io/ardeche-habitat-sc-amplitudes-observatoire-public/securite-incendie/">
+  <link rel="stylesheet" href="../assets/styles.css">
+  <style>
+    html{-webkit-text-size-adjust:100%;text-size-adjust:100%;overflow-x:hidden}
+    body{overflow-x:hidden}
+    .fire-stack{display:grid;gap:22px;padding-top:34px;padding-bottom:64px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;box-shadow:var(--shadow);min-width:0}
+    .summary-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 18px;margin:0}
+    .summary-grid>div{border-bottom:1px solid var(--line);padding:10px 0}.summary-grid dt{font-weight:700}.summary-grid dd{margin:4px 0 0;color:var(--muted);overflow-wrap:anywhere}
+    .source-grid,.layer-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .source-card,.layer-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px;min-width:0}.source-card h3,.layer-card h3{margin-top:0}.source-card p,.layer-card p{color:var(--muted)}
+    .field{display:grid;gap:7px}.field input,.field select,.field textarea{width:100%;min-width:0;max-width:100%;padding:12px 14px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}.field textarea{resize:vertical}
+    .form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}button,.button{display:inline-block;border:1px solid var(--accent);border-radius:10px;padding:10px 14px;background:var(--accent);color:#fff;text-decoration:none;font:inherit;font-weight:700;cursor:pointer}.button.secondary{background:#fff;color:var(--accent)}
+    .status{color:var(--muted)}.invariant{font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-weight:700;overflow-wrap:anywhere}.callout{background:#eef3f8;border-left:4px solid var(--accent);padding:12px 16px;margin:16px 0}
+    .table-scroll{width:100%;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch}.audit-table{width:100%;border-collapse:collapse;background:#fff}.audit-table th,.audit-table td{border:1px solid var(--line);padding:10px;text-align:left;vertical-align:top}.audit-table th{background:#eef5f1}
+    @media(max-width:800px){.summary-grid,.source-grid,.layer-grid,.form-grid{grid-template-columns:1fr}.panel{padding:16px}}
+  </style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">Bâtiment · sécurité incendie · provenance</p>
+  <h1>Sécurité incendie du bâtiment</h1>
+  <p class="lead">Identifier le bâtiment, rassembler les sources ouvertes et documentaires, puis qualifier ce qu’elles permettent réellement d’établir — sans transformer automatiquement un classement, un PEI, un risque ou un document en conformité incendie.</p>
+  <div class="badges"><span>ID-RNB</span><span>DECI / PEI</span><span>Géorisques</span><span>ERP</span><span>Preuves locales</span></div>
+</div></header>
+
+<main class="wrap fire-stack">
+  <section class="panel">
+    <h2>Principe maïeutique</h2>
+    <p class="invariant">RNB_ID ≠ FIRE_SAFETY_STATUS<br>ERP_CLASSIFICATION ≠ FIRE_SAFETY_COMPLIANCE<br>NEARBY_PEI ≠ SUFFICIENT_DECI<br>GEORISK ≠ INTERNAL_FIRE_SAFETY<br>DOCUMENT_ASSERTS_CONTROL ≠ CONTROL_OCCURRED</p>
+    <p>La conformité reste <strong>INDÉTERMINÉE</strong> tant qu’une source ayant la portée suffisante ne permet pas de qualifier précisément l’élément contrôlé, sa date et son état.</p>
+  </section>
+
+  <section class="panel">
+    <p class="eyebrow">Pivot bâtiment · API publique RNB</p>
+    <h2>1 — Identifier le bâtiment</h2>
+    <form id="rnb-form">
+      <div class="field">
+        <label for="rnb-id">ID-RNB</label>
+        <input id="rnb-id" type="text" autocomplete="off" placeholder="PG46-YY6Y-WCX8" aria-describedby="rnb-help">
+        <span id="rnb-help" class="status">Identifiant pérenne du bâtiment. La consultation RNB est publique et ne constitue pas un état de sécurité.</span>
+      </div>
+      <div class="actions">
+        <button type="submit">Charger le bâtiment</button>
+        <a class="button secondary" href="https://rnb.beta.gouv.fr/" target="_blank" rel="noopener noreferrer">Carte RNB</a>
+      </div>
+    </form>
+    <p id="rnb-status" class="status" role="status" aria-live="polite">Aucun bâtiment chargé.</p>
+  </section>
+
+  <section id="building-panel" class="panel" hidden>
+    <p class="eyebrow">Identité bâtiment</p>
+    <h2>2 — Actif persistant</h2>
+    <dl id="building-summary" class="summary-grid"></dl>
+    <div class="callout"><p><strong>Identité ≠ sécurité.</strong> L’ID-RNB établit quel bâtiment est visé. Il ne dit rien, à lui seul, sur ses extincteurs, son désenfumage, ses portes coupe-feu, son SSI ou sa conformité.</p></div>
+  </section>
+
+  <section class="panel">
+    <p class="eyebrow">Sources · portée et limites</p>
+    <h2>3 — Sources mobilisables</h2>
+    <div id="source-grid" class="source-grid"></div>
+  </section>
+
+  <section id="evidence-panel" class="panel" hidden>
+    <p class="eyebrow">Preuve locale · sans upload</p>
+    <h2>4 — Ajouter une trace de sécurité incendie</h2>
+    <p>Cette saisie sert à enregistrer une <strong>trace</strong> : registre, rapport de maintenance, procès-verbal, facture, photo, contrôle ou observation. Une trace déclarée ne devient pas automatiquement un fait matériel établi.</p>
+    <form id="evidence-form">
+      <div class="form-grid">
+        <div class="field">
+          <label for="evidence-layer">Couche</label>
+          <select id="evidence-layer">
+            <option value="INTERNAL_SYSTEMS">Systèmes internes</option>
+            <option value="PERIODIC_CONTROLS">Contrôles périodiques</option>
+            <option value="COMMISSION_DECISIONS">Commission / décision</option>
+            <option value="DECI_PEI">DECI / PEI</option>
+            <option value="ERP_ADMINISTRATIVE">ERP / administratif</option>
+            <option value="DOCUMENTARY_EVIDENCE">Preuve documentaire</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="evidence-date">Date de la trace</label>
+          <input id="evidence-date" type="date">
+        </div>
+        <div class="field">
+          <label for="evidence-label">Document / source</label>
+          <input id="evidence-label" type="text" placeholder="Ex. rapport maintenance désenfumage">
+        </div>
+        <div class="field">
+          <label for="evidence-subject">Élément concerné</label>
+          <input id="evidence-subject" type="text" placeholder="Ex. porte coupe-feu cage A">
+        </div>
+      </div>
+      <div class="field">
+        <label for="evidence-statement">Ce que la trace affirme</label>
+        <textarea id="evidence-statement" rows="4" placeholder="Décrire strictement ce que le document, la photo ou l’observation permet d’affirmer."></textarea>
+      </div>
+      <div class="actions"><button type="submit">Ajouter la trace</button></div>
+    </form>
+    <p id="evidence-status" class="status"></p>
+    <div class="table-scroll"><table class="audit-table"><thead><tr><th>Couche</th><th>Source</th><th>Élément</th><th>État</th><th>Date</th></tr></thead><tbody id="evidence-body"></tbody></table></div>
+  </section>
+
+  <section id="state-panel" class="panel" hidden>
+    <p class="eyebrow">État borné</p>
+    <h2>5 — Ce que nous pouvons conclure</h2>
+    <dl id="state-summary" class="summary-grid"></dl>
+    <div class="callout"><p id="bounded-claim"></p></div>
+    <div class="actions"><button id="export-profile" type="button" class="button secondary">Exporter la carte sécurité (.json)</button></div>
+  </section>
+
+  <section class="panel">
+    <h2>Architecture</h2>
+    <div class="layer-grid">
+      <article class="layer-card"><h3>RNB</h3><p>Identité persistante du bâtiment et pivot de rapprochement.</p></article>
+      <article class="layer-card"><h3>ERP / administratif</h3><p>Classement, commissions ou décisions lorsqu’un jeu local les publie.</p></article>
+      <article class="layer-card"><h3>DECI / PEI</h3><p>Contexte des points d’eau incendie ; données standardisées mais principalement consolidées au niveau départemental.</p></article>
+      <article class="layer-card"><h3>Géorisques</h3><p>Risques naturels et technologiques externes ; pas un état du SSI ou des équipements intérieurs.</p></article>
+      <article class="layer-card"><h3>Systèmes internes</h3><p>Portes coupe-feu, désenfumage, alarmes, éclairage, colonnes, extincteurs, etc. à documenter par sources adaptées.</p></article>
+      <article class="layer-card"><h3>Provenance</h3><p>Chaque affirmation reste rattachée à sa source, sa date et sa portée.</p></article>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap">Muse-IRS · Observatoire public · Sécurité incendie · 2026</div><div class="wrap privacy-links"><a href="../">Accueil</a><a href="../identite-logement/">Carte d’identité</a><a href="../information/">Information</a><a href="../rgpd/">RGPD</a><a href="../privacy.html">Confidentialité</a></div></footer>
+<script type="module" src="./app.js"></script>
+</body>
+</html>
