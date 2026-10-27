@@ -115,7 +115,7 @@ The core performs no network request and no persistence. Domain repositories sho
 
 ## Simulation 3CL après travaux
 
-Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.1.0`.
+Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.2.0`.
 
 - scenario core: `public/assets/dpe-3cl-simulator/core.js`;
 - Open3CL provider: `public/assets/dpe-3cl-simulator/open3cl-provider.js`;
@@ -124,7 +124,7 @@ Public reusable contract: `DPE_3CL_SCENARIO_CORE_V1 v0.1.0`.
 
 Current engine provider is pinned to `@open3cl/engine 1.9.1` (MIT) and loads lazily from jsDelivr after explicit user action.
 
-V0.1 supports envelope scenarios by direct U-values for walls, upper floor / roof, lower floor and windows. Heating, ECS, ventilation and generator replacement are intentionally deferred until their mappings are verified.
+V0.2 supports envelope scenarios plus four guarded heating/ECS presets: recent gas-condensing boiler (heating only), recent air/water heat pump (heating only), matched mixed gas-condensing boiler (heating + ECS), and recent outdoor-air thermodynamic water heater. Unsupported collective, cascade or multi-generator topologies are refused rather than simplified. Ventilation and photovoltaic mappings remain deferred.
 
 ```text
 BASELINE XML/JSON
